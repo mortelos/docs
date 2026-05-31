@@ -1,0 +1,62 @@
+{
+  "version": "0",
+  "sections": [
+    {
+      "title": "Getting started",
+      "items": [
+        {
+          "title": "Overview",
+          "slug": "index"
+        },
+        {
+          "title": "Installation",
+          "slug": "installation"
+        },
+        {
+          "title": "First portal",
+          "slug": "first-portal"
+        }
+      ]
+    },
+    {
+      "title": "Build method",
+      "items": [
+        {
+          "title": "Agentic development",
+          "slug": "agentic-development"
+        }
+      ]
+    },
+    {
+      "title": "Governance",
+      "items": [
+        {
+          "title": "Package governance",
+          "slug": "package-governance"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
+        {
+          "title": "Packages",
+          "slug": "packages"
+        },
+        {
+          "title": "Starter package",
+          "slug": "starter-package"
+        },
+        {
+          "title": "API",
+          "slug": "api"
+        },
+        {
+          "title": "Changelog",
+          "slug": "changelog"
+        }
+      ]
+    }
+  ]
+}
+
