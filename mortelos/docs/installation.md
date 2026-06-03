@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-05-31"
+last_verified: "2026-06-03"
 public: true
 ---
 
@@ -40,6 +40,21 @@ php artisan serve
 
 Open `http://127.0.0.1:8000`.
 
+`composer create-project` installs the PHP dependencies and runs the starter bootstrap hooks. That means `vendor/`, `.env`, the SQLite database file, migrations and the development seed account are already in place before the Vite build runs.
+
+The frontend build imports Livewire and Flux assets from Composer packages under `vendor/`. If you created the app from an existing checkout or copied the files manually, run the Composer bootstrap first:
+
+```bash
+composer install
+php -r "file_exists('.env') || copy('.env.example', '.env');"
+php artisan key:generate
+php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+php artisan migrate --force
+php artisan db:seed --force
+npm install --ignore-scripts
+npm run build
+```
+
 The development seed account is:
 
 | Email | Password |
@@ -63,4 +78,3 @@ Expected result:
 2. Login works with the local seed account.
 3. The default tenant is selected.
 4. The dashboard loads.
-
