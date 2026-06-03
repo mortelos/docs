@@ -18,7 +18,43 @@ public: true
 
 Create a new MortelOS Starter host app when you want a Laravel portal with the standard shell, authentication baseline, dashboard, inbox, governance, users and settings.
 
-## Requirements
+## Meet MortelOS
+
+MortelOS is a Laravel portal system for building governed customer portals from a stable host application and reusable capability packages.
+
+The starter app gives every installation the same baseline: authentication, tenant selection, dashboard shell, inbox, governance surfaces, users and settings. Project-specific behavior starts in the host and moves into packages when it can serve more than one installation.
+
+### Why MortelOS?
+
+MortelOS keeps the first portal fast without making the second portal expensive. The starter app handles the recurring operational surface, while packages keep reusable domain behavior portable across installations.
+
+### An Agent Ready Portal System
+
+MortelOS is built for human-directed, agent-assisted development. File locations, package boundaries, policy rules and review checkpoints are documented so an AI coding agent can work inside predictable constraints.
+
+Read [Agentic Development](/docs/0/agentic-development) before asking an agent to build the first customer-specific capability.
+
+## Creating a MortelOS Host Application
+
+### Getting Started Using AI
+
+If you use an AI coding agent, start with a prompt that gives it the MortelOS playbook before it touches the project:
+
+```text
+I'm building a new MortelOS portal host application.
+
+Read and follow the MortelOS installation guide:
+https://mortelos.nl/docs/0/installation
+
+Then read the agentic development guide:
+https://mortelos.nl/docs/0/agentic-development
+
+Create the host with mortelos new, keep Laravel defaults where MortelOS does not specify otherwise, and stop before adding customer-specific behavior.
+```
+
+After the agent creates the host app, continue with a capability-first interview before implementation work starts.
+
+### Installing PHP and Composer
 
 | Tool | Version or access |
 | --- | --- |
@@ -27,7 +63,35 @@ Create a new MortelOS Starter host app when you want a Laravel portal with the s
 | Node | `^20` |
 | GitHub access | SSH or token access for private MortelOS packages when required |
 
-## Create the host app
+If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows.
+
+### Installing the MortelOS CLI
+
+The starter ships a small CLI script at `bin/mortelos`. Install it once from a trusted starter checkout:
+
+```bash
+git clone git@github.com:mortelos/starter.git mortelos-starter
+cd mortelos-starter
+install -m 0755 bin/mortelos /usr/local/bin/mortelos
+```
+
+If you install it into `~/.local/bin`, make sure that directory is in your `PATH`.
+
+The CLI uses `git@github.com:mortelos/starter.git` by default. Override it with `MORTELOS_STARTER_REPO` or `MORTELOS_STARTER_BRANCH` when you need another source or branch.
+
+### Creating the Host Application
+
+Use the CLI when it is available:
+
+```bash
+mortelos new mijn-portal
+cd mijn-portal
+composer dev
+```
+
+`mortelos new` shallow-clones the starter, removes the starter Git history, initializes a fresh repository and runs `composer setup`.
+
+If the CLI is not installed yet, use Composer directly:
 
 ```bash
 composer create-project mortelos/starter mijn-portal
@@ -40,7 +104,7 @@ php artisan serve
 
 Open `http://127.0.0.1:8000`.
 
-`composer create-project` installs the PHP dependencies and runs the starter bootstrap hooks. That means `vendor/`, `.env`, the SQLite database file, migrations and the development seed account are already in place before the Vite build runs.
+`composer setup` and `composer create-project` both install the PHP dependencies and run the starter bootstrap hooks. That means `vendor/`, `.env`, the SQLite database file, migrations and the development seed account are already in place before the Vite build runs.
 
 The frontend build imports Livewire and Flux assets from Composer packages under `vendor/`. If you created the app from an existing checkout or copied the files manually, run the Composer bootstrap first:
 
@@ -55,7 +119,27 @@ npm install --ignore-scripts
 npm run build
 ```
 
-The development seed account is:
+## Initial Configuration
+
+### Environment Based Configuration
+
+Review `.env` before adding customer data or external integrations. Set the application URL, mail transport, queue connection and database connection for the target environment.
+
+Local development can use the starter defaults. Production and staging should use explicit environment values managed outside Git.
+
+### Databases and Migrations
+
+Run the starter migrations before the first browser check:
+
+```bash
+php artisan migrate
+```
+
+Use SQLite for quick local verification when the project has no database choice yet. Switch to MySQL or PostgreSQL when the customer environment requires it.
+
+### Tenant and User Baseline
+
+The starter includes a local development seed account:
 
 | Email | Password |
 | --- | --- |
@@ -63,7 +147,53 @@ The development seed account is:
 
 This account is only a local development baseline. Replace it before production use.
 
-## Verify the baseline
+## Installation Using Herd
+
+Laravel Herd provides PHP, Nginx, Composer and Node tooling for local Laravel development. MortelOS host apps work well in a Herd parked directory.
+
+### Herd on macOS
+
+Create the host app inside your parked directory:
+
+```bash
+cd ~/Herd
+mortelos new mijn-portal
+cd mijn-portal
+herd open
+```
+
+Run the baseline checks after the app opens.
+
+### Herd on Windows
+
+Create the host app from PowerShell inside the Herd parked directory:
+
+```powershell
+cd ~\Herd
+mortelos new mijn-portal
+cd mijn-portal
+herd open
+```
+
+Use the Herd UI to confirm the PHP version and site domain.
+
+## IDE Support
+
+Use an editor that can follow Laravel conventions, Blade views, Livewire components, package source paths and tests. VS Code, Cursor and PhpStorm all work well for MortelOS projects.
+
+For agent-assisted work, keep `AGENTS.md`, the project README and the MortelOS docs open as source material.
+
+## MortelOS and AI
+
+MortelOS agents should work from accepted scope, not from guesses. Start by mapping roles, data, actions, approvals and package boundaries.
+
+### Installing Agent Guidance
+
+Keep the project guidance files in the host app and update them when the portal introduces new package rules, naming conventions or customer-specific constraints.
+
+Use the [Agentic Development](/docs/0/agentic-development) guide as the baseline for prompts and review checkpoints.
+
+## Verify the Baseline
 
 Run the baseline checks before adding portal-specific behavior.
 
@@ -78,3 +208,11 @@ Expected result:
 2. Login works with the local seed account.
 3. The default tenant is selected.
 4. The dashboard loads.
+
+## Next Steps
+
+Now that the host app is running, continue with the first customer-facing vertical slice:
+
+1. Build the first portal flow with [First Portal](/docs/0/first-portal).
+2. Review package ownership with [Package Governance](/docs/0/package-governance).
+3. Check reusable starter capabilities in [Starter Package](/docs/0/starter-package).

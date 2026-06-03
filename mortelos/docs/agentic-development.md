@@ -9,7 +9,7 @@ order: 30
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/agentic-development"
-last_verified: "2026-05-31"
+last_verified: "2026-06-03"
 public: true
 ---
 
@@ -22,7 +22,7 @@ The user owns product judgment, scope and acceptance. The agent wires routes, ac
 ## Recommended prompt
 
 ```text
-Use the portal-kickoff skill.
+Use the setup-portal skill.
 I want to build a customer portal for: [describe the customer, user group or process].
 ```
 
@@ -51,4 +51,3 @@ Stop for review before building the first vertical slice.
 ## Operating rule
 
 The agent can move quickly after the capability map is accepted. Before that point, speed creates rework.
-
