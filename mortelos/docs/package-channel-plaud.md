@@ -4,7 +4,7 @@ nav_title: "Plaud channel"
 slug: "package-channel-plaud"
 version: "0"
 description: "Plaud channel driver for transcription ingestion."
-section: "packages"
+section: "channels"
 order: 61
 status: "mvp"
 audience: "developers"
@@ -36,4 +36,3 @@ composer require mortelos/channel-plaud
 ## Boundaries
 
 The package owns the Plaud driver, API client, polling job and transcription formatting. The host app owns credentials, user consent, retention policy and local workflow routing.
-

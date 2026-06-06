@@ -4,7 +4,7 @@ nav_title: "Telegram channel"
 slug: "package-channel-telegram"
 version: "0"
 description: "Telegram channel driver for bidirectional Bot API communication."
-section: "packages"
+section: "channels"
 order: 62
 status: "mvp"
 audience: "developers"
@@ -35,4 +35,3 @@ composer require mortelos/channel-telegram
 ## Boundaries
 
 The package owns the Telegram driver, API client, webhook route and inbound processing job. The host app owns bot credentials, tenant policy and which workflows can send or receive Telegram messages.
-

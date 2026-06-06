@@ -4,7 +4,7 @@ nav_title: "Dev tools"
 slug: "package-dev-tools"
 version: "0"
 description: "Developer tooling for MortelOS package decisions and governance checks."
-section: "packages"
+section: "tooling"
 order: 65
 status: "mvp"
 audience: "developers"
@@ -46,4 +46,3 @@ php artisan mortelos:package-decisions:check --require-reason
 ## Boundaries
 
 Use this package for development workflow and governance. It does not own runtime portal behavior.
-

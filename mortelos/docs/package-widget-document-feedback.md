@@ -4,7 +4,7 @@ nav_title: "Document feedback"
 slug: "package-widget-document-feedback"
 version: "0"
 description: "Document feedback widget for MortelOS chat surfaces."
-section: "packages"
+section: "widgets"
 order: 64
 status: "mvp"
 audience: "developers"
@@ -42,4 +42,3 @@ php artisan chat:widget:check document_feedback_annotate
 ## Boundaries
 
 Use this package for document feedback widget registration and UI. Keep generic widget runtime logic in `mortelos/chat`, and keep local document storage, approval policy and apply behavior in the host workflow unless those parts become reusable.
-

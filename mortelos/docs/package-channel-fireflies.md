@@ -4,7 +4,7 @@ nav_title: "Fireflies channel"
 slug: "package-channel-fireflies"
 version: "0"
 description: "Fireflies channel driver for inbound webhooks and transcript ingest."
-section: "packages"
+section: "channels"
 order: 57
 status: "mvp"
 audience: "developers"
@@ -35,4 +35,3 @@ composer require mortelos/channel-fireflies
 ## Boundaries
 
 The package owns the Fireflies driver, API client, webhook route and processing job. The host app owns credentials, tenant policy and what happens after transcript ingest.
-

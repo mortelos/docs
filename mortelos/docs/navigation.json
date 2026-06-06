@@ -19,7 +19,7 @@
       ]
     },
     {
-      "title": "Build method",
+      "title": "AI",
       "items": [
         {
           "title": "Agentic development",
@@ -66,7 +66,12 @@
         {
           "title": "Entity graph",
           "slug": "package-entity-graph"
-        },
+        }
+      ]
+    },
+    {
+      "title": "Channels",
+      "items": [
         {
           "title": "Fireflies channel",
           "slug": "package-channel-fireflies"
@@ -90,7 +95,12 @@
         {
           "title": "Telegram channel",
           "slug": "package-channel-telegram"
-        },
+        }
+      ]
+    },
+    {
+      "title": "Widgets",
+      "items": [
         {
           "title": "Compliance widget",
           "slug": "package-widget-compliance"
@@ -98,7 +108,12 @@
         {
           "title": "Document feedback",
           "slug": "package-widget-document-feedback"
-        },
+        }
+      ]
+    },
+    {
+      "title": "Tooling",
+      "items": [
         {
           "title": "Dev tools",
           "slug": "package-dev-tools"

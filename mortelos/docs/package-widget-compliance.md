@@ -4,7 +4,7 @@ nav_title: "Compliance widget"
 slug: "package-widget-compliance"
 version: "0"
 description: "Compliance-focused chat widgets for MortelOS."
-section: "packages"
+section: "widgets"
 order: 63
 status: "mvp"
 audience: "developers"
@@ -42,4 +42,3 @@ php artisan chat:widget:check compliance_intake_start
 ## Boundaries
 
 Use this package for compliance-specific widget UI and registration. Keep generic widget runtime logic in `mortelos/chat`, and keep irreversible compliance writes behind policy checks and approval flows.
-

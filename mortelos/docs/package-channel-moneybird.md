@@ -4,7 +4,7 @@ nav_title: "Moneybird channel"
 slug: "package-channel-moneybird"
 version: "0"
 description: "Moneybird channel driver for scheduled invoice and contact sync."
-section: "packages"
+section: "channels"
 order: 60
 status: "mvp"
 audience: "developers"
@@ -36,4 +36,3 @@ composer require mortelos/channel-moneybird
 ## Boundaries
 
 The package owns the Moneybird driver, API client, sync actions and setup provider. The host app owns credentials, sync schedule, tenant policy and how synced financial data appears in portal workflows.
-

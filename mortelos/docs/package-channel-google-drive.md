@@ -4,7 +4,7 @@ nav_title: "Google Drive channel"
 slug: "package-channel-google-drive"
 version: "0"
 description: "Google Drive channel driver for attachments, briefings and exported workspace material."
-section: "packages"
+section: "channels"
 order: 59
 status: "mvp"
 audience: "developers"
@@ -35,4 +35,3 @@ composer require mortelos/channel-google-drive
 ## Boundaries
 
 The package owns the Drive driver, API client and push job. The host app owns Google credentials, target folder policy, retention policy and which portal events should push material to Drive.
-

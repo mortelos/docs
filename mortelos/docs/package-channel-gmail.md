@@ -4,7 +4,7 @@ nav_title: "Gmail channel"
 slug: "package-channel-gmail"
 version: "0"
 description: "Gmail channel driver for inbound and outbound workspace mail."
-section: "packages"
+section: "channels"
 order: 58
 status: "mvp"
 audience: "developers"
@@ -36,4 +36,3 @@ composer require mortelos/channel-gmail
 ## Boundaries
 
 The package owns the Gmail driver, API client, polling jobs and send-mail action. The host app owns Google credentials, tenant policy, message retention choices and local workflow decisions.
-

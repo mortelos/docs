@@ -4,7 +4,7 @@ nav_title: "Agentic development"
 slug: "agentic-development"
 version: "0"
 description: "Use an AI coding agent to build MortelOS portals without skipping governance."
-section: "build-method"
+section: "ai"
 order: 30
 status: "mvp"
 audience: "developers"
