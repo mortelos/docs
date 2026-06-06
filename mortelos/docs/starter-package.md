@@ -4,13 +4,13 @@ nav_title: "Starter package"
 slug: "starter-package"
 version: "0"
 description: "What the mortelos/starter host app template provides."
-section: "reference"
-order: 60
+section: "packages"
+order: 51
 status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/starter-package"
-last_verified: "2026-05-31"
+last_verified: "2026-06-04"
 public: true
 ---
 
@@ -38,4 +38,3 @@ It gives you a working application first. You get login, tenant selection, dashb
 Portal-specific behavior is added through host bindings, resolvers, actions, policies, projections and package decisions.
 
 Use packages for behavior that can serve more than one MortelOS installation. Keep tenant policy, branding and local orchestration in the host.
-

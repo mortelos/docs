@@ -37,16 +37,77 @@
       ]
     },
     {
-      "title": "Reference",
+      "title": "Packages",
       "items": [
         {
-          "title": "Packages",
+          "title": "Overview",
           "slug": "packages"
         },
         {
           "title": "Starter package",
           "slug": "starter-package"
         },
+        {
+          "title": "Framework",
+          "slug": "package-framework"
+        },
+        {
+          "title": "UI",
+          "slug": "package-ui"
+        },
+        {
+          "title": "Chat",
+          "slug": "package-chat"
+        },
+        {
+          "title": "Overviews",
+          "slug": "package-overviews"
+        },
+        {
+          "title": "Entity graph",
+          "slug": "package-entity-graph"
+        },
+        {
+          "title": "Fireflies channel",
+          "slug": "package-channel-fireflies"
+        },
+        {
+          "title": "Gmail channel",
+          "slug": "package-channel-gmail"
+        },
+        {
+          "title": "Google Drive channel",
+          "slug": "package-channel-google-drive"
+        },
+        {
+          "title": "Moneybird channel",
+          "slug": "package-channel-moneybird"
+        },
+        {
+          "title": "Plaud channel",
+          "slug": "package-channel-plaud"
+        },
+        {
+          "title": "Telegram channel",
+          "slug": "package-channel-telegram"
+        },
+        {
+          "title": "Compliance widget",
+          "slug": "package-widget-compliance"
+        },
+        {
+          "title": "Document feedback",
+          "slug": "package-widget-document-feedback"
+        },
+        {
+          "title": "Dev tools",
+          "slug": "package-dev-tools"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
         {
           "title": "API",
           "slug": "api"
@@ -59,4 +120,3 @@
     }
   ]
 }
-
