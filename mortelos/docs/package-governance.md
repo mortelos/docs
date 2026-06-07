@@ -9,7 +9,7 @@ order: 40
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/package-governance"
-last_verified: "2026-05-31"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -31,6 +31,8 @@ Default to `package-ready` when unsure. It preserves speed while keeping the fut
 
 ## Record a decision
 
+Use `mortelos/dev-tools` when it is installed:
+
 ```bash
 php artisan mortelos:package-decision "Customer Portal" \
   --decision=package-ready \
@@ -41,7 +43,18 @@ php artisan mortelos:package-decision "Customer Portal" \
 php artisan mortelos:package-decisions:check --require-reason --no-interaction
 ```
 
-CI should fail when package governance fails.
+When the dev tools are not installed, record the same fields in `.mortelos/package-decisions.md`:
+
+```markdown
+## Customer Portal
+
+Surface: `mortelos/customer-portal`
+Decision: `package-ready`
+Reason: Reusable shell with customer-specific tenant policy and branding.
+Date: 2026-06-07
+```
+
+CI should fail when package governance fails. In host apps, this is usually exposed through:
 
 ```bash
 composer package-governance
@@ -53,3 +66,10 @@ Host apps own tenant config, local branding, policy defaults, local orchestratio
 
 Reusable packages own shared routes, views, Livewire namespaces, migrations, commands, extension contracts and tests when those concerns apply to more than one installation.
 
+## Examples
+
+| Capability | Likely decision | Reason |
+| --- | --- | --- |
+| Document review workflow | `package-ready` | The host may need local policy and branding first, but review workflow behavior is reusable. |
+| Moneybird sync | `package-now` | The integration boundary can serve multiple installations. |
+| One customer's internal KPI wording | `workspace-only` | The behavior is specific to that workspace. |

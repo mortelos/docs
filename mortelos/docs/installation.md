@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-06-03"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -22,7 +22,7 @@ Create a new MortelOS Starter host app when you want a Laravel portal with the s
 
 MortelOS is a Laravel portal system for building governed customer portals from a stable host application and reusable capability packages.
 
-The starter app gives every installation the same baseline: authentication, tenant selection, dashboard shell, inbox, governance surfaces, users and settings. Project-specific behavior starts in the host and moves into packages when it can serve more than one installation.
+The starter app gives every installation the same baseline: authentication, dashboard shell, inbox, governance surfaces, users and settings. Project-specific behavior starts in the host and moves into packages when it can serve more than one installation.
 
 ### Why MortelOS?
 
@@ -61,23 +61,43 @@ After the agent creates the host app, continue with a capability-first interview
 | PHP | `^8.4` |
 | Composer | `^2.7` |
 | Node | `^20` |
-| GitHub access | SSH or token access for private MortelOS packages when required |
+| GitHub access | SSH or token access for private MortelOS packages when Composer requires them |
 
 If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows.
 
 ### Installing the MortelOS CLI
 
-The starter ships a small CLI script at `bin/mortelos`. Install it once from a trusted starter checkout:
+The starter ships a small CLI script at `bin/mortelos`. Install it once from a trusted starter checkout. The current CLI version is `v0.1.1`.
 
 ```bash
-git clone git@github.com:mortelos/starter.git mortelos-starter
+git clone https://github.com/mortelos/starter.git mortelos-starter
 cd mortelos-starter
-install -m 0755 bin/mortelos /usr/local/bin/mortelos
+mkdir -p ~/.local/bin
+install -m 0755 bin/mortelos ~/.local/bin/mortelos
+mortelos --version
 ```
 
-If you install it into `~/.local/bin`, make sure that directory is in your `PATH`.
+`~/.local/bin` is the preferred local install target because it does not require administrator permissions. Make sure that directory is in your `PATH` before older system-wide install paths.
 
-The CLI uses `git@github.com:mortelos/starter.git` by default. Override it with `MORTELOS_STARTER_REPO` or `MORTELOS_STARTER_BRANCH` when you need another source or branch.
+For a system-wide install, use `/usr/local/bin` only when you can write to it. On macOS with Homebrew, `/opt/homebrew/bin` usually appears before `/usr/local/bin` and is often the better user-writable target:
+
+```bash
+install -m 0755 bin/mortelos /usr/local/bin/mortelos
+# or
+install -m 0755 bin/mortelos /opt/homebrew/bin/mortelos
+```
+
+If that command returns `Permission denied`, install into `~/.local/bin` instead or rerun the system-wide install with administrator permissions.
+
+If `mortelos --version` still shows an older version, inspect every matching binary:
+
+```bash
+type -a mortelos
+```
+
+Install the new script into the path that appears first, or remove the stale copy.
+
+The CLI uses `https://github.com/mortelos/starter.git` by default. Override it with `MORTELOS_STARTER_REPO` or `MORTELOS_STARTER_BRANCH` when you need another source or branch.
 
 ### Creating the Host Application
 
@@ -90,6 +110,8 @@ composer dev
 ```
 
 `mortelos new` shallow-clones the starter, removes the starter Git history, initializes a fresh repository and runs `composer setup`.
+
+During `composer setup`, Composer may still need SSH or token access for private package repositories such as `mortelos/ui` or `mortelos/framework`, depending on the package access model in your environment. The starter clone itself no longer requires GitHub SSH access.
 
 If the CLI is not installed yet, use Composer directly:
 
@@ -206,8 +228,8 @@ Expected result:
 
 1. Guests are redirected to `/login`.
 2. Login works with the local seed account.
-3. The default tenant is selected.
-4. The dashboard loads.
+3. The user is redirected to `/dashboard`.
+4. Users, event store and starter config checks pass.
 
 ## Next Steps
 

@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/dev-tools"
 canonical_path: "/docs/0/package-dev-tools"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -24,6 +24,7 @@ public: true
 | --- | --- |
 | Decision logging | Record whether a feature is `package-now`, `package-ready` or `workspace-only`. |
 | Governance checks | Validate package decision logs locally or in CI. |
+| Agent rules | Publish and check merged agent rules for package-aware development. |
 | Workflow support | Keep package boundaries explicit before implementation starts. |
 
 ## Install
@@ -41,6 +42,8 @@ php artisan mortelos:package-decision "Customer Portal" \
   --reason="Reusable shell with customer-specific tenant policy and branding."
 
 php artisan mortelos:package-decisions:check --require-reason
+php artisan mortelos:agent-rules:publish
+php artisan mortelos:agent-rules:check
 ```
 
 ## Boundaries

@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/ui"
 canonical_path: "/docs/0/package-ui"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -35,4 +35,3 @@ composer require mortelos/ui
 ## Boundaries
 
 Use this package for reusable interface primitives. Keep customer branding, page composition, local copy and domain-specific workflows in the host app or in the package that owns that domain surface.
-

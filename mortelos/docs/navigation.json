@@ -19,11 +19,32 @@
       ]
     },
     {
+      "title": "Build method",
+      "items": [
+        {
+          "title": "Building portals",
+          "slug": "building-portals"
+        },
+        {
+          "title": "Host app anatomy",
+          "slug": "host-app-anatomy"
+        },
+        {
+          "title": "TALL conventions",
+          "slug": "tall-conventions"
+        }
+      ]
+    },
+    {
       "title": "AI",
       "items": [
         {
           "title": "Agentic development",
           "slug": "agentic-development"
+        },
+        {
+          "title": "MCP runtime",
+          "slug": "mcp-runtime"
         }
       ]
     },
@@ -126,6 +147,10 @@
         {
           "title": "API",
           "slug": "api"
+        },
+        {
+          "title": "Troubleshooting",
+          "slug": "troubleshooting"
         },
         {
           "title": "Changelog",

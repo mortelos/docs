@@ -1,0 +1,79 @@
+---
+title: "TALL Conventions"
+nav_title: "TALL conventions"
+slug: "tall-conventions"
+version: "0"
+description: "Frontend and Laravel implementation conventions for MortelOS host apps."
+section: "build-method"
+order: 33
+status: "mvp"
+audience: "developers"
+package: "mortelos/starter"
+canonical_path: "/docs/0/tall-conventions"
+last_verified: "2026-06-07"
+public: true
+---
+
+# TALL Conventions
+
+MortelOS Starter uses Laravel 13, Livewire 4 single-file components, Flux UI, Tailwind and Pest.
+
+## Rules
+
+| Rule | Why |
+| --- | --- |
+| Check Flux UI first before writing custom Alpine or Tailwind. | Flux is the design system. |
+| Use Livewire 4 single-file components for new portal surfaces. | State, lifecycle and view stay together. |
+| Put write paths in action classes under `app/Actions/<Domain>/`. | Domain rules stay out of components. |
+| Use Pest for tests. | The starter baseline and capability tests run through Pest. |
+| Use Pint for formatting. | One style across host and packages. |
+| Deny by default for policies. | Governance remains consistent across web, widgets and agents. |
+
+## Livewire surface shape
+
+New host-owned pages and widgets usually live under:
+
+```text
+resources/views/livewire/
+  pages/<domain>/<name>.blade.php
+  shared/<component>.blade.php
+```
+
+Package-owned surfaces use the package's Livewire namespace and should not hardcode host-specific classes. Use config and resolver contracts for host-specific behavior.
+
+## Domain boundaries
+
+Do not embed domain rules in Blade or Livewire components. Components should:
+
+1. Read projection or service state.
+2. Render Flux-aligned UI.
+3. Call action classes for writes.
+4. Let policies and resolvers decide access.
+
+Actions, projections, policies, resolvers and package services own behavior.
+
+## Surface selection
+
+Use the smallest useful surface:
+
+| Surface | Use for |
+| --- | --- |
+| Dashboard widget | Dense operational overview or queue status. |
+| Inbox item | Human review, approval or decision point. |
+| Page widget | Reusable block embedded in a host page. |
+| Chat widget | Guided task inside `mortelos/chat`. |
+| Package route | Reusable feature workspace. |
+
+Do not add a standalone page when a dashboard widget or inbox item fits the workflow.
+
+## Verification
+
+For UI work, verify:
+
+```bash
+vendor/bin/pint --dirty
+php artisan starter:doctor
+vendor/bin/pest
+```
+
+Then open the affected surface manually and check responsive layout, allowed access and denied access.

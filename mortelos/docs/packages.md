@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -32,7 +32,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | Package | Type | Use when |
 | --- | --- | --- |
 | [`mortelos/chat`](/docs/0/package-chat) | Workspace package | You need the tenant-gated chat workspace, conversation panel and chat widget registry. |
-| [`mortelos/overviews`](/docs/0/package-overviews) | Workspace package | You need reusable flexible overviews with datasource wiring, save-flow behavior, chat widgets and context integration. |
+| [`mortelos/overviews`](/docs/0/package-overviews) | Workspace package | You need reusable flexible overviews with datasource wiring, save-flow behavior, chat widget support and agent tools. |
 | [`mortelos/entity-graph`](/docs/0/package-entity-graph) | Workspace package | You need entity graph traversal, API routes, visualization, search, path-finding, chat widget support and agent tooling. |
 
 ## Channels

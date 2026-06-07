@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-plaud"
 canonical_path: "/docs/0/package-channel-plaud"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 

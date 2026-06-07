@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/chat"
 canonical_path: "/docs/0/package-chat"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -43,4 +43,3 @@ php artisan chat:widget:check compliance_intake_start
 ## Boundaries
 
 Use this package for generic chat infrastructure. Put domain-specific widgets in dedicated packages such as `mortelos/widget-compliance` or `mortelos/widget-document-feedback`.
-

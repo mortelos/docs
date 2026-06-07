@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/widget-compliance"
 canonical_path: "/docs/0/package-widget-compliance"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 

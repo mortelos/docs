@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-06-04"
+last_verified: "2026-06-07"
 public: true
 ---
 
@@ -40,3 +40,17 @@ composer require mortelos/framework
 
 Use this package for OS-level primitives that multiple MortelOS installations can share. Keep customer-specific policy defaults, branding, local orchestration and one-off integrations in the host app.
 
+## Runtime mount
+
+Host apps mount the framework MCP server when operate mode is enabled:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+Mcp::oauthRoutes();
+
+Mcp::web('/mcp/mortelos', config('mortelos.mcp.server'))
+    ->middleware(['auth:api']);
+```
+
+Production hosts add tenant initialization, role resolution, trust-level enforcement, data classification and throttling around that route.
