@@ -87,6 +87,10 @@
         {
           "title": "Entity graph",
           "slug": "package-entity-graph"
+        },
+        {
+          "title": "Mail",
+          "slug": "package-mail"
         }
       ]
     },

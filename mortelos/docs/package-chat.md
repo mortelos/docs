@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/chat"
 canonical_path: "/docs/0/package-chat"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -24,6 +24,7 @@ public: true
 | --- | --- |
 | Chat workspace | Routes, views and Livewire components for a tenant-gated workspace. |
 | Widget runtime | `WidgetRegistry`, `WidgetRenderer`, widget definitions and widget run persistence. |
+| Connector setup widgets | Render provider-driven connector setup forms and OAuth next actions from channel packages. |
 | Widget commands | `chat:widget:make` and `chat:widget:check` for scaffolding and validation. |
 | Shared storage | The `chat_widget_runs` tenant migration for widget runtime state. |
 

@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/dev-tools"
 canonical_path: "/docs/0/package-dev-tools"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -45,6 +45,23 @@ php artisan mortelos:package-decisions:check --require-reason
 php artisan mortelos:agent-rules:publish
 php artisan mortelos:agent-rules:check
 ```
+
+## Composer Hook
+
+Host apps should regenerate package agent rules after Composer updates, similar to Laravel Boost package discovery hooks:
+
+```json
+{
+  "scripts": {
+    "post-autoload-dump": [
+      "@php artisan package:discover --ansi",
+      "@php artisan mortelos:agent-rules:publish --target=AGENTS.md --no-interaction"
+    ]
+  }
+}
+```
+
+Keep host-specific instructions outside the generated block. Manual edits inside the generated block are overwritten.
 
 ## Boundaries
 

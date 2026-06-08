@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-gmail"
 canonical_path: "/docs/0/package-channel-gmail"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -26,6 +26,7 @@ public: true
 | Outbound mail | Execute send-mail actions through Gmail. |
 | Classification | Classify inbound mail before local workflow handling. |
 | OAuth callback | Handle Google OAuth callback wiring for the channel. |
+| Connector setup | Register the Gmail connector provider so chat can start Google OAuth. |
 
 ## Install
 
@@ -35,4 +36,4 @@ composer require mortelos/channel-gmail
 
 ## Boundaries
 
-The package owns the Gmail driver, API client, polling jobs and send-mail action. The host app owns Google credentials, tenant policy, message retention choices and local workflow decisions.
+The package owns the Gmail driver, API client, polling jobs, send-mail action and connector setup provider. The host app owns Google credentials, tenant policy, message retention choices and local workflow decisions.

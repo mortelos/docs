@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -34,6 +34,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/chat`](/docs/0/package-chat) | Workspace package | You need the tenant-gated chat workspace, conversation panel and chat widget registry. |
 | [`mortelos/overviews`](/docs/0/package-overviews) | Workspace package | You need reusable flexible overviews with datasource wiring, save-flow behavior, chat widget support and agent tools. |
 | [`mortelos/entity-graph`](/docs/0/package-entity-graph) | Workspace package | You need entity graph traversal, API routes, visualization, search, path-finding, chat widget support and agent tooling. |
+| [`mortelos/mail`](/docs/0/package-mail) | Workspace package | You need reusable mail read models, indexing and search context for communication workflows. |
 
 ## Channels
 
@@ -70,3 +71,5 @@ These packages support development and governance. They are not feature packages
 Use `mortelos/starter` for the host, `mortelos/framework` for core primitives, `mortelos/ui` for shared interface primitives and dedicated packages for reusable capabilities. Keep tenant-specific branding, policy defaults, local orchestration and one-off integrations in the host until they can serve more than one installation.
 
 Package pages should describe stable contracts, not tenant-specific implementation details. Planned package names stay out of this index until source is available.
+
+Use sibling local repositories as package sources while developing: `~/Sites/mortelos-*` for MortelOS packages, `~/Sites/channel-*` for channel packages and `~/Sites/widget-*` for widget packages. Host-local `packages/` folders are temporary test scaffolding, not canonical package source.
