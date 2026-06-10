@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -40,6 +40,8 @@ Read [Agentic Development](/docs/0/agentic-development) before asking an agent t
 
 If you use an AI coding agent, start with a prompt that gives it the MortelOS playbook before it touches the project:
 
+If your machine cannot yet create, boot or verify a MortelOS host app, use the `mortelos-tooling-setup` skill before `setup-portal`. Trigger it for missing Herd, PHP, Composer, Node, GitHub access, MortelOS CLI, DBngin, TablePlus or `mortelos new` setup.
+
 ```text
 I'm building a new MortelOS portal host application.
 
@@ -49,6 +51,7 @@ https://mortelos.nl/docs/0/installation
 Then read the agentic development guide:
 https://mortelos.nl/docs/0/agentic-development
 
+If the machine is not ready yet, use the mortelos-tooling-setup skill first.
 Create the host with mortelos new, keep Laravel defaults where MortelOS does not specify otherwise, and stop before adding customer-specific behavior.
 ```
 

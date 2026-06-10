@@ -9,7 +9,7 @@ order: 30
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/agentic-development"
-last_verified: "2026-06-07"
+last_verified: "2026-06-08"
 public: true
 ---
 
@@ -29,6 +29,15 @@ There are two AI modes:
 Use build mode while creating the portal. Use operate mode after the workspace is running and policy-governed.
 
 ## Recommended prompt
+
+If your agent supports local skills, choose the skill by setup state:
+
+| Situation | Skill |
+| --- | --- |
+| Clean machine, missing tooling, Herd, PHP, Composer, Node, GitHub access, MortelOS CLI, DBngin, TablePlus or `mortelos new` setup | `mortelos-tooling-setup` |
+| New portal kickoff after a host app can boot and verify | `setup-portal` |
+
+Use `mortelos-tooling-setup` first when the developer machine cannot yet create, boot or verify a MortelOS host app. Move to `setup-portal` only after the host baseline is ready.
 
 ```text
 Use the setup-portal skill.
