@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/dev-tools"
 canonical_path: "/docs/0/package-dev-tools"
-last_verified: "2026-06-08"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -24,13 +24,19 @@ public: true
 | --- | --- |
 | Decision logging | Record whether a feature is `package-now`, `package-ready` or `workspace-only`. |
 | Governance checks | Validate package decision logs locally or in CI. |
-| Agent rules | Publish and check merged agent rules for package-aware development. |
+| Agent rules | Publish and check merged agent rules for package-aware development, including `mortelos/agent-standards`. |
 | Workflow support | Keep package boundaries explicit before implementation starts. |
 
 ## Install
 
 ```bash
 composer require mortelos/dev-tools --dev
+```
+
+Install `mortelos/agent-standards` alongside it when the host should receive the shared MortelOS AI rules:
+
+```bash
+composer require mortelos/agent-standards --dev
 ```
 
 ## Commands

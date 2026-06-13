@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/starter-package"
-last_verified: "2026-06-07"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -25,6 +25,7 @@ It gives you a working application first. You get login, dashboard, inbox, gover
 | Area | Included |
 | --- | --- |
 | Framework | Laravel 13, Livewire 4, Flux UI, Tailwind and Pest |
+| Runtime standards | `mortelos/app-standards` for host-level Laravel defaults |
 | Auth baseline | Password login, invitation stub and passkey stub |
 | Shell routes | `/login`, `/dashboard`, `/inbox`, `/governance`, `/users`, `/settings`, `/onboarding` |
 | Layout | `mortelos-starter::layouts.app` and `layouts.guest` |
@@ -34,13 +35,15 @@ It gives you a working application first. You get login, dashboard, inbox, gover
 | Seed account | `admin@example.test` / `password` |
 | Diagnostics | `php artisan starter:doctor` |
 | Tests | Pest boot smoke and config shape tests |
-| Agent guidance | `AGENTS.md`, `docs/building-portals.md`, `knowledge/` and the `setup-portal` skill |
+| Agent guidance | `AGENTS.md`, `mortelos/agent-standards`, `docs/building-portals.md`, `knowledge/` and the `setup-portal` skill |
 
 ## Extension model
 
 Portal-specific behavior is added through host bindings, resolvers, actions, policies, projections and package decisions.
 
 Use packages for behavior that can serve more than one MortelOS installation. Keep tenant policy, branding and local orchestration in the host.
+
+Host-wide framework defaults live in `mortelos/app-standards`, not in reusable feature packages. Shared agent instructions live in `mortelos/agent-standards` and are merged into `AGENTS.md` through `mortelos/dev-tools`.
 
 ## Required auth contracts
 

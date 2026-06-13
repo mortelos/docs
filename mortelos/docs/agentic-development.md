@@ -9,7 +9,7 @@ order: 30
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/agentic-development"
-last_verified: "2026-06-08"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -90,3 +90,15 @@ The agent can move quickly after the capability map is accepted. Before that poi
 11. Stop for user review.
 
 Do not invent a tenant model, put domain rules in Blade or Livewire components, add a surface without a package decision, bypass policies with local UI checks, or claim success without verification.
+
+## Shared Agent Rules
+
+Host apps install `mortelos/agent-standards` and `mortelos/dev-tools` so reusable AI rules are generated instead of copied by hand.
+
+Keep local instructions above or below the generated block in `AGENTS.md`. The generated block is refreshed by:
+
+```bash
+php artisan mortelos:agent-rules:publish --target=AGENTS.md --no-interaction
+```
+
+Use `mortelos/agent-standards` for rules that should apply across every MortelOS OS app. Use the host `AGENTS.md` only for local app facts, customer-specific constraints and temporary instructions.

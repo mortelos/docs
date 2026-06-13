@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-06-08"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -24,6 +24,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | Package | Type | Use when |
 | --- | --- | --- |
 | [`mortelos/starter`](/docs/0/starter-package) | Host app template | You need a new Laravel portal host with shell routes, auth baseline, dashboard, inbox, governance, users, settings and diagnostics. |
+| [`mortelos/app-standards`](/docs/0/package-app-standards) | Host runtime defaults | You need MortelOS-owned Laravel defaults for a concrete host app. |
 | [`mortelos/framework`](/docs/0/package-framework) | Core library | You need MortelOS primitives: entities, links, events, projections, tenant primitives, access resolution, MCP runtime and reusable application services. |
 | [`mortelos/ui`](/docs/0/package-ui) | UI library | You need shared Flux-aligned UI primitives for a host app or reusable package surface. |
 
@@ -65,10 +66,11 @@ These packages support development and governance. They are not feature packages
 | Package | Type | Use when |
 | --- | --- | --- |
 | [`mortelos/dev-tools`](/docs/0/package-dev-tools) | Development tooling | You need Artisan commands for package decisions, governance checks and package-ready feature workflow support. |
+| [`mortelos/agent-standards`](/docs/0/package-agent-standards) | Agent instructions | You need shared AI agent rules merged into host `AGENTS.md` files. |
 
 ## Package Boundaries
 
-Use `mortelos/starter` for the host, `mortelos/framework` for core primitives, `mortelos/ui` for shared interface primitives and dedicated packages for reusable capabilities. Keep tenant-specific branding, policy defaults, local orchestration and one-off integrations in the host until they can serve more than one installation.
+Use `mortelos/starter` for the host, `mortelos/app-standards` for concrete host runtime defaults, `mortelos/framework` for core primitives, `mortelos/ui` for shared interface primitives and dedicated packages for reusable capabilities. Keep tenant-specific branding, policy defaults, local orchestration and one-off integrations in the host until they can serve more than one installation.
 
 Package pages should describe stable contracts, not tenant-specific implementation details. Planned package names stay out of this index until source is available.
 

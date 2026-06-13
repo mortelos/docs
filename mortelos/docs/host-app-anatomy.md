@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/host-app-anatomy"
-last_verified: "2026-06-07"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -30,6 +30,7 @@ public: true
 | `app/Support/StarterUsersResolver.php` | Yes | Lists local users and exposes invitation placeholders. |
 | `app/Support/StarterUsersAccessResolver.php` | Yes | Guards user inspection actions. |
 | `config/starter.php` | Yes | Host contract surface with safe defaults. |
+| `config/app-standards.php` | Optional | Published overrides for `mortelos/app-standards`. |
 | `routes/starter.php` | Yes | Starter route bridge. |
 | `routes/web.php` | Yes | Requires `routes/starter.php`. |
 | `tests/Feature/BootSmokeTest.php` | Yes | Confirms login and dashboard baseline. |
@@ -52,6 +53,7 @@ public: true
 | Policy abilities | `app/Policies/` | Deny by default. |
 | Portal docs | `docs/portals/<slug>/` | Capability map, build plan and progress. |
 | Package decisions | `.mortelos/package-decisions.md` | One entry per surface or package boundary. |
+| Agent rules | `AGENTS.md` | Host-specific prose plus generated package rules from `mortelos/agent-standards` and package-owned rules. |
 | MCP mount | `routes/ai.php` | Host mounts the framework MCP server when operate mode is enabled. |
 
 ## Expected portal slice output
