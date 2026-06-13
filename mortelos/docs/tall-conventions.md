@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/tall-conventions"
-last_verified: "2026-06-07"
+last_verified: "2026-06-13"
 public: true
 ---
 
@@ -65,6 +65,20 @@ Use the smallest useful surface:
 | Package route | Reusable feature workspace. |
 
 Do not add a standalone page when a dashboard widget or inbox item fits the workflow.
+
+## Frontend technology choice
+
+Livewire 4 single-file components are the default for every portal surface. Blaze and islands cover most cases that previously felt too interactive for Livewire: Blaze speeds up Blade rendering on the server, and islands scope a re-render to a single region so only that part takes a roundtrip. Alpine handles client-only interactions (toggles, conditional fields, small calculations) without any roundtrip.
+
+These tools raise the bar for reaching outside Livewire, but they do not change where state lives. Blaze and islands still hit the server; Alpine is a light reactivity layer, not a full client framework. Reach for Vue only when the state is inherently client-side and Alpine is too thin for it:
+
+| Signal | Why Livewire and Alpine are the wrong fit |
+| --- | --- |
+| Offline or optimistic UI | State must live on the client; a server roundtrip is unavailable or must not block the UI. |
+| High-frequency or collaborative updates (live cursors, realtime canvas) | A roundtrip per frame is too slow even when islands keep each one light. |
+| Heavy client interaction (graph editor with pan, zoom, drag; complex diagram editing) | Alpine is too thin for large client state; this is component-framework territory. |
+
+If none of these apply, stay on Livewire 4. Introducing Vue is itself an architecture decision: record a `mortelos:package-decision` before adding a Vue surface, and keep it as an island mounted inside the Livewire shell rather than a separate SPA.
 
 ## Verification
 
