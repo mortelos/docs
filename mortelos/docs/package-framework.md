@@ -40,6 +40,12 @@ composer require mortelos/framework
 
 Use this package for OS-level primitives that multiple MortelOS installations can share. Keep customer-specific policy defaults, branding, local orchestration and one-off integrations in the host app.
 
+## Future Optimization Notes
+
+When MortelOS optimization work moves from application-level cleanup to database-level tuning, consider PostgreSQL functions or procedures for small, data-heavy invariants. Good candidates are planner task ordering, append-to-day task planning, entity search ranking, memory recall candidate lookup, import-registry claims, AI action statistic increments and version publication counters.
+
+Do not move broad workflows into the database by default. Keep external API calls, AI calls, embeddings, queue dispatch, Laravel events, mail delivery, policy orchestration and UI behavior in application code. Database routines should only own logic that benefits from atomicity, indexes, locking or reduced round trips.
+
 ## Runtime mount
 
 Host apps mount the framework MCP server when operate mode is enabled:
