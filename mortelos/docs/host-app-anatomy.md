@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/host-app-anatomy"
-last_verified: "2026-06-13"
+last_verified: "2026-07-20"
 public: true
 ---
 
@@ -27,7 +27,7 @@ public: true
 | `app/Http/Controllers/Auth/PasswordLoginController.php` | Yes | Working email and password login. |
 | `app/Http/Controllers/Auth/PasskeyAuthenticatedController.php` | Yes | Replace when passkeys are specified. |
 | `app/Http/Controllers/Auth/AcceptInvitationController.php` | Yes | Replace when invitation persistence is specified. |
-| `app/Support/StarterUsersResolver.php` | Yes | Lists local users and exposes invitation placeholders. |
+| `app/Support/StarterUsersResolver.php` | Yes | Lists members of the configured tenant and exposes invitation placeholders. |
 | `app/Support/StarterUsersAccessResolver.php` | Yes | Guards user inspection actions. |
 | `config/starter.php` | Yes | Host contract surface with safe defaults. |
 | `config/app-standards.php` | Optional | Published overrides for `mortelos/app-standards`. |
@@ -48,7 +48,7 @@ public: true
 | Navigation tree | `app/Support/StarterSidebarNavigationResolver.php` | Bind through `navigation.sidebar_resolver`. |
 | Universal search | `app/Support/StarterUniversalSearchResolver.php` | Bind through `navigation.universal_search_resolver`. |
 | Governance access | `app/Support/StarterGovernanceAccessResolver.php` | Bind through `governance.access_resolver`. |
-| User management | `app/Support/StarterUsersResolver.php` | Bind through `users.resolver`. |
+| User management | `app/Support/StarterUsersResolver.php` | Bind through `users.resolver`; scope reads and inspection to explicit `tenant_user` membership. |
 | Dashboard widgets | Host Livewire component or package | Decide with package governance. |
 | Policy abilities | `app/Policies/` | Deny by default. |
 | Portal docs | `docs/portals/<slug>/` | Capability map, build plan and progress. |

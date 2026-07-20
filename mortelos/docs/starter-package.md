@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/starter-package"
-last_verified: "2026-06-13"
+last_verified: "2026-07-20"
 public: true
 ---
 
@@ -32,6 +32,7 @@ It gives you a working application first. You get login, dashboard, inbox, gover
 | Livewire namespace | `starter::` pages and shared shell components |
 | Config contracts | `config/starter.php` with boot-safe defaults |
 | Event store | `events` table and MortelOS event-sourcing config |
+| Tenant baseline | Default tenant plus explicit `tenant_user` membership for the seed account |
 | Seed account | `admin@example.test` / `password` |
 | Diagnostics | `php artisan starter:doctor` |
 | Tests | Pest boot smoke and config shape tests |
@@ -55,10 +56,14 @@ Required auth contracts already point at working stubs, so a fresh app boots. Re
 | `auth.controllers.password_login` | Handles email and password login. |
 | `auth.controllers.passkey_authenticated` | Stub for passkey login POST. |
 | `auth.controllers.accept_invitation` | Stub for invitation show and store. |
-| `users.resolver` | Lists local users and handles invitation placeholders. |
+| `users.resolver` | Lists members of the configured tenant and handles invitation placeholders. |
 | `users.access_resolver` | Guards user inspection actions. |
 
 Optional resolvers for sidebar navigation, universal search, governance, onboarding, inbox item types and dashboard messages can stay `null` until the capability map calls for them.
+
+The `users` table stores identities. Membership and the active tenant role live
+in `tenant_user`; a user without a row for the configured tenant is not a member
+and must not inherit access from `role_user` or a default role name.
 
 ## Verification
 
