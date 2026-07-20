@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-06-08"
+last_verified: "2026-07-20"
 public: true
 ---
 
@@ -164,13 +164,22 @@ Use SQLite for quick local verification when the project has no database choice 
 
 ### Tenant and User Baseline
 
-The starter includes a local development seed account:
+The starter creates a default tenant and a local development seed account:
 
 | Email | Password |
 | --- | --- |
 | `admin@example.test` | `password` |
 
 This account is only a local development baseline. Replace it before production use.
+
+A row in `users` is an identity, not a tenant membership. The `tenant_user` row
+links that identity to the active tenant and carries its tenant role. The seed
+creates both records for the admin account.
+
+When `tenant_user` exists, MortelOS requires an explicit row for the active
+tenant. Creating or importing a user without that row does not grant access.
+The framework reads `role_user` only as a compatibility fallback for older
+installations where the `tenant_user` table itself does not exist.
 
 ## Installation Using Herd
 
