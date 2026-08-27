@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/app-standards"
 canonical_path: "/docs/0/package-app-standards"
-last_verified: "2026-06-13"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -47,23 +47,9 @@ Console safety is production-only on purpose. Test suites and local setup comman
 composer require mortelos/app-standards
 ```
 
-For local workspace testing, add a path repository to the host app:
+The package resolves from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
-```json
-{
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../../mortelos/*",
-      "options": {
-        "symlink": true
-      }
-    }
-  ]
-}
-```
-
-`uteq/os` may use mirrored path repositories instead of symlinks. That is fine, but remember to run Composer again after changing the package source.
+To test a local checkout of the package against a host app, symlink it into `vendor/` after installing. Do not add a `path` repository to the committed `composer.json`; see [Packages](/docs/0/packages).
 
 ## Configuration
 

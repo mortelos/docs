@@ -9,7 +9,7 @@ order: 40
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/package-governance"
-last_verified: "2026-06-08"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -62,29 +62,18 @@ composer package-governance
 
 ## Local Source Layout
 
-Use sibling package repositories as the canonical local source for MortelOS work:
+Every package has its own Git repository. Check them out as siblings in one workspace directory, one directory per package, and treat that checkout as the canonical local source for MortelOS work.
 
-| Package family | Local source pattern | Example |
-| --- | --- | --- |
-| MortelOS packages | `~/Sites/mortelos-*` | `~/Sites/mortelos-chat` |
-| Channel packages | `~/Sites/channel-*` | `~/Sites/channel-gmail` |
-| Widget packages | `~/Sites/widget-*` | `~/Sites/widget-compliance` |
+Host-local package folders such as `packages/mortelos/*` are only for short-lived testing. Before tagging or releasing a reusable package change, move the work into the matching package repository and tag that repository.
 
-Host-local package folders such as `packages/mortelos/*` are only for short-lived testing. Before tagging or releasing a reusable package change, move the work into the matching sibling repository and tag that repository.
+Host apps install every MortelOS package from the registry by version range. To try a local change against a host app, replace the installed copy with a symlink to your checkout after `composer install`:
 
-Composer path repositories should point to sibling sources, for example:
-
-```json
-{
-  "type": "path",
-  "url": "../mortelos-mail",
-  "options": {
-    "symlink": true
-  }
-}
+```bash
+rm -rf vendor/mortelos/mail
+ln -s ~/Sites/mortelos/mail vendor/mortelos/mail
 ```
 
-Use a path repository only while developing or when a package remote is not available yet. Prefer tagged VCS dependencies for normal app installs.
+The symlink is local and uncommitted, and the next `composer install` removes it. Do not add a `path` repository to the committed `composer.json`: it pins the app to a machine-local directory and breaks CI and deploys.
 
 ## Agent Rules
 

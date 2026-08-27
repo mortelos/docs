@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/troubleshooting"
-last_verified: "2026-06-07"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -52,14 +52,24 @@ It should return `mortelos v0.1.1` or newer.
 
 ## `mortelos/ui` cannot be installed
 
-Composer may need access to private MortelOS package repositories.
+MortelOS packages come from the private registry at `https://packages.mortelos.com`, so a missing or wrong registry credential fails the install. A `401 Unauthorized` or a repeated credential prompt for `packages.mortelos.com` points at the credential; `Could not find a matching version` usually points at a missing repository entry.
+
+Check both:
 
 ```bash
-ssh -T git@github.com
+composer config --global --list | grep packages.mortelos.com
+composer config repositories.mortelos
+```
+
+Set what is missing and install again:
+
+```bash
+composer config --global http-basic.packages.mortelos.com <customer> <token>
+composer config repositories.mortelos composer https://packages.mortelos.com
 composer install
 ```
 
-If you install via HTTPS with a token, configure Composer authentication with a GitHub token.
+GitHub SSH access is not involved; MortelOS packages are no longer installed from GitHub.
 
 ## Vite manifest not found
 

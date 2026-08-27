@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-07-20"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -64,7 +64,7 @@ After the agent creates the host app, continue with a capability-first interview
 | PHP | `^8.4` |
 | Composer | `^2.7` |
 | Node | `^20` |
-| GitHub access | SSH or token access for private MortelOS packages when Composer requires them |
+| MortelOS package access | A customer name and token for `https://packages.mortelos.com` |
 
 If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows.
 
@@ -102,6 +102,30 @@ Install the new script into the path that appears first, or remove the stale cop
 
 The CLI uses `https://github.com/mortelos/starter.git` by default. Override it with `MORTELOS_STARTER_REPO` or `MORTELOS_STARTER_BRANCH` when you need another source or branch.
 
+### Configuring Package Access
+
+MortelOS packages are distributed from the private Composer registry at `https://packages.mortelos.com`, not from GitHub. Composer needs one repository entry and one credential before it can install `mortelos/*` packages. Set the credential on your machine; check the repository entry in the host app and add it when it is missing.
+
+Configure the credential once per machine with the customer name and token you received:
+
+```bash
+composer config --global http-basic.packages.mortelos.com <customer> <token>
+```
+
+That writes to your global `auth.json` and applies to every host app on the machine. In CI, pass the same credential through an environment variable instead of committing it:
+
+```bash
+composer config --global http-basic.packages.mortelos.com <customer> "$MORTELOS_REGISTRY_TOKEN"
+```
+
+If a host app does not have the repository entry yet, add it:
+
+```bash
+composer config repositories.mortelos composer https://packages.mortelos.com
+```
+
+Host apps require MortelOS packages by version range (`"mortelos/framework": "^0.6"`), never as `@dev` and never through a `path` repository. See [Packages](/docs/0/packages) for how to work on a package locally.
+
 ### Creating the Host Application
 
 Use the CLI when it is available:
@@ -114,7 +138,7 @@ composer dev
 
 `mortelos new` shallow-clones the starter, removes the starter Git history, initializes a fresh repository and runs `composer setup`.
 
-During `composer setup`, Composer may still need SSH or token access for private package repositories such as `mortelos/ui` or `mortelos/framework`, depending on the package access model in your environment. The starter clone itself no longer requires GitHub SSH access.
+During `composer setup`, Composer downloads `mortelos/ui`, `mortelos/framework` and the other MortelOS packages from `https://packages.mortelos.com`. Configure the registry credential first, otherwise this step fails with an authentication error. Cloning the starter itself needs no GitHub access.
 
 If the CLI is not installed yet, use Composer directly:
 
