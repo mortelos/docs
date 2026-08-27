@@ -104,7 +104,7 @@ The CLI uses `https://github.com/mortelos/starter.git` by default. Override it w
 
 ### Configuring Package Access
 
-MortelOS packages are distributed from the private Composer registry at `https://packages.mortelos.com`, not from GitHub. Composer needs one repository entry and one credential before it can install `mortelos/*` packages. The starter ships with the repository entry; you only add the credential.
+MortelOS packages are distributed from the private Composer registry at `https://packages.mortelos.com`, not from GitHub. Composer needs one repository entry and one credential before it can install `mortelos/*` packages. Set the credential on your machine; check the repository entry in the host app and add it when it is missing.
 
 Configure the credential once per machine with the customer name and token you received:
 
