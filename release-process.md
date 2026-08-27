@@ -8,11 +8,13 @@ package deliberately, with version history and independent rollback.
 
 ## The model in one paragraph
 
-Each package is published as semver git tags. Apps (`os`, `sijperda-os`, …) require
-caret ranges (`^0.5`, `^0.2`, …) resolved over VCS, and commit `composer.lock` so
-installs are reproducible. Packages require each other with carets too. Local
-live-editing is via `composer link-local` (vendor symlinks) — **never** path
-repositories in `composer.json`.
+Each package is published as semver git tags. A pushed tag triggers a rebuild of the
+private registry at `https://packages.mortelos.com` (`trigger-registry-rebuild.yml`),
+which is where every consumer resolves from: one `{"type":"composer","url":"https://packages.mortelos.com"}`
+entry plus an HTTP Basic credential — **no** per-package `vcs` blocks and **never** a
+`path` repository. Apps (`os`, `sijperda-os`, …) require caret ranges (`^0.6`, `^0.2`, …)
+and commit `composer.lock` so installs are reproducible. Packages require each other with
+carets too. Local live-editing is via `composer link-local` (vendor symlinks).
 
 ## Dependency tiers (tag bottom-up)
 
@@ -35,8 +37,10 @@ Work in an **isolated git worktree** off `origin/main`, never in a checkout you
 2. **Green gate** (this is the release gate — test-green-then-tag):
    `composer install && composer ci` (PHPStan level max + Pest/PHPUnit). Must be
    fully green. Private tier-1/2 packages install standalone because their
-   `composer.json` lists VCS repos for `framework`/`chat`; auth comes from
-   `~/.config/composer/auth.json` (github-oauth).
+   `composer.json` lists the registry; auth comes from `~/.config/composer/auth.json`
+   (`http-basic.packages.mortelos.com`). Consequence: a dep must already be **tagged
+   and in the registry** before a dependent can be built against it — the tier order
+   below is not optional, and you cannot test against an untagged branch in CI.
 3. **Tighten constraints**: any `@dev` / `dev-main` constraint on another mortelos
    package becomes a caret on its current tag (`framework @dev → ^0.5`). Packages
    already on carets need no change.
@@ -44,7 +48,11 @@ Work in an **isolated git worktree** off `origin/main`, never in a checkout you
    `git tag -a v0.3.9 origin/main -m "v0.3.9 — <what>; phpstan clean, N tests green"`
    then `git push origin v0.3.9`. If main needed a commit (constraint rewrite,
    reconcile), push the branch to `main` first (fast-forward).
-5. **Clean up**: `git worktree remove …`.
+5. **Verify the registry picked it up** (the tag hook is what makes the release
+   consumable; a package without `trigger-registry-rebuild.yml` needs a manual
+   rebuild/deploy of `package-registry`):
+   `curl -s -u <customer>:<token> https://packages.mortelos.com/p2/mortelos/<pkg>.json | grep v0.3.9`
+6. **Clean up**: `git worktree remove …`.
 
 A package whose `origin/main` is already green and ahead of its last tag just needs
 steps 2 + 4 (no merge). The latest tag stays the source of truth.
@@ -74,9 +82,11 @@ behavioural/API change — and remember a pre-1.0 minor (`0.2.x → 0.3.0`) fall
 
 ## Consuming a release in an app
 
-- App `composer.json` requires carets (`mortelos/framework: ^0.5`), with a VCS repo
-  per mortelos dep. **No `path` repositories** — the `../*` / `../framework`
-  wildcard path-lock is the recurring CI/deploy breaker; remove on sight.
+- App `composer.json` requires carets (`mortelos/framework: ^0.6`) and carries one
+  registry repository entry for all mortelos deps. **No `path` repositories** — the
+  `../*` / `../framework` wildcard path-lock is the recurring CI/deploy breaker;
+  remove on sight. **No per-package `vcs` blocks** either; they route around the
+  registry and need a GitHub token where the registry credential is enough.
 - Upgrade deliberately: `composer update mortelos/<pkg>` (without
   `--with-all-dependencies` to keep the bump focused), run the app suite, commit
   the lock. Land via PR to the app's `main`.

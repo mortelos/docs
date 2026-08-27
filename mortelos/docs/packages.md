@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-06-13"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -74,4 +74,14 @@ Use `mortelos/starter` for the host, `mortelos/app-standards` for concrete host 
 
 Package pages should describe stable contracts, not tenant-specific implementation details. Planned package names stay out of this index until source is available.
 
-Use sibling local repositories as package sources while developing: `~/Sites/mortelos-*` for MortelOS packages, `~/Sites/channel-*` for channel packages and `~/Sites/widget-*` for widget packages. Host-local `packages/` folders are temporary test scaffolding, not canonical package source.
+## Installing A Package
+
+Every package on this page is distributed from the private Composer registry at `https://packages.mortelos.com`. Configure registry access once per machine, then install a package by name:
+
+```bash
+composer require mortelos/chat
+```
+
+Host apps depend on version ranges (`"mortelos/chat": "^0.3"`) and commit `composer.lock`, so an install is reproducible and a package upgrade is a deliberate `composer update mortelos/chat`. See [Installation](/docs/0/installation#configuring-package-access) for the credential and repository entry.
+
+Each package has its own Git repository; check them out as siblings in one workspace directory while developing. To try a local change against a host app, symlink the checkout into `vendor/` after installing — never add a `path` repository to the committed `composer.json`. Host-local `packages/` folders are temporary test scaffolding, not canonical package source.

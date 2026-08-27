@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/ui"
 canonical_path: "/docs/0/package-ui"
-last_verified: "2026-06-07"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -31,6 +31,8 @@ public: true
 ```bash
 composer require mortelos/ui
 ```
+
+Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
 ## Boundaries
 

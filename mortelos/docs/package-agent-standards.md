@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/agent-standards"
 canonical_path: "/docs/0/package-agent-standards"
-last_verified: "2026-06-13"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -32,6 +32,8 @@ The standard is packaged so every host app can install one reusable source of tr
 composer require mortelos/agent-standards --dev
 composer require mortelos/dev-tools --dev
 ```
+
+Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
 Host apps should publish package rules after Composer updates:
 

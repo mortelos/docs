@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-06-07"
+last_verified: "2026-08-27"
 public: true
 ---
 
@@ -35,6 +35,8 @@ The current PHP namespace can still be `Mortel\...` during the external package 
 ```bash
 composer require mortelos/framework
 ```
+
+Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
 ## Boundaries
 
