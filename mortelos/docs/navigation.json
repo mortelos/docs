@@ -69,6 +69,10 @@
           "slug": "starter-package"
         },
         {
+          "title": "App standards",
+          "slug": "package-app-standards"
+        },
+        {
           "title": "Framework",
           "slug": "package-framework"
         },
@@ -142,6 +146,10 @@
         {
           "title": "Dev tools",
           "slug": "package-dev-tools"
+        },
+        {
+          "title": "Agent standards",
+          "slug": "package-agent-standards"
         }
       ]
     },
