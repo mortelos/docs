@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-08-27"
+last_verified: "2026-09-26"
 public: true
 ---
 
@@ -36,6 +36,10 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/overviews`](/docs/0/package-overviews) | Workspace package | You need reusable flexible overviews with datasource wiring, save-flow behavior, chat widget support and agent tools. |
 | [`mortelos/entity-graph`](/docs/0/package-entity-graph) | Workspace package | You need entity graph traversal, API routes, visualization, search, path-finding, chat widget support and agent tooling. |
 | [`mortelos/mail`](/docs/0/package-mail) | Workspace package | You need reusable mail read models, indexing and search context for communication workflows. |
+| [`mortelos/document-studio`](/docs/0/package-document-studio) | Workspace package | You need document collections, structured registers and multi-approver sign-off packages. |
+| [`mortelos/daily-planner`](/docs/0/package-daily-planner) | Workspace package | You need a per-user planner page with a backlog, a time-boxed day timeline and morning and evening rituals. |
+| [`mortelos/feedback`](/docs/0/package-feedback) | Workspace package | You need signed-in users to report bugs, suggestions and questions from any page, delivered through a MortelOS channel. |
+| [`mortelos/policy-studio`](/docs/0/package-policy-studio) | Workspace package | You need chat-driven access change proposals with admin approval, a governance overview widget and admin pages for grants, conditions and agent approvals. |
 
 ## Channels
 
@@ -45,9 +49,11 @@ Channel packages connect MortelOS to external systems. Install them only when th
 | --- | --- | --- |
 | [`mortelos/channel-fireflies`](/docs/0/package-channel-fireflies) | Fireflies | You need inbound webhook handling and transcript ingest from Fireflies. |
 | [`mortelos/channel-gmail`](/docs/0/package-channel-gmail) | Gmail | You need Gmail channel access for workspace communication or ingestion flows. |
+| [`mortelos/channel-google-calendar`](/docs/0/package-channel-google-calendar) | Google Calendar | You need per-user Google Calendar access to read upcoming events through Google OAuth. |
 | [`mortelos/channel-google-drive`](/docs/0/package-channel-google-drive) | Google Drive | You need Drive delivery for attachments, briefings or exported workspace material. |
 | [`mortelos/channel-moneybird`](/docs/0/package-channel-moneybird) | Moneybird | You need scheduled invoice and contact sync from Moneybird. |
 | [`mortelos/channel-plaud`](/docs/0/package-channel-plaud) | Plaud | You need Plaud channel ingestion for recorded or transcribed source material. |
+| [`mortelos/channel-pocket`](/docs/0/package-channel-pocket) | Pocket | You need Pocket conversation recordings stored as meeting entities with transcript, summary and action items. |
 | [`mortelos/channel-telegram`](/docs/0/package-channel-telegram) | Telegram | You need bidirectional Telegram Bot API communication. |
 
 ## Widgets
@@ -67,6 +73,7 @@ These packages support development and governance. They are not feature packages
 | --- | --- | --- |
 | [`mortelos/dev-tools`](/docs/0/package-dev-tools) | Development tooling | You need Artisan commands for package decisions, governance checks and package-ready feature workflow support. |
 | [`mortelos/agent-standards`](/docs/0/package-agent-standards) | Agent instructions | You need shared AI agent rules merged into host `AGENTS.md` files. |
+| [`mortelos/issue-factory`](/docs/0/package-issue-factory) | Development tooling | You need issue dossiers, a ready queue and lifecycle commands for an agent-driven TDD build loop. |
 
 ## Package Boundaries
 

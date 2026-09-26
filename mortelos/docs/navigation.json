@@ -69,6 +69,10 @@
           "slug": "starter-package"
         },
         {
+          "title": "App standards",
+          "slug": "package-app-standards"
+        },
+        {
           "title": "Framework",
           "slug": "package-framework"
         },
@@ -91,6 +95,22 @@
         {
           "title": "Mail",
           "slug": "package-mail"
+        },
+        {
+          "title": "Document studio",
+          "slug": "package-document-studio"
+        },
+        {
+          "title": "Daily planner",
+          "slug": "package-daily-planner"
+        },
+        {
+          "title": "Feedback",
+          "slug": "package-feedback"
+        },
+        {
+          "title": "Policy Studio",
+          "slug": "package-policy-studio"
         }
       ]
     },
@@ -106,6 +126,10 @@
           "slug": "package-channel-gmail"
         },
         {
+          "title": "Google Calendar channel",
+          "slug": "package-channel-google-calendar"
+        },
+        {
           "title": "Google Drive channel",
           "slug": "package-channel-google-drive"
         },
@@ -116,6 +140,10 @@
         {
           "title": "Plaud channel",
           "slug": "package-channel-plaud"
+        },
+        {
+          "title": "Pocket channel",
+          "slug": "package-channel-pocket"
         },
         {
           "title": "Telegram channel",
@@ -142,6 +170,14 @@
         {
           "title": "Dev tools",
           "slug": "package-dev-tools"
+        },
+        {
+          "title": "Agent standards",
+          "slug": "package-agent-standards"
+        },
+        {
+          "title": "Issue factory",
+          "slug": "package-issue-factory"
         }
       ]
     },

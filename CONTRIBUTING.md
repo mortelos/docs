@@ -12,5 +12,5 @@ MortelOS docs are written as versioned Markdown.
 
 ## Version Rules
 
-The branch name is the version identifier. For v0 documentation, write on branch `0`.
+Version `0` lives on `main`: open pull requests against `main`. When version 1 ships, version `0` is frozen on a branch named `0` and `main` moves on to the next version.
 
