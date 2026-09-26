@@ -9,13 +9,19 @@ order: 80
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/changelog"
-last_verified: "2026-06-07"
+last_verified: "2026-09-26"
 public: true
 ---
 
 # Changelog
 
 ## 0
+
+2026-09-26:
+
+1. Added package pages for `mortelos/channel-google-calendar`, `mortelos/channel-pocket`, `mortelos/daily-planner`, `mortelos/document-studio`, `mortelos/feedback`, `mortelos/issue-factory` and `mortelos/policy-studio`, verified against their latest releases.
+2. Listed the new pages and the existing app standards and agent standards pages in the navigation and the package overview.
+3. Clarified that version 0 is written on `main`.
 
 2026-06-07:
 
