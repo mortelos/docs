@@ -1,0 +1,86 @@
+name: Docs content
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  validate:
+    name: Validate candidate docs
+    # Match the public site's workflows; fork content never reaches org runners.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout candidate at the PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: candidate
+          persist-credentials: false
+
+      - name: Checkout trusted validator
+        uses: actions/checkout@v4
+        with:
+          repository: mortelos/site
+          ref: d42bb35fae0d5142e87663fe4ce793a0d2c3cb58
+          path: validator
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      # Install and execute only the pinned site's code, never candidate scripts.
+      - name: Install validator dependencies
+        working-directory: validator
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare validator
+        working-directory: validator
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+          touch database/database.sqlite
+
+      - name: Validate candidate content files
+        env:
+          DOCS_CONTENT_PATH: ${{ github.workspace }}/candidate/mortelos/docs
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['DOCS_CONTENT_PATH'])
+          assert root.is_dir() and not root.is_symlink(), 'Missing or unsafe content root'
+          assert not root.parent.is_symlink(), 'Unsafe content parent'
+          for path in root.rglob('*'):
+              assert not path.is_symlink(), 'Content symlinks are not allowed'
+              if path.is_file():
+                  assert path.suffix == '.md' or path.name in ('navigation.json', 'versions.json'), 'Unexpected content file'
+          navigation = json.loads((root / 'navigation.json').read_text())
+          for section in navigation.get('sections', []):
+              for item in section.get('items', []):
+                  slug = item.get('slug', '')
+                  assert isinstance(slug, str) and slug and all(
+                      part and part not in ('.', '..') for part in slug.split('/')
+                  ) and '\\' not in slug, 'Unsafe navigation slug'
+          PY
+
+      - name: Validate candidate docs content
+        working-directory: validator
+        env:
+          DOCS_CONTENT_PATH: ${{ github.workspace }}/candidate/mortelos/docs
+        run: php artisan docs:validate 0
+
+# The docs proposal writer must have no Workflows permission and may only change
+# Markdown pages and navigation. Updating this workflow is a maintainer action.
