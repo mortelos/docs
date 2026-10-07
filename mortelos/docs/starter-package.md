@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/starter-package"
-last_verified: "2026-07-20"
+last_verified: "2026-10-07"
 public: true
 ---
 
@@ -54,8 +54,8 @@ Required auth contracts already point at working stubs, so a fresh app boots. Re
 | --- | --- |
 | `auth.post_login_redirect_resolver` | Returns the post-login URL, `/dashboard` by default. |
 | `auth.controllers.password_login` | Handles email and password login. |
-| `auth.controllers.passkey_authenticated` | Stub for passkey login POST. |
-| `auth.controllers.accept_invitation` | Stub for invitation show and store. |
+| `auth.controllers.passkey_authenticated` | Stub for passkey login POST; returns `501` until replaced, see [Passkey and invitation stubs](#passkey-and-invitation-stubs). |
+| `auth.controllers.accept_invitation` | Stub for invitation show and store; returns `501` until replaced. |
 | `users.resolver` | Lists members of the configured tenant and handles invitation placeholders. |
 | `users.access_resolver` | Guards user inspection actions. |
 
@@ -64,6 +64,17 @@ Optional resolvers for sidebar navigation, universal search, governance, onboard
 The `users` table stores identities. Membership and the active tenant role live
 in `tenant_user`; a user without a row for the configured tenant is not a member
 and must not inherit access from `role_user` or a default role name.
+
+### Passkey and invitation stubs
+
+Two stubs answer every request with HTTP `501 Not Implemented`. That is deliberate: the starter does not choose a passkey library or a way to store invitation tokens, because that choice belongs to the host.
+
+| Route | Stub | Replace it when |
+| --- | --- | --- |
+| `POST /passkeys/authenticate` | `App\Http\Controllers\Auth\PasskeyAuthenticatedController` | The host has picked a passkey library, for example `spatie/laravel-passkeys`. |
+| `GET` and `POST /invite/{token}` | `App\Http\Controllers\Auth\AcceptInvitationController` | The host has decided how invitation tokens are stored and tied to tenant membership. |
+
+Replace the controller in `app/Http/Controllers/Auth/`, or point `auth.controllers.passkey_authenticated` or `auth.controllers.accept_invitation` in `config/starter.php` at your own class. The login page shows no passkey form until `auth.passkey_form_component` is set, so a fresh app only hits the passkey stub when something posts to the route directly.
 
 ## Verification
 
