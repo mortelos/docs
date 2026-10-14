@@ -10,19 +10,19 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/tall-conventions"
-last_verified: "2026-06-13"
+last_verified: "2026-10-14"
 public: true
 ---
 
 # TALL Conventions
 
-MortelOS Starter uses Laravel 13, Livewire 4 single-file components, Flux UI, Tailwind and Pest.
+MortelOS Starter uses Laravel 13, Livewire 4 single-file components, `mortelos/ui` (built on Flux), Tailwind and Pest.
 
 ## Rules
 
 | Rule | Why |
 | --- | --- |
-| Check Flux UI first before writing custom Alpine or Tailwind. | Flux is the design system. |
+| Use `x-mortel::` components from `mortelos/ui` first; check its `COMPONENTS.md` catalogue. Use Flux (`flux:`) only when no matching component exists in `mortelos/ui`. Never write custom HTML for something it already provides. | `mortelos/ui` is the design system. |
 | Use Livewire 4 single-file components for new portal surfaces. | State, lifecycle and view stay together. |
 | Put write paths in action classes under `app/Actions/<Domain>/`. | Domain rules stay out of components. |
 | Use Pest for tests. | The starter baseline and capability tests run through Pest. |
@@ -34,9 +34,9 @@ MortelOS Starter uses Laravel 13, Livewire 4 single-file components, Flux UI, Ta
 New host-owned pages and widgets usually live under:
 
 ```text
-resources/views/livewire/
-  pages/<domain>/<name>.blade.php
-  shared/<component>.blade.php
+resources/views/
+  pages/<domain>/⚡<name>.blade.php
+  components/<component>.blade.php
 ```
 
 Package-owned surfaces use the package's Livewire namespace and should not hardcode host-specific classes. Use config and resolver contracts for host-specific behavior.
@@ -46,7 +46,7 @@ Package-owned surfaces use the package's Livewire namespace and should not hardc
 Do not embed domain rules in Blade or Livewire components. Components should:
 
 1. Read projection or service state.
-2. Render Flux-aligned UI.
+2. Render `x-mortel::` components from `mortelos/ui`.
 3. Call action classes for writes.
 4. Let policies and resolvers decide access.
 
