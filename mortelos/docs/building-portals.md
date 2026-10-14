@@ -9,7 +9,7 @@ order: 31
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/building-portals"
-last_verified: "2026-06-07"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -78,6 +78,7 @@ Every new surface, connector, widget, workflow or reusable service starts with a
 | `package-now` | The capability is reusable across MortelOS installations today. |
 | `package-ready` | The host needs local wiring first, but the package boundary is explicit. |
 | `workspace-only` | The behavior is specific to one customer or workspace. |
+| `build-in-mortelos` | Never change a package from the app: use a package outlet (an extension point), or, to change behavior for everyone, open a PR in the package repository with a package decision; a separate "Outlets" page is coming soon. |
 
 Default to `package-ready` when unsure.
 
@@ -128,7 +129,7 @@ Pick the smallest surface that fits the workflow.
 | Chat widget | Guided task inside `mortelos/chat`. | Package |
 | Inbox item | Human approval or review point. | Host or workflow package |
 
-Use Flux UI before custom Tailwind or Alpine. Use Livewire 4 single-file components for new UI.
+Use `x-mortel::` components from `mortelos/ui` first; check its `COMPONENTS.md` catalogue. Use Flux (`flux:`) only when `mortelos/ui` has no component for the task. Never write custom HTML for something `mortelos/ui` already provides. Use Livewire 4 single-file components for new UI.
 
 ## Policies and workflows
 

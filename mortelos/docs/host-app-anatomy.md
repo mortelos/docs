@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/host-app-anatomy"
-last_verified: "2026-07-20"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -41,13 +41,13 @@ public: true
 | Concern | Lives in | Notes |
 | --- | --- | --- |
 | Layout shell | `resources/views/layouts/app.blade.php` and `guest.blade.php` | Keep the starter layout instead of replacing it. |
-| Auth pages | `resources/views/livewire/pages/auth/` | Livewire 4 single-file components. |
+| Auth pages | `resources/views/pages/auth/⚡<name>.blade.php` | Livewire 4 single-file components. |
 | Auth logic | `app/Http/Controllers/Auth/` | Replace stubs when the portal auth flow is specified. |
 | Post-login redirect | `app/Actions/Auth/ResolvePostLoginRedirect.php` | Make role-aware per portal when needed. |
 | Tenant resolution | Host-owned support class | The host picks its tenancy strategy. |
-| Navigation tree | `app/Support/StarterSidebarNavigationResolver.php` | Bind through `navigation.sidebar_resolver`. |
-| Universal search | `app/Support/StarterUniversalSearchResolver.php` | Bind through `navigation.universal_search_resolver`. |
-| Governance access | `app/Support/StarterGovernanceAccessResolver.php` | Bind through `governance.access_resolver`. |
+| Navigation tree | Host-owned support class | Bind through `navigation.sidebar_resolver`. |
+| Universal search | Host-owned support class | Bind through `navigation.universal_search_resolver`. |
+| Governance access | Host-owned support class | Bind through `governance.access_resolver`. |
 | User management | `app/Support/StarterUsersResolver.php` | Bind through `users.resolver`; scope reads and inspection to explicit `tenant_user` membership. |
 | Dashboard widgets | Host Livewire component or package | Decide with package governance. |
 | Policy abilities | `app/Policies/` | Deny by default. |

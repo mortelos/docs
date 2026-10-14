@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/daily-planner"
 canonical_path: "/docs/0/package-daily-planner"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -65,6 +65,6 @@ The `Planner` sidebar item is registered only when the framework `NavigationItem
 
 `mortelos/framework` owns policies and the sidebar registry. `mortelos/daily-planner` owns the planner data model, the `/planner` page and its task actions. All planner data is scoped to the signed-in user.
 
-The host app owns tenancy initialization for `/planner`, because the route applies only `web` and `auth`. It also provides the `layouts::app` layout and the Flux components the page renders with, both of which ship with `mortelos/starter`. Bind channel-backed implementations of `GmailInboxReader`, `CalendarGateway` and `ChannelConnector` in the host. The package's null defaults import nothing, make no external calendar requests and list no connections.
+The host app owns tenancy initialization for `/planner`, because the route applies only `web` and `auth`. It also provides the `layouts::app` layout and the `mortelos/ui` components the page renders with, both of which ship with `mortelos/starter`. Bind channel-backed implementations of `GmailInboxReader`, `CalendarGateway` and `ChannelConnector` in the host. The package's null defaults import nothing, make no external calendar requests and list no connections.
 
 In v0.1.1 the interface text is Dutch and cannot be translated; publish the views to change it. The timeline loads FullCalendar 6.1.15 from the jsDelivr CDN in the browser. Deleting a time block does not remove an event that was already pushed to the calendar.

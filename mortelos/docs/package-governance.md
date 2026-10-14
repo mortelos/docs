@@ -9,7 +9,7 @@ order: 40
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/package-governance"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -26,6 +26,7 @@ This keeps MortelOS composable. It also forces the team to decide what belongs i
 | `package-now` | The capability can serve another MortelOS installation today. Build directly in a package. |
 | `package-ready` | The host needs local wiring first, but the package boundary is explicit. Extract when stable. |
 | `workspace-only` | The behavior is specific to one customer or workspace. |
+| `build-in-mortelos` | Never change a package from the app: use a package outlet (an extension point), or, to change behavior for everyone, open a PR in the package repository with a package decision; a separate "Outlets" page is coming soon. |
 
 Default to `package-ready` when unsure. It preserves speed while keeping the future package boundary visible.
 
