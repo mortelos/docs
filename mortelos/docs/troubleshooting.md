@@ -69,6 +69,8 @@ composer config repositories.mortelos composer https://packages.mortelos.com
 composer install
 ```
 
+No customer name and token yet? See [Requesting Package Access](/docs/0/installation#requesting-package-access).
+
 GitHub SSH access is not involved; MortelOS packages are no longer installed from GitHub.
 
 ## Vite manifest not found

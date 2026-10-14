@@ -64,7 +64,7 @@ After the agent creates the host app, continue with a capability-first interview
 | PHP | `^8.4` |
 | Composer | `^2.7` |
 | Node | `^20` |
-| MortelOS package access | A customer name and token for `https://packages.mortelos.com` |
+| MortelOS package access | A customer name and token for `https://packages.mortelos.com`; see [Requesting Package Access](#requesting-package-access) |
 
 If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows.
 
@@ -101,6 +101,12 @@ type -a mortelos
 Install the new script into the path that appears first, or remove the stale copy.
 
 The CLI uses `https://github.com/mortelos/starter.git` by default. Override it with `MORTELOS_STARTER_REPO` or `MORTELOS_STARTER_BRANCH` when you need another source or branch.
+
+### Requesting Package Access
+
+Package access is issued by hand. Mail [info@uteq.nl](mailto:info@uteq.nl) with your name and the organisation the access is for. You get a customer name and a token back by mail; once you have both, continue with [Configuring Package Access](#configuring-package-access).
+
+Treat the token like a password: keep it out of git, chat and issue trackers.
 
 ### Configuring Package Access
 
