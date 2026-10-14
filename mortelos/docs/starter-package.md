@@ -26,10 +26,10 @@ It gives you a working application first. You get login, dashboard, inbox, gover
 | --- | --- |
 | Framework | Laravel 13, Livewire 4, Flux UI, Tailwind and Pest |
 | Runtime standards | `mortelos/app-standards` for host-level Laravel defaults |
-| Auth baseline | Password login, invitation stub and passkey stub |
+| Auth baseline | Password login, a working invitation flow (`/invite/{token}`) and a passkey stub |
 | Shell routes | `/login`, `/dashboard`, `/inbox`, `/governance`, `/users`, `/settings`, `/onboarding` |
-| Layout | `mortelos-starter::layouts.app` and `layouts.guest` |
-| Livewire namespace | `starter::` pages and shared shell components |
+| Layout | `layouts::app` and `layouts::guest` |
+| Livewire namespace | `pages::` host pages and `components/<group>/⚡…` shell components; no `starter::` |
 | Config contracts | `config/starter.php` with boot-safe defaults |
 | Event store | `events` table and MortelOS event-sourcing config |
 | Tenant baseline | Default tenant plus explicit `tenant_user` membership for the seed account |

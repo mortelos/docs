@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -41,6 +41,20 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 ## Boundaries
 
 Use this package for OS-level primitives that multiple MortelOS installations can share. Keep customer-specific policy defaults, branding, local orchestration and one-off integrations in the host app.
+
+## Action results, undo and actors
+
+Since v0.6.38 every write goes through the same few types. The starter shows them in use: `app/Actions/Invitations/InviteUser.php` and `app/Providers/StarterServiceProvider.php`.
+
+- `Mortel\Actions\ActionResult` is what an Action returns. Its status is `done`, `approval_needed`, `failed` or `skipped`. A refusal by policy stays an exception.
+- `Mortel\Actions\Undo` is the recipe to reverse a change: a counter-Action class, its params and a `validUntil`. It lives in the result, not in the event.
+- `Mortel\Actions\UndoRegistry` maps a counter-Action to its handler. The counter-Action records its own event, and that event is the audit.
+- `Mortel\Support\Actor` says who acts, in four forms: `Actor::user()` (the bare user id), `Actor::agent()` (`agent:<run-id>`), `Actor::system()` (`system:<process>`) and `Actor::bridge()` (`bridge:<name>`).
+- `EventContext::within($actor, $reason, $work)` fills actor, reason, org and branch around the work and restores the previous context afterwards.
+- `PolicyScope::Action` is the policy scope of host Action abilities such as `invitations.manage`.
+- `config('mortel.events.schema_namespaces')` opts a host namespace in to payload validation. The schema file sits next to the event class, and its name follows the class name: `InvitationCreated` is validated against `invitation.created.v1.schema.json`.
+- `handle()` is the method on every Action. `execute()` still works on the Actions that had it.
+- The `events.actor` column is 255 characters wide from v0.6.41, so `agent:`, `system:` and `bridge:` actors fit.
 
 ## Future Optimization Notes
 
