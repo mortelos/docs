@@ -78,6 +78,10 @@ php artisan mortelos:agent-rules:publish
 
 Use local host prose only for details that cannot live in a reusable package. If a rule should apply across all OS apps, move it into `mortelos/agent-standards`.
 
+## Outlets
+
+This package declares no outlets yet; it has no screens or seams a host plugs into.
+
 ## Boundaries
 
 `mortelos/agent-standards` is only instruction content. It does not add runtime behavior. Pair it with `mortelos/dev-tools` for publish/check commands, and pair host apps with `mortelos/app-standards` for Laravel runtime defaults.

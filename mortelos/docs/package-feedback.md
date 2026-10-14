@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/feedback"
 canonical_path: "/docs/0/package-feedback"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -70,6 +70,21 @@ Pass `:floating="false"` to the component to hide the button and start the flow 
 ## Configuration
 
 `feedback-hub:install` publishes `config/feedback-hub.php`. The main switches are `enabled` (when off, the submit route returns 404), `project`, `route_prefix`, `route_middleware`, `admin_middleware`, `storage_disk`, `screenshot_path` and `queue`. The `github`, `linear` and `telegram` sections only feed the opt-in handler and the diagnostic commands; each has an `enabled` flag that is on by default, so turn off the ones you do not use.
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/feedback` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.2; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list feedback
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| contract | `Mortel\Feedback\Contracts\FeedbackDeliveryHandler` | Delivers a saved feedback report to its destination. The alternative `DefaultFeedbackDeliveryHandler` delivers to GitHub, Linear and Telegram from config. Default: `ChannelFeedbackDeliveryHandler`. |
+| contract | `Mortel\Feedback\Contracts\TelegramCredentialResolver` | Supplies the Telegram bot token and chat ID for the config-driven delivery handler. Default: `ConfigTelegramCredentialResolver`. |
+
+The Blade component `<x-feedback-hub::floating-button />` and the browser event `open-feedback-hub` (see Runtime surfaces above) are not outlets in the manifest.
 
 ## Boundaries
 

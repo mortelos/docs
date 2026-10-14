@@ -45,21 +45,38 @@ The service provider is auto-discovered. It appends the package migrations to th
 
 ```bash
 php artisan planner:import gmail --user=<user-id>
-php artisan vendor:publish --tag=daily-planner-views
 php artisan vendor:publish --tag=daily-planner-migrations
 ```
 
-`planner:import` accepts only the `gmail` source, which is the default, and requires `--user`. Views publish to `resources/views/vendor/daily-planner`; migrations publish to `database/migrations/tenant`.
+`planner:import` accepts only the `gmail` source, which is the default, and requires `--user`. Migrations publish to `database/migrations/tenant`.
 
 ## Runtime surfaces
 
 | Surface | Key |
 | --- | --- |
 | Route | `planner` (`GET /planner`, `web` and `auth` middleware) |
-| Livewire page | `PlannerIndex` (view `daily-planner::livewire.pages.index`) |
+| Livewire page | `PlannerIndex` (view `daily-planner::components.pages.index`) |
 | Sidebar item | `nav.sidebar.planner` |
 
 The `Planner` sidebar item is registered only when the framework `NavigationItemRegistry` is bound. A tenant migration allows `nav.sidebar.planner` on the framework's default `Owner navigation access` and `Operator navigation access` policies.
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/daily-planner` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.3; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list daily-planner
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| contract | `Uteq\DailyPlanner\Extras\DayExtras` | Adds your own rows to the Day board: at the top of the backlog, in a third column and as decoration on your own tasks. Default: `NullDayExtras`. |
+| contract | `Uteq\DailyPlanner\Sync\CalendarGateway` | Reads and writes appointments in the user's external calendar. Default: `NullCalendarGateway`. |
+| contract | `Uteq\DailyPlanner\Import\GmailInboxReader` | Reads incoming Gmail messages for the import into the backlog. Default: `NullGmailInboxReader`. |
+| contract | `Uteq\DailyPlanner\Connect\ChannelConnector` | Connects the planner screen to the host's connect flow (Google Calendar, Gmail). Default: `NullChannelConnector`. |
+| event | `Uteq\DailyPlanner\Events\TaskCompleted` | After a task is checked off. |
+| event | `Uteq\DailyPlanner\Events\TaskReopened` | After a checked-off task is opened again. |
+| config | `daily-planner` | The sidebar item: label and order (`navigation.label`, `navigation.sort`). Publish with `php artisan vendor:publish --tag=daily-planner-config`. |
 
 ## Boundaries
 
@@ -67,4 +84,4 @@ The `Planner` sidebar item is registered only when the framework `NavigationItem
 
 The host app owns tenancy initialization for `/planner`, because the route applies only `web` and `auth`. It also provides the `layouts::app` layout and the `mortelos/ui` components the page renders with, both of which ship with `mortelos/starter`. Bind channel-backed implementations of `GmailInboxReader`, `CalendarGateway` and `ChannelConnector` in the host. The package's null defaults import nothing, make no external calendar requests and list no connections.
 
-In v0.1.1 the interface text is Dutch and cannot be translated; publish the views to change it. The timeline loads FullCalendar 6.1.15 from the jsDelivr CDN in the browser. Deleting a time block does not remove an event that was already pushed to the calendar.
+The interface text is Dutch and cannot be translated yet. Do not copy the package views into your app to change it: `OutletsGuard` fails the build on a copied view (`vendor-view-copy`). The planner has no view outlets yet. To add your own rows to the Day board, bind the `DayExtras` contract; for anything else, open a pull request on the package that adds the outlet or the translation (see [Outlets](/docs/0/outlets#when-no-outlet-fits)). The timeline loads FullCalendar 6.1.15 from the jsDelivr CDN in the browser. Deleting a time block does not remove an event that was already pushed to the calendar.

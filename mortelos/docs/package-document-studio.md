@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/document-studio"
 canonical_path: "/docs/0/package-document-studio"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -66,7 +66,23 @@ php artisan vendor:publish --tag=document-studio-config
 | `document-studio.routes.middleware` | `['web', 'auth']` |
 | `document-studio.sign_off.action_type` | `document-studio.sign-off-package` |
 
-Migrations load automatically; publish them with `--tag=document-studio-migrations` if the host manages them. The page copy ships in Dutch. To change it, publish the views with `--tag=document-studio-views`.
+Migrations load automatically; publish them with `--tag=document-studio-migrations` if the host manages them. The page copy ships in Dutch. The package no longer publishes its views, and `OutletsGuard` fails the build on a copied view. To add your own buttons or panels to a document or collection page, register them in one of the view outlets below; to change the package's own text, open a pull request on the package (see [Outlets](/docs/0/outlets#when-no-outlet-fits)).
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/document-studio` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.1; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list document-studio
+```
+
+| Kind | Name | What it is for | Data |
+| --- | --- | --- | --- |
+| view | `document-studio.document.header-actions` | On the right of a document's header, after the Markdown edit and diff buttons. Default: empty. | `document`, `version` |
+| view | `document-studio.document.sidebar` | At the bottom of a document's sidebar, below Versions and Review status. Default: empty. | `document`, `version` |
+| view | `document-studio.collection.header-actions` | On the right of a document collection's header. Default: empty. | `collection` |
+| view | `document-studio.collection.sidebar` | At the bottom of a document collection's sidebar, below Review and sign-off. Default: empty. | `collection` |
+| config | `document-studio` | Routes on or off and their middleware, the sign-off action type and the dogfood flag in `config/document-studio.php`. Publish with `php artisan vendor:publish --tag=document-studio-config`. |  |
 
 ## Boundaries
 

@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-10-07"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -41,6 +41,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/feedback`](/docs/0/package-feedback) | Workspace package | You need signed-in users to report bugs, suggestions and questions from any page, delivered through a MortelOS channel. |
 | [`mortelos/policy-studio`](/docs/0/package-policy-studio) | Workspace package | You need chat-driven access change proposals with admin approval, a governance overview widget and admin pages for grants, conditions and agent approvals. |
 | `mortelos/record` | Workspace package | You need one record page per entity, built from declarative layouts that the framework, packages and the host app contribute to. |
+| [`mortelos/triage`](/docs/0/package-triage) | Workspace package | You need building blocks for a mail triage loop: one judgement per thread, a doubt check and a receipt for every decision. |
 | `mortelos/sidecar` | Workspace package | You need heavy chat questions handed to Claude Code on the asking user's own Claude account, in a closed sandbox. |
 
 ## Channels
@@ -50,7 +51,7 @@ Channel packages connect MortelOS to external systems. Install them only when th
 | Package | External system | Use when |
 | --- | --- | --- |
 | [`mortelos/channel-fireflies`](/docs/0/package-channel-fireflies) | Fireflies | You need inbound webhook handling and transcript ingest from Fireflies. |
-| `mortelos/channel-github` | GitHub | You need GitHub pull requests in the inbox through a GitHub App, with approval-bound documentation publication and explicit merge or close decisions. |
+| [`mortelos/channel-github`](/docs/0/package-channel-github) | GitHub | You need GitHub pull requests in the inbox through a GitHub App, with approval-bound documentation publication and explicit merge or close decisions. |
 | [`mortelos/channel-gmail`](/docs/0/package-channel-gmail) | Gmail | You need Gmail channel access for workspace communication or ingestion flows. |
 | [`mortelos/channel-google-calendar`](/docs/0/package-channel-google-calendar) | Google Calendar | You need per-user Google Calendar access to read upcoming events through Google OAuth. |
 | [`mortelos/channel-google-drive`](/docs/0/package-channel-google-drive) | Google Drive | You need Drive delivery for attachments, briefings or exported workspace material. |
@@ -90,6 +91,8 @@ The registry serves exactly the packages on this page. Two other Composer projec
 ## Package Boundaries
 
 Use `mortelos/starter` for the host, `mortelos/app-standards` for concrete host runtime defaults, `mortelos/framework` for core primitives, `mortelos/ui` for shared interface primitives and dedicated packages for reusable capabilities. Keep tenant-specific branding, policy defaults, local orchestration and one-off integrations in the host until they can serve more than one installation.
+
+A host never changes a package to make it fit. Every package lists its outlets in `resources/mortelos/outlets.json`: the contracts, registries, events, config files and view outlets your app can plug into. Each package page has an Outlets section with that list, and [Outlets](/docs/0/outlets) explains what to do when none fits.
 
 Package pages should describe stable contracts, not tenant-specific implementation details. Planned package names stay out of this index until source is available.
 

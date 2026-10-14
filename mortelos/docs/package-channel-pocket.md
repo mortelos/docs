@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-pocket"
 canonical_path: "/docs/0/package-channel-pocket"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -54,6 +54,10 @@ php artisan channel:poll-pocket
 | Channel driver | `pocket` |
 | Entity type | `meeting` |
 | Meeting fields added | `pocket_recording_id`, `pocket_updated_at`, `transcript`, `action_items`, `calendar_event_id` |
+
+## Outlets
+
+This package declares no outlets yet; it has no screens or seams a host plugs into.
 
 ## Boundaries
 

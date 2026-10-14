@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/app-standards"
 canonical_path: "/docs/0/package-app-standards"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -62,6 +62,19 @@ php artisan vendor:publish --tag=mortelos-app-standards-config
 The published file is `config/app-standards.php`.
 
 Prefer environment-specific toggles over removing the package. If a default is wrong for most MortelOS hosts, change it in this package and cover the behavior with a package test.
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/app-standards` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.1.3; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list app-standards
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| config | `spine` | Configure the governed models and permitted writers used by the spine checks. Publish with `php artisan vendor:publish --tag=mortelos-spine-contract`. |
+| config | `app-standards` | Configure the runtime defaults applied by app-standards. Publish with `php artisan vendor:publish --tag=mortelos-app-standards-config`. |
 
 ## Boundaries
 

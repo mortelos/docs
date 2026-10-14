@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/overviews"
 canonical_path: "/docs/0/package-overviews"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -43,6 +43,24 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 | Chat widget | `overview_save_prompt` |
 | Agent tool | `overview.save` |
 | Agent tool | `overview.suggest_save` |
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/overviews` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.1; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list overviews
+```
+
+| Kind | Name | What it is for | Data |
+| --- | --- | --- | --- |
+| contract | `Mortelos\Overviews\Support\OverviewDatasource` | Supplies the rows of a saved overview from one source (database, SQL, API). Default: `EntitiesOverviewDatasource`. |  |
+| registry | `Mortelos\Overviews\Support\OverviewDatasourceRegistry` | Add an `OverviewDatasource`; an overview picks it with `attributes.datasource`. Register with `register()`. |  |
+| config | `overviews` | Switches for the chat widget and the agent tool, and `overviews.entities.limit` (the maximum number of candidate rows; `null` is unlimited). Publish with `php artisan vendor:publish --tag=overviews-config`. |  |
+| view | `overviews.save-prompt.actions` | Next to the Dynamic, Snapshot and Not now buttons in the save widget. Default: those three buttons. | `message` |
+| view | `overviews.save-prompt.saved` | The confirmation after the overview is saved. Default: a check mark with a short Dutch confirmation. | `message` |
+
+After saving, the save widget sends the Livewire browser event `overzicht-saved` with `overviewId`. It is not an outlet in the manifest, so it can change in a minor release.
 
 ## Boundaries
 

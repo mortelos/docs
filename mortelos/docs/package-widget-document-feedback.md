@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/widget-document-feedback"
 canonical_path: "/docs/0/package-widget-document-feedback"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -40,6 +40,10 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 ```bash
 php artisan chat:widget:check document_feedback_annotate
 ```
+
+## Outlets
+
+This package declares no outlets yet; its chat widget has no places a host plugs into.
 
 ## Boundaries
 

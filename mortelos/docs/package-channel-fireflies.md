@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-fireflies"
 canonical_path: "/docs/0/package-channel-fireflies"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -33,6 +33,10 @@ composer require mortelos/channel-fireflies
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+## Outlets
+
+This package declares no outlets yet; it has no screens or seams a host plugs into.
 
 ## Boundaries
 

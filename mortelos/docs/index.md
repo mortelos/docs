@@ -9,7 +9,7 @@ order: 0
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/index"
-last_verified: "2026-06-07"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -35,6 +35,7 @@ Use these entry points:
 | [First portal](/docs/0/first-portal) | You need to choose the first useful vertical slice. |
 | [Building portals](/docs/0/building-portals) | You need the full capability-first build method. |
 | [Host app anatomy](/docs/0/host-app-anatomy) | You need to know where portal code belongs. |
+| [Outlets](/docs/0/outlets) | You need a package to do something different without changing the package. |
 | [TALL conventions](/docs/0/tall-conventions) | You need frontend and Laravel implementation rules. |
 | [MCP runtime](/docs/0/mcp-runtime) | You need to understand operate mode and agent access. |
 | [Troubleshooting](/docs/0/troubleshooting) | You need fixes for common install and boot failures. |

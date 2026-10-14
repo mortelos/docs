@@ -56,6 +56,8 @@ public: true
 | Agent rules | `AGENTS.md` | Host-specific prose plus generated package rules from `mortelos/agent-standards` and package-owned rules. |
 | MCP mount | `routes/ai.php` | Host mounts the framework MCP server when operate mode is enabled. |
 
+Extend a package from a host service provider through its declared outlets: a contract, registry, event, config file or view outlet. Run `php artisan mortelos:outlets:list <package>` to find them; [Outlets](/docs/0/outlets) explains how to use them and when to open a package pull request. `OutletsGuard` checks that your app uses these routes instead of patching or copying package code.
+
 ## Expected portal slice output
 
 A complete first vertical slice usually adds:
