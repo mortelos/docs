@@ -24,22 +24,63 @@ MortelOS Starter uses Laravel 13, Livewire 4 single-file components, `mortelos/u
 | --- | --- |
 | Use `x-mortel::` components from `mortelos/ui` first; check its `COMPONENTS.md` catalogue. Use Flux (`flux:`) only when no matching component exists in `mortelos/ui`. Never write custom HTML for something it already provides. | `mortelos/ui` is the design system. |
 | Use Livewire 4 single-file components for new portal surfaces. | State, lifecycle and view stay together. |
-| Put write paths in action classes under `app/Actions/<Domain>/`. | Domain rules stay out of components. |
+| Put every write in an action class under `app/Actions/<Domain>/`: `final`, a `handle()` method, a `public const ABILITY`, a `Mortel\Support\Actor` in and a `Mortel\Actions\ActionResult` out (with a `Mortel\Actions\Undo` when the change can be reversed). | Domain rules stay out of components, and every screen, agent and bridge gets the same result shape. |
 | Use Pest for tests. | The starter baseline and capability tests run through Pest. |
 | Use Pint for formatting. | One style across host and packages. |
 | Deny by default for policies. | Governance remains consistent across web, widgets and agents. |
 
 ## Livewire surface shape
 
-New host-owned pages and widgets usually live under:
+Host-owned pages, components and layouts live under:
 
 ```text
 resources/views/
-  pages/<domain>/⚡<name>.blade.php
-  components/<component>.blade.php
+  pages/<domain>/⚡<name>.blade.php        pages::<domain>.<name>
+  components/<group>/⚡<name>.blade.php    shared components
+  layouts/app.blade.php, guest.blade.php   layouts::app, layouts::guest
 ```
 
+A page is a single-file component such as `resources/views/pages/users/⚡index.blade.php`, routed in `routes/starter.php`:
+
+```php
+Route::livewire('/users', 'pages::users.index')->name('users');
+```
+
+A page picks its layout with `#[Layout('layouts::app')]`; the login page uses `layouts::guest`. A page above about 300 lines splits into components, not into traits.
+
 Package-owned surfaces use the package's Livewire namespace and should not hardcode host-specific classes. Use config and resolver contracts for host-specific behavior.
+
+## The three `Route::livewire` forms
+
+| Form | Use for | Example |
+| --- | --- | --- |
+| `pages::<domain>.<name>` | A page the host owns. | `Route::livewire('/users', 'pages::users.index')` |
+| `layouts::<name>` | A layout, in `#[Layout(...)]` or `<x-layouts::guest>`. | `layouts::app` |
+| `<package>::<name>` | A page a package owns. | `overviews::…` |
+
+Do not add `resources/views/livewire/`, classes or traits under `app/Livewire/`, or `Livewire::addNamespace()` for the host's own views. `tests/Feature/ArchGuardTest.php` fails on the first two. The third is a rule in `AGENTS.md`, reviewed by hand.
+
+## A host fact, end to end
+
+A fact the host must be able to audit or undo goes through one chain. The invitations in the starter show it:
+
+| Step | Starter file | Job |
+| --- | --- | --- |
+| Action | `app/Actions/Invitations/InviteUser.php` | Checks the ability, validates, fills `EventContext` and returns an `ActionResult` with an `Undo`. |
+| Aggregate | `app/Aggregates/InvitationAggregate.php` | Holds the guards and calls `recordThat()`. |
+| Stored event | `app/Events/Invitations/InvitationCreated.php` | `storedEventType()` returns `invitations.invitation.created`. |
+| Event schema | `app/Events/Invitations/invitation.created.v1.schema.json` | Validated when the event is stored; registered in `config/mortel.php`. |
+| Event map | `config/event-sourcing.php` | `event_class_map` maps the type to the class, so a renamed class does not break a replay. |
+| Projector | `app/Projectors/InvitationProjector.php` | The only writer of the `invitations` table. |
+| Read model | `app/Models/Invitation.php` | Listed in `governed_models` in `config/spine.php`. |
+| Screen | `resources/views/pages/users/⚡index.blade.php` | Calls the Action, shows the message and the undo button from the `ActionResult`. |
+
+Rules that keep the chain honest:
+
+- Record a stored event only through `recordThat()` in an aggregate. Never `event(new …)` it from an Action, a component or a controller.
+- Write the read model only from the projector. Governed models and their allowed writers are listed in `config/spine.php`.
+- The read table must be reproducible from the events alone. A host projection is rebuilt with Spatie's `php artisan event-sourcing:replay "App\\Projectors\\InvitationProjector"` (signature `event-sourcing:replay {projector?*}`). `php artisan mortel:projection:rebuild` only covers the framework projections (entity, workflows, workflow_runs, metrics, experiments, transcripts), not host projectors. `tests/Feature/InvitationsTest.php` proves reproducibility with `Spatie\EventSourcing\Projectionist::replay()`: the replayed rows equal the rows before.
+- Give the host ability its policy in `PolicyScope::Action`. The starter lists its abilities in `StarterGovernanceGate::SCOPES` in `app/Access/StarterGovernanceGate.php`.
 
 ## Domain boundaries
 
@@ -91,3 +132,14 @@ vendor/bin/pest
 ```
 
 Then open the affected surface manually and check responsive layout, allowed access and denied access.
+
+## Done means
+
+Host work is done when these pass:
+
+| Command | Proves |
+| --- | --- |
+| `composer test:arch` | `ArchGuardTest` and `UiGuardTest` report nothing: Action shape, writes in Actions, events in aggregates, Livewire on the Livewire 4 paths, UI from `<x-mortel::…>` components. |
+| `composer test` | The Feature and Unit suites pass, including the replay and the policy tests. |
+| `composer analyse` | PHPStan passes, including the governed-model rule from `config/spine.php`. |
+| `composer test:browser` | Every screen you touched has a browser test that passes. |

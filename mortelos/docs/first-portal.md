@@ -9,7 +9,7 @@ order: 20
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/first-portal"
-last_verified: "2026-06-07"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -54,16 +54,41 @@ Default to `package-ready` when unsure. It preserves speed while keeping the fut
 
 Choose the smallest useful end-to-end capability. A good first slice usually contains:
 
-1. One role.
-2. One domain object.
-3. One read model.
-4. One workflow or action.
-5. One surface where the user completes the work.
-6. One policy test for allowed access and one for denied access.
+1. One role. In the starter: the owner, who holds `invitations.manage` (`app/Access/StarterGovernanceGate.php`).
+2. One domain object. In the starter: an invitation (`app/Models/Invitation.php`).
+3. One read model. In the starter: the `invitations` table, written only by `app/Projectors/InvitationProjector.php`.
+4. One workflow or action. In the starter: `app/Actions/Invitations/InviteUser.php`, with `app/Aggregates/InvitationAggregate.php` and `app/Events/Invitations/InvitationCreated.php` behind it.
+5. One surface where the user completes the work. In the starter: `resources/views/pages/users/⚡index.blade.php`.
+6. One policy test for allowed access and one for denied access. In the starter: `tests/Feature/InvitationsTest.php`.
 
 Do not start with the full navigation tree. Build the first capability to completion, then expand.
 
-For a document review portal, a good first slice is:
+The invitations are the worked example. The chain below is what a first slice looks like on disk:
+
+```text
+Owner enters an email and a role on the users page
+  |
+  v
+InviteUser checks invitations.manage and returns an ActionResult with an Undo
+  |
+  v
+InvitationAggregate records InvitationCreated
+  |
+  v
+InvitationProjector writes the invitations table
+  |
+  v
+The users page lists the open invitation and shows the link once
+  |
+  +--> Undo button: RevokeInvitation records InvitationRevoked
+  |
+  +--> The invitee opens /invite/{token}: AcceptInvitation creates the account
+       and records InvitationAccepted
+```
+
+See [TALL conventions](/docs/0/tall-conventions) for the same chain with every file named.
+
+For a document review portal, the same shape gives this first slice:
 
 ```text
 Customer uploads a document
@@ -91,8 +116,12 @@ Before claiming the first slice is done, verify:
 ```bash
 vendor/bin/pint --dirty
 php artisan starter:doctor
+composer test:arch
 vendor/bin/pest
+composer test:browser
 ```
+
+`starter:doctor` checks the boot baseline wiring. `composer test:arch` must report nothing. `composer test:browser` runs the browser test of every screen you touched.
 
 Also run the browser smoke manually:
 
