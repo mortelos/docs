@@ -30,6 +30,10 @@
           "slug": "host-app-anatomy"
         },
         {
+          "title": "Outlets",
+          "slug": "outlets"
+        },
+        {
           "title": "TALL conventions",
           "slug": "tall-conventions"
         }
@@ -111,6 +115,10 @@
         {
           "title": "Policy Studio",
           "slug": "package-policy-studio"
+        },
+        {
+          "title": "Triage",
+          "slug": "package-triage"
         }
       ]
     },
@@ -120,6 +128,10 @@
         {
           "title": "Fireflies channel",
           "slug": "package-channel-fireflies"
+        },
+        {
+          "title": "GitHub channel",
+          "slug": "package-channel-github"
         },
         {
           "title": "Gmail channel",

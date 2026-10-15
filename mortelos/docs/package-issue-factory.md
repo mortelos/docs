@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/issue-factory"
 canonical_path: "/docs/0/package-issue-factory"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -81,6 +81,19 @@ php artisan vendor:publish --tag=issue-factory-skills
 | `issue-factory.entity_type` | `issue` | Entity type name used for issues in the tenant. |
 
 Resolve `Mortelos\IssueFactory\Contracts\IssueSource` to read and write issues from host code. With `source` set to `os` it uses the tenant entity store when a tenant is initialised and falls back to the markdown feed otherwise. The artisan commands do not use this binding: `create` always writes the feed and the tenant commands always use the entity store.
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/issue-factory` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.1.3; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list issue-factory
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| contract | `Mortelos\IssueFactory\Contracts\IssueSource` | Where the issues live (tenant entities or a markdown feed). Only applies to code that resolves IssueSource from the container: the artisan commands (sync, finish, show, next, create) build their own source and ignore this binding, so binding your own IssueSource does not change what they do. Default: `OsEntityIssueSource`. |
+| config | `issue-factory` | Source (os or local), markdown folder, entity type, maximum attempts, stop point and source marker of the issue loop. Publish with `php artisan vendor:publish --tag=issue-factory-config`. |
 
 ## Boundaries
 

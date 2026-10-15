@@ -26,7 +26,7 @@ This keeps MortelOS composable. It also forces the team to decide what belongs i
 | `package-now` | The capability can serve another MortelOS installation today. Build directly in a package. |
 | `package-ready` | The host needs local wiring first, but the package boundary is explicit. Extract when stable. |
 | `workspace-only` | The behavior is specific to one customer or workspace. |
-| `build-in-mortelos` | Never change a package from the app: use a package outlet (an extension point), or, to change behavior for everyone, open a PR in the package repository with a package decision; a separate "Outlets" page is coming soon. |
+| `build-in-mortelos` | The change belongs in a MortelOS package, not in the app. Never patch or copy a package from the app: first look for an outlet, then follow the ladder on the [Outlets](/docs/0/outlets#when-no-outlet-fits) page. Rung 6 adds a missing outlet to the package; rung 7 changes the behavior for everyone and is the one that needs this decision. |
 
 Default to `package-ready` when unsure. It preserves speed while keeping the future package boundary visible.
 
@@ -99,7 +99,9 @@ When a package boundary, widget convention or agent tool contract is unclear, co
 
 Host apps own tenant config, local branding, policy defaults, local orchestration and customer-specific integrations.
 
-Reusable packages own shared routes, views, Livewire namespaces, migrations, commands, extension contracts and tests when those concerns apply to more than one installation.
+Reusable packages own shared routes, views, Livewire namespaces, migrations, commands, outlets and tests when those concerns apply to more than one installation.
+
+When the host needs a package to behave differently, it plugs into one of the package's outlets: a contract, a registry, an event, a config file or a view outlet. `php artisan mortelos:outlets:list <package>` shows them. When none fits, climb the ladder on the [Outlets](/docs/0/outlets#when-no-outlet-fits) page before you change the package.
 
 ## Examples
 

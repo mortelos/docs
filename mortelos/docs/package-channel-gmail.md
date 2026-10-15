@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-gmail"
 canonical_path: "/docs/0/package-channel-gmail"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -35,6 +35,21 @@ composer require mortelos/channel-gmail
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/channel-gmail` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.5.0; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list channel-gmail
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| config | `gmail-channel` | Turns fetching unread mail on or off (`poll_inbound`, off by default). Publish with `php artisan vendor:publish --tag=gmail-channel-config`. |
+| event | `Mortel\Events\Channel\MailReceived` | After each fetched mail, before classification turns it into inbox items. |
+| event | `Mortel\Events\Channel\MailSent` | After each mail sent through Gmail. |
+| contract | `Mortel\Contracts\OAuthCredentialsResolver` | Supplies the client ID, client secret and redirect URI of the Google OAuth app (provider `google`); by default from `services.google.*`. Default: `ConfigOAuthCredentialsResolver`. |
 
 ## Boundaries
 

@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-plaud"
 canonical_path: "/docs/0/package-channel-plaud"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -34,6 +34,21 @@ composer require mortelos/channel-plaud
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/channel-plaud` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.4.1; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list channel-plaud
+```
+
+| Kind | Name | What it is for | Data |
+| --- | --- | --- | --- |
+| view | `channel-plaud.recording.panel` | A column next to the recording detail, only for its owner: process, share, chat. Default: nothing, the page stays one column. | `recordingId`, `recordingName` |
+| config | `plaud-personal` | Connection to Plaud (`issuer`, `mcp_url`, `client_name`), routes (`route_prefix`, `middleware`, `return_route`) and sync (`sync_max_pages`, `timeout`). Publish with `php artisan vendor:publish --tag=plaud-personal-config`. |  |
+
+The panel can dispatch the Livewire browser event `plaud-recording-audience-changed` to refresh the page. The connect routes check the gate ability `plaud-personal.connect`; define it in the host to decide who may connect a personal Plaud account. This browser event and gate are described here rather than as outlet rows in the manifest.
 
 ## Boundaries
 

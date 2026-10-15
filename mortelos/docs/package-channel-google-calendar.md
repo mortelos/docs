@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-google-calendar"
 canonical_path: "/docs/0/package-channel-google-calendar"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -41,6 +41,18 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 | --- | --- |
 | Channel driver | `google_calendar` |
 | Connector setup provider | `google_calendar` |
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/channel-google-calendar` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.4.0; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list channel-google-calendar
+```
+
+| Kind | Name | What it is for |
+| --- | --- | --- |
+| contract | `Mortel\Contracts\OAuthCredentialsResolver` | Supplies the Google OAuth client ID, client secret and redirect URI; defaults to services.google.*. Default: `ConfigOAuthCredentialsResolver`. |
 
 ## Boundaries
 

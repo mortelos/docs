@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/policy-studio"
 canonical_path: "/docs/0/package-policy-studio"
-last_verified: "2026-09-26"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -68,6 +68,21 @@ The published file is `config/policy-studio.php`.
 | `ai_intent` | `enabled`, `model`, `confidence_threshold` (default `70`) and `timeout` for the classifier. |
 | `chat_widget.enabled` | Register the two chat widgets. Default `true`. |
 | `studio_routes.enabled` | Register the studio routes. Default `true`. The key is not in the published file. |
+
+## Outlets
+
+An outlet is a place where you extend `mortelos/policy-studio` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.2; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+
+```bash
+php artisan mortelos:outlets:list policy-studio
+```
+
+| Kind | Name | What it is for | Data |
+| --- | --- | --- | --- |
+| view | `policy-studio.proposal-queue.header-actions` | On the right of the proposal queue header; only visible to administrators. Default: empty. | none |
+| view | `policy-studio.proposal-queue.row-actions` | After the Details, Approve and Reject buttons of one proposal. Default: empty. | `proposal` |
+| contract | `Mortelos\PolicyStudio\Contracts\PolicyChangeIntentClassifier` | Works out from a chat message which access change is meant, when the keywords find nothing. Default: `PolicyChangeIntentAgent`. |  |
+| config | `policy-studio` | Who is an administrator (`access_resolver`), the folder roots, the AI intent detection and whether the chat widgets and studio routes are on. Publish with `php artisan vendor:publish --tag=policy-studio-config`. |  |
 
 ## Boundaries
 
