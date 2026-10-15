@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/agent-standards"
 canonical_path: "/docs/0/package-agent-standards"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -61,7 +61,7 @@ php artisan mortelos:agent-rules:check --target=AGENTS.md --no-interaction
 | --- | --- |
 | Working method | Read repo instructions, keep work scoped, verify before reporting completion. |
 | Laravel and PHP | Strict types, explicit domain boundaries, immutable dates and strict models. |
-| TALL and UI | Use local Livewire and Flux conventions, keep components presentational. |
+| TALL and UI | Use Livewire 4 single-file components and `x-mortel::` components from `mortelos/ui` first. Use Flux (`flux:`) only when `mortelos/ui` has no matching component; never write custom HTML for something it already provides. Keep components presentational. |
 | Security | Validate and authorize at boundaries, guard tenant scope, fake external calls in tests. |
 | Version control | Keep changes focused and respect dirty worktrees. |
 | Dutch copy | Plain Dutch prose and no em dashes in Dutch user-facing text. |

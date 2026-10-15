@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-09-26"
+last_verified: "2026-10-07"
 public: true
 ---
 
@@ -17,7 +17,7 @@ public: true
 
 MortelOS follows the same documentation shape as Laravel: packages have their own navigation section, and every installable package gets a focused page. This page is the index.
 
-Start with `mortelos/starter`, then add the package that matches the portal surface, integration channel or widget you need.
+Start with `mortelos/starter`, then add the package that matches the portal surface, integration channel or widget you need. Packages without a link do not have a documentation page yet.
 
 ## Foundation
 
@@ -40,6 +40,8 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/daily-planner`](/docs/0/package-daily-planner) | Workspace package | You need a per-user planner page with a backlog, a time-boxed day timeline and morning and evening rituals. |
 | [`mortelos/feedback`](/docs/0/package-feedback) | Workspace package | You need signed-in users to report bugs, suggestions and questions from any page, delivered through a MortelOS channel. |
 | [`mortelos/policy-studio`](/docs/0/package-policy-studio) | Workspace package | You need chat-driven access change proposals with admin approval, a governance overview widget and admin pages for grants, conditions and agent approvals. |
+| `mortelos/record` | Workspace package | You need one record page per entity, built from declarative layouts that the framework, packages and the host app contribute to. |
+| `mortelos/sidecar` | Workspace package | You need heavy chat questions handed to Claude Code on the asking user's own Claude account, in a closed sandbox. |
 
 ## Channels
 
@@ -48,6 +50,7 @@ Channel packages connect MortelOS to external systems. Install them only when th
 | Package | External system | Use when |
 | --- | --- | --- |
 | [`mortelos/channel-fireflies`](/docs/0/package-channel-fireflies) | Fireflies | You need inbound webhook handling and transcript ingest from Fireflies. |
+| `mortelos/channel-github` | GitHub | You need GitHub pull requests in the inbox through a GitHub App, with approval-bound documentation publication and explicit merge or close decisions. |
 | [`mortelos/channel-gmail`](/docs/0/package-channel-gmail) | Gmail | You need Gmail channel access for workspace communication or ingestion flows. |
 | [`mortelos/channel-google-calendar`](/docs/0/package-channel-google-calendar) | Google Calendar | You need per-user Google Calendar access to read upcoming events through Google OAuth. |
 | [`mortelos/channel-google-drive`](/docs/0/package-channel-google-drive) | Google Drive | You need Drive delivery for attachments, briefings or exported workspace material. |
@@ -74,6 +77,15 @@ These packages support development and governance. They are not feature packages
 | [`mortelos/dev-tools`](/docs/0/package-dev-tools) | Development tooling | You need Artisan commands for package decisions, governance checks and package-ready feature workflow support. |
 | [`mortelos/agent-standards`](/docs/0/package-agent-standards) | Agent instructions | You need shared AI agent rules merged into host `AGENTS.md` files. |
 | [`mortelos/issue-factory`](/docs/0/package-issue-factory) | Development tooling | You need issue dossiers, a ready queue and lifecycle commands for an agent-driven TDD build loop. |
+
+## Internal Repositories
+
+The registry serves exactly the packages on this page. Two other Composer projects in the MortelOS organization are internal: no host app installs them, so they are neither listed here nor served by the registry.
+
+| Repository | Why it is not listed |
+| --- | --- |
+| `mortelos/package-registry` | It builds the private Composer registry that distributes the packages on this page. |
+| `mortelos/site` | It runs the public website and renders this documentation. |
 
 ## Package Boundaries
 

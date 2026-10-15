@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/troubleshooting"
-last_verified: "2026-08-27"
+last_verified: "2026-10-14"
 public: true
 ---
 
@@ -69,6 +69,8 @@ composer config repositories.mortelos composer https://packages.mortelos.com
 composer install
 ```
 
+No customer name and token yet? See [Requesting Package Access](/docs/0/installation#requesting-package-access).
+
 GitHub SSH access is not involved; MortelOS packages are no longer installed from GitHub.
 
 ## Vite manifest not found
@@ -119,7 +121,7 @@ Check:
 
 ## Sidebar, search or chat is empty
 
-These are optional surfaces and degrade silently when their resolvers are `null`.
+These are optional surfaces. Their resolvers are `null` in a fresh starter, and the surface stays off until you bind one.
 
 | Surface | Config to bind |
 | --- | --- |
@@ -132,3 +134,23 @@ These are optional surfaces and degrade silently when their resolvers are `null`
 | Chat panel | `chat.settings_service` and `chat.conversation_panel_component` |
 
 Bind these only when the capability map calls for them.
+
+`php artisan starter:doctor` warns about the three that a fresh starter runs into first. A warning does not fail the doctor:
+
+| Config | While it is `null` |
+| --- | --- |
+| `navigation.sidebar_resolver` | The sidebar stays empty. |
+| `onboarding.resolver` | `/onboarding` shows an empty state that names this key instead of the welcome steps. |
+| `inbox.item_type_resolver` | The inbox opens every item in the approval flow, never in the intake pane. |
+
+### Fill the sidebar
+
+The sidebar needs two keys: `layout.sidebar_nav_component` set to `shared.sidebar-nav`, and `navigation.sidebar_resolver` set to a host class with three methods:
+
+1. `sections($user)` returns the menu sections.
+2. `inboxCount($user)` returns the badge count on the inbox item.
+3. `overviews($user)` returns the saved overviews, or `[]`.
+
+For `sections()`, return `app(Mortel\Support\NavigationRegistry::class)->forUser($user)` from `mortelos/framework`. The registry is named `forUser()`, not `sections()`, so point the key at your own class and call the registry from there.
+
+`forUser()` filters every item through a policy with scope `navigation` and denies by default, so it returns an empty list until the user's role has such a policy allowing the built-in item permissions: `nav.sidebar.inbox`, `nav.sidebar.search`, `nav.sidebar.dashboard`, `nav.sidebar.governance`, `nav.sidebar.users` and `nav.sidebar.apps`. From `mortelos/framework` 0.6.39 the registry leaves out any item whose route the host does not define. On older versions, leave `nav.sidebar.apps` out unless the host defines an `apps.marketplace` route, because the sidebar cannot link to a route that does not exist.
