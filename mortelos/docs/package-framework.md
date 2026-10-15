@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-10-14"
+last_verified: "2026-10-15"
 public: true
 ---
 
@@ -175,10 +175,11 @@ Host apps mount the framework MCP server when operate mode is enabled:
 
 ```php
 use Laravel\Mcp\Facades\Mcp;
+use Mortel\MCP\Servers\UteqOSServer;
 
 Mcp::oauthRoutes();
 
-Mcp::web('/mcp/mortelos', config('mortelos.mcp.server'))
+Mcp::web('/mcp/mortelos', UteqOSServer::class)
     ->middleware(['auth:api']);
 ```
 

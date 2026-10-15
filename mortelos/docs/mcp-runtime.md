@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/mcp-runtime"
-last_verified: "2026-06-07"
+last_verified: "2026-10-15"
 public: true
 ---
 
@@ -31,10 +31,11 @@ A host mounts the MortelOS MCP server from `mortelos/framework` in `routes/ai.ph
 
 ```php
 use Laravel\Mcp\Facades\Mcp;
+use Mortel\MCP\Servers\UteqOSServer;
 
 Mcp::oauthRoutes();
 
-Mcp::web('/mcp/mortelos', config('mortelos.mcp.server'))
+Mcp::web('/mcp/mortelos', UteqOSServer::class)
     ->middleware([
         'auth:api',
         // tenancy init from the MCP token
