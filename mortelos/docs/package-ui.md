@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/ui"
 canonical_path: "/docs/0/package-ui"
-last_verified: "2026-10-14"
+last_verified: "2026-10-15"
 public: true
 ---
 
@@ -48,7 +48,7 @@ Set your brand colour in the host app's `resources/css/app.css`. Import the Mort
 }
 ```
 
-One token is enough. The layer derives readable button text and link tints for light and dark mode. Without any `--mortel-*` token nothing changes: Flux's own colours stay.
+One token is enough. The layer derives readable button text and link tints for light and dark mode. Without any `--mortel-*` token Flux's own colours stay, with one exception: callouts (see below).
 
 | Token | Used for | Default |
 | --- | --- | --- |
@@ -65,6 +65,7 @@ One token is enough. The layer derives readable button text and link tints for l
 - Neutral greys follow Flux: redefine `--color-zinc-50` to `--color-zinc-950` in the same `@theme` block. White is not themeable; Flux and `mortelos/ui` use it directly for surfaces.
 - A typo in a colour value makes the accent invalid (transparent buttons). Check a primary button in light and dark after changing it.
 - The derivation uses CSS relative colour syntax and `round()`. It is tested in Chromium, WebKit and Firefox.
+- Callouts in light mode: Flux colours their heading and text with shade 600 on shade 50, which stays below contrast 4.5 for twelve colours (green for `variant="success"` measured 3.08, yellow for `variant="warning"` 2.84). From `mortelos/ui` 0.5.1 the layer caps the lightness of that heading and text, so every Flux callout colour reaches at least 5.0. Colours that were already dark enough stay the same; the grey of a default callout gets slightly darker. Dark mode is unchanged. Measured in Chromium and WebKit.
 
 ## View outlets
 
