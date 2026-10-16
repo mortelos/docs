@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/host-app-anatomy"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -59,7 +59,7 @@ public: true
 | Post-login redirect | `app/Actions/Auth/ResolvePostLoginRedirect.php` | Make role-aware per portal when needed. |
 | Tenant resolution | `app/Support/SingleTenantResolver.php` | The starter resolves one tenant; the host picks its own tenancy strategy and rebinds `TenantResolver`. |
 | Navigation tree | Host-owned resolver class | Bind through `navigation.sidebar_resolver` in `config/starter.php`; `null` by default. |
-| Universal search | Host-owned resolver class | Bind through `navigation.universal_search_resolver` in `config/starter.php`; `null` by default. |
+| Universal search | Host-owned resolver class | Set `layout.universal_search_component` to `shared.universal-search` and bind the resolver through `navigation.universal_search_resolver` in `config/starter.php`; both `null` by default. [Troubleshooting](/docs/0/troubleshooting) lists the resolver methods. |
 | Governance access | `app/Access/StarterGovernanceGate.php` | Bound to the `GovernanceGate` contract in `app/Providers/StarterServiceProvider.php`. |
 | User management | `app/Support/StarterUsersResolver.php` | Bind through `users.resolver`; scope reads and inspection to explicit `tenant_user` membership. |
 | Dashboard widgets | `resources/views/components/<group>/⚡<name>.blade.php` or a package | Decide with package governance. |
