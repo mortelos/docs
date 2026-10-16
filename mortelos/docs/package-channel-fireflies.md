@@ -35,7 +35,7 @@ composer require mortelos/channel-fireflies
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
-The package needs PHP 8.4 and `mortelos/framework` 0.6.11 or later. The service provider is auto-discovered. It registers the `fireflies` driver with the framework's channel driver registry, loads the webhook route and adds two Artisan commands. A queued job processes webhook payloads, so the host needs a running queue worker.
+The package needs PHP 8.4 and `mortelos/framework` `^0.6.11` (0.6.11 or later within 0.6). The service provider is auto-discovered. It registers the `fireflies` driver with the framework's channel driver registry, loads the webhook route and adds two Artisan commands. A queued job processes webhook payloads, so the host needs a running queue worker.
 
 ## Set Up A Tenant
 
@@ -96,13 +96,13 @@ Both entities are classified `confidential` when one of these is true. Otherwise
 php artisan mortel:channel:fireflies:health --tenant=<tenant-id-or-slug>
 ```
 
-The command checks the stored API key against the Fireflies API. It also counts the `transcript` entities created in the last seven days.
+The command checks the stored API key against the Fireflies API. It also counts all `transcript` entities created in the tenant in the last seven days, regardless of source.
 
 | Exit code | Meaning |
 | --- | --- |
 | `0` | The API key works and at least one transcript came in during the last seven days. |
 | `1` | The API key works, but no transcripts came in during the last seven days. |
-| `2` | No Fireflies channel is set up, the tenant is unknown, or Fireflies rejected the API key. |
+| `2` | The tenant is unknown, the channel or its credentials are missing, or the API returns any non-2xx response, including 401 and 5xx. |
 
 When Fireflies answers `401`, the command sets the channel to `disconnected`. It also sends a database notification to the tenant's users asking them to run the setup command again. The notification goes out only when the status changes, not on every check. Its message is in Dutch.
 
