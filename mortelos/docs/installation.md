@@ -64,9 +64,10 @@ After the agent creates the host app, continue with a capability-first interview
 | PHP | `^8.4` |
 | Composer | `^2.7` |
 | Node | `^20` |
+| PostgreSQL | A local service on `127.0.0.1:5432`, through DBngin or Herd Pro; the starter expects user `postgres` with an empty password |
 | MortelOS package access | A customer name and token for `https://packages.mortelos.com`; see [Requesting Package Access](#requesting-package-access) |
 
-If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows.
+If you do not have a local PHP stack yet, install PHP and Composer first. Laravel Herd is the fastest path on macOS and Windows. Start PostgreSQL before you create the host app: `composer setup` creates and migrates the database straight away.
 
 ### Installing the MortelOS CLI
 
@@ -159,7 +160,7 @@ php artisan serve
 
 Open `http://127.0.0.1:8000`.
 
-`composer setup` and `composer create-project` both install the PHP dependencies and run the starter bootstrap hooks. That means `vendor/`, `.env`, the SQLite database file, migrations and the development seed account are already in place before the Vite build runs.
+`composer setup` and `composer create-project` both install the PHP dependencies and run the starter bootstrap hooks. That means `vendor/`, `.env`, the PostgreSQL database, migrations and the development seed account are already in place before the Vite build runs. The database is named after the project folder: `mijn-portal` becomes `mijn_portal`.
 
 The frontend build imports Livewire and Flux assets from Composer packages under `vendor/`. If you created the app from an existing checkout or copied the files manually, run the Composer bootstrap first:
 
@@ -167,7 +168,6 @@ The frontend build imports Livewire and Flux assets from Composer packages under
 composer install
 php -r "file_exists('.env') || copy('.env.example', '.env');"
 php artisan key:generate
-php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
 php artisan migrate --force
 php artisan db:seed --force
 npm install --ignore-scripts
@@ -190,7 +190,9 @@ Run the starter migrations before the first browser check:
 php artisan migrate
 ```
 
-Use SQLite for quick local verification when the project has no database choice yet. Switch to MySQL or PostgreSQL when the customer environment requires it.
+The starter runs on PostgreSQL, locally and in production. `php artisan migrate --force` creates the database named in `DB_DATABASE` when it does not exist yet. Change `DB_USERNAME` and `DB_PASSWORD` in `.env` when your PostgreSQL service uses other credentials.
+
+Do not run a portal on SQLite. SQLite allows one writer at a time, and a MortelOS app always has several: web requests, the scheduler, the queue and the agents. On SQLite a workflow step also holds the write lock while it runs, so one slow AI call blocks every other write. The starter tests still run on SQLite in memory for a quick local check; CI runs them on PostgreSQL.
 
 ### Tenant and User Baseline
 
