@@ -16,7 +16,7 @@ public: true
 
 # MortelOS Sidecar
 
-`mortelos/sidecar` hands heavy chat questions to Claude Code. It runs on the asking user's own Claude account, in a closed sandbox, for up to 30 minutes by default. The sidecar reads data only through read-only agent tools under the asker's policy and calculates in Python. Its answer and files go back into the conversation. The same runner also runs standalone tasks and `sidecar.task` workflow steps. This page describes version 0.2.6.
+`mortelos/sidecar` hands heavy chat questions to Claude Code. It runs on the asking user's own Claude account, in a closed sandbox. Chat runs have a 30-minute limit by default; standalone tasks default to 600 seconds, and workflow tasks allow at most 600 seconds. The sidecar reads data only through read-only agent tools under the asker's policy and calculates in Python. Its answer and files go back into the conversation. The same runner also runs standalone tasks and `sidecar.task` workflow steps. This page describes version 0.2.6.
 
 The user-facing texts are in Dutch. They can be changed in config and per tenant.
 
@@ -35,7 +35,7 @@ The user-facing texts are in Dutch. They can be changed in config and per tenant
 
 ## Requirements
 
-Composer: PHP 8.4 with `ext-dom`, `mortelos/framework` 0.6.31 or later, `mortelos/chat` (0.3.21.5, 0.3.27 or later, 0.4 or 0.5), `mortelos/ui` (0.4.6 or later, or 0.5) and Livewire 4.
+Composer: PHP 8.4 with `ext-dom`, `mortelos/framework` `^0.6.31`, `mortelos/chat` `~0.3.21.5 || ^0.3.27 || ^0.4 || ^0.5`, `mortelos/ui` `^0.4.6 || ^0.5` and Livewire `^4.0`. The framework constraint stays within 0.6; it does not include 0.7.0.
 
 Server:
 
@@ -111,14 +111,15 @@ Files the sidecar writes directly in `output/` become downloads under its answer
 - Allowed extensions: `csv`, `xlsx`, `docx`, `pdf`, `html`, `svg`, `png`, `jpg`, `md`, `txt`. `output.extensions` can only narrow this list.
 - At most 10 files (`output.max_files`) of up to 10 MB each (`output.max_file_bytes`).
 - An HTML file is rebuilt as a static page. Scripts, forms and everything that points outside the page are removed. A standalone SVG is rebuilt as a static drawing in the same way.
-- A Word, Excel, PDF, CSV or Markdown file with a link or reference to outside is not handed out. CSV cells that look like formulas are neutralised.
+- A Word, Excel, PDF or Markdown file with a link or reference to outside is not handed out.
+- A CSV is attached unchanged unless it has cells that look like formulas. Those cells are prefixed with an apostrophe. An outside reference alone does not cause refusal. A read or processing failure does.
 
 ## Limits
 
 | Limit | Default |
 | --- | --- |
 | Run time (`max_seconds`) | 1800 seconds, at least 60. Claude is interrupted 60 seconds before the deadline (`interrupt_lead_seconds`). |
-| Runs at the same time on the server (`max_concurrent`) | 2, plus one per user. |
+| Runs at the same time on the server (`max_concurrent`) | 2 in total, at most 1 per user. |
 | Wait for a free slot (`max_queue_seconds`) | 3600 seconds. After that, the user is asked to try again later. |
 | Network | None for Bash. Web fetch and web search are denied. |
 | Engine (`engine`) | `claude` only. An unknown engine fails when the sidecar is used. |
@@ -205,10 +206,10 @@ $task = app(StartTask::class)->start(new TaskRequest(
 
 - The task runs as a real user. That user must exist, have a role in the tenant and have pilot access, and the sidecar must be on. There is no system actor.
 - `identity` is unique per tenant, up to 191 characters. Starting the same task again returns the same task and dispatches its job again. A different definition or user under the same identity fails. A new paid attempt needs a new identity.
-- `model` must be empty or equal the installation's model. The installation's model and effort are saved with the task, and the deadline is capped by `max_seconds`.
+- `model` must be empty or equal the installation's model. The installation's model and effort are saved with the task. `deadlineSeconds` defaults to 600 and is capped by `max_seconds`.
 - `tools` holds exact registry names. An empty list gives the task no tools.
 - `inputs` holds `{artifact_id, checksum, path}` references with a SHA-256 checksum. Inputs and outputs must be ordinary text files within the `tasks.*` limits. Links, hidden configuration, credential file names and binary files are refused.
-- Personal memory and the user's tools are off unless `personalMemory` or `personalSkills` is set. Memory also needs `memory.enabled`.
+- Personal memory and personal skills are off unless `personalMemory` or `personalSkills` is set. Memory also needs `memory.enabled`.
 
 | `tasks.*` key | Default |
 | --- | --- |
@@ -231,7 +232,13 @@ A failed delivery leaves `delivery_error` set to `delivery_failed` and keeps the
 
 ## Workflow Step
 
-The package registers the `sidecar.task` step type with the framework's workflow step registry:
+The package registers the `sidecar.task` step type with the framework's workflow step registry. The host must first:
+
+- Run the framework's workflow-step wait migration.
+- Register synchronous `WorkflowRunProjector` and `WorkflowStepWaitProjector` projectors with Spatie event sourcing, and include `WorkflowStepWaitRegistered` and `WorkflowStepWaitResolved` in `event-sourcing.event_class_map`.
+- Bind `TenantContext` and `TenantResolver`, and keep `mortel:workflows:run-due` running for recovery.
+
+Example step:
 
 ```json
 {
@@ -256,7 +263,7 @@ The package registers the `sidecar.task` step type with the framework's workflow
 - The workflow run snapshot must contain `executor_user_id`. The host must bind the framework's `WorkflowStepAuthorizer`.
 - The step reads its config from the run's saved definition, not from the live workflow or the payload.
 - The task identity is `workflow:<run-id>:<step-index>`. A workflow retry reuses the task and never starts another paid run.
-- Workflow tasks always use `destination` `result`, with personal memory and tools off.
+- Workflow tasks always use `destination` `result`, with personal memory and personal skills off. The `tools` list still grants the named agent tools; an empty list grants none.
 
 Only `answered` completes the step, with this result:
 

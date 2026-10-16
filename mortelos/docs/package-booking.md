@@ -40,7 +40,7 @@ composer require mortelos/booking
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
-The package needs PHP 8.4, Livewire 4.4 or later, `mortelos/framework` 0.6.42 or later, `mortelos/ui` 0.4.8 or later and `mortelos/chat` 0.4. The service provider is auto-discovered.
+The package needs PHP 8.4, Livewire `^4.4`, `mortelos/framework` `^0.6.42`, `mortelos/ui` `^0.4.8` and `mortelos/chat` `^0.4`. The framework constraint stays within 0.6, and the UI constraint stays within 0.4. The service provider is auto-discovered.
 
 The package adds its migrations to the tenant migration paths (`tenancy.migration_parameters`). The tables are created per tenant when you run the tenant migrations: `booking_links`, `booking_blocks`, `booking_block_skips`, `booking_questions` and `bookings`.
 
@@ -75,7 +75,7 @@ For tests, bind `Mortelos\Booking\Testing\FakeBookingCalendar`. Use `connect()` 
 | Area | Prefix | Middleware | Route names |
 | --- | --- | --- | --- |
 | Owner pages | `afspraken` (`os_prefix`) | `web`, `auth` (`os_middleware`) | `booking.index` and the pages under it. |
-| Public pages | `afspraak` (`public_prefix`) | `AllowEmbedding`, `InitializeTenancyFromBookingUrl`, `throttle:booking-public` (`public_middleware`) | `booking.public.show`, `booking.public.confirmed`, `booking.public.cancel` |
+| Public pages | `afspraak` (`public_prefix`) | `AllowEmbedding`, `InitializeTenancyFromBookingUrl`, `throttle:booking-public` (`public_middleware`) | `booking.public.show`, `booking.public.store`, `booking.public.confirmed`, `booking.public.cancel`, `booking.public.cancel.confirm` |
 
 Public URLs carry the tenant slug and the link slug. `InitializeTenancyFromBookingUrl` looks up the tenant by `slug` on `tenancy.tenant_model` and answers 404 when there is none. The current tenant must have a slug for the package to build booking URLs. Confirmation and cancel URLs are signed.
 
@@ -127,7 +127,7 @@ A weekly block repeats from its first date, optionally until an end date. Closin
 
 ## Chat Tool
 
-When the framework's agent tool registry is present, the package registers the `booking` tool. Its policy action is `agent_tool:booking` and it is deny-by-default, so grant it to the roles that may use it. The tool is offered only when the chat run's source context has `surface` set to `booking`, which means the chat on the Afspraken pages. It has write risk and asks for no approval.
+When the framework's agent tool registry is present, the package registers the `booking` tool. Its policy action is `agent_tool:booking`. Running the tenant migrations grants access to the existing `owner` and `operator` roles. Other roles need an explicit grant. A host that wants different access must change the policies through its policy management after migration. The tool is offered only when the chat run's source context has `surface` set to `booking`, which means the chat on the Afspraken pages. It has write risk and asks for no approval.
 
 | Action | What it does |
 | --- | --- |
@@ -143,7 +143,7 @@ The tool works only on the run user's own links. It never cancels or moves booki
 
 ## Navigation
 
-When the framework's navigation registry is bound, the package adds a sidebar item to the `Vast` group. The item has the configured label, the `calendar` icon, the route `booking.index` and the permission `nav.sidebar.booking`.
+When the framework's navigation registry is bound, the package adds a sidebar item to the `Vast` group. The item has the configured label, the `calendar` icon, the route `booking.index` and the permission `nav.sidebar.booking`. Running the tenant migrations adds an allow for this permission to the existing `Owner navigation access` and `Operator navigation access` policies. A host that wants different sidebar access must change those policies after migration.
 
 ## Outlets
 
@@ -153,8 +153,8 @@ An outlet is a place where you extend a package from your app without changing i
 php artisan mortelos:outlets:list booking
 ```
 
-In version 0.1.1, the `BookingCalendar` contract, the `booking` config and the `booking-public` rate limiter are the places a host plugs in.
+In version 0.1.1, the outlet manifest declares only the `BookingCalendar` contract. The config and rate limiter described above are not declared outlets in this version.
 
 ## Boundaries
 
-The package owns links, open times, questions, availability, the public form, bookings and the chat tool. The host app owns the calendar implementation, user accounts, tenancy with tenant slugs, and the policies for `agent_tool:booking` and `nav.sidebar.booking`. The host also decides where the form is embedded. The package sends no e-mail itself. The visitor is added as an attendee to the calendar event, so any invitation depends on the calendar implementation.
+The package owns links, open times, questions, availability, the public form, bookings and the chat tool. The host app owns the calendar implementation, user accounts and tenancy with tenant slugs. The package migrations grant owner and operator access to the chat tool and sidebar as described above; the host manages any changes to those policies. The host also decides where the form is embedded. The package sends no e-mail itself. The visitor is added as an attendee to the calendar event, so any invitation depends on the calendar implementation.

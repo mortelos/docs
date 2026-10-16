@@ -81,11 +81,18 @@ An agent that works in a package from a parent directory loads that `CLAUDE.md` 
 | Area | Rule family |
 | --- | --- |
 | Working method | Read repo instructions, keep work scoped, verify before reporting completion. |
-| Laravel and PHP | Strict types, explicit domain boundaries, immutable dates and strict models. |
-| TALL and UI | Use Livewire 4 single-file components and `x-mortel::` components from `mortelos/ui` first. Use Flux (`flux:`) only when `mortelos/ui` has no matching component; never write custom HTML for something it already provides. Keep components presentational. |
-| Security | Validate and authorize at boundaries, guard tenant scope, fake external calls in tests. |
-| Version control | Keep changes focused and respect dirty worktrees. |
-| Dutch copy | Plain Dutch prose and no em dashes in Dutch user-facing text. |
+| Outlets first | Use declared outlets before changing a package. Declare new public surfaces in the outlet manifest. |
+| Laravel and PHP | Strict types, typed values, immutable dates and strict models. Put writes in authorized Actions. |
+| Host state and events | Store auditable facts through aggregates and events. Rebuild read tables through projectors. Return Action results with undo where possible. |
+| TALL and UI | Build UI only from `x-mortel::` components. Never write `flux:` directly or raw form controls and tables. Compose missing components from existing ones. Keep components presentational. |
+| Livewire 4 | Use single-file components, islands, stable loop keys and scoped state. Follow the loading, polling and navigation rules. |
+| Verify UI changes | Run the guards and screen browser tests. Check request counts, layout shifts and console output, and include screenshots. Name skipped browser checks when the repo has no browser job. |
+| Security | Validate and authorize at boundaries, guard tenant scope and explicit membership, fake external calls in tests. |
+| Version control and review | Keep changes focused and respect dirty worktrees. |
+| External sources and personal data | Reuse framework channels, entities and transcript events for personal imports. Keep content private and make purges safe across replays. |
+| Dependency and versioning | Use semantic-version tags and registry caret constraints. Commit application lockfiles, keep package lockfiles out of git and wait for tags before upgrading consumers. |
+| Code language | Write code, comments, commits and pull requests in English. Keep Dutch to user-facing copy and the explicit exceptions. |
+| Dutch product copy | Plain Dutch prose and no em dashes in Dutch user-facing text. |
 
 ## Host-Specific Rules
 
