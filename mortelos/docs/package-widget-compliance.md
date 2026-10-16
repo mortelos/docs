@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/widget-compliance"
 canonical_path: "/docs/0/package-widget-compliance"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -41,9 +41,25 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 php artisan chat:widget:check compliance_intake_start
 ```
 
+## Upgrading to 0.4.0
+
+Require `mortelos/framework:^0.7` and `mortelos/chat:^0.6`, run the framework upgrade migration, and update chat and host integrations together. See [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070) for the migration.
+
+Update host-provided Livewire components and published intake views. There are no aliases for the old names.
+
+| 0.3 | 0.4 |
+| --- | --- |
+| `compliance.normkaart-publication-widget` | `compliance.rulebook-publication-widget` |
+| `compliance.bronnen-toevoegen-widget` | `compliance.add-sources-widget` |
+| compliance visibility key `normkaart` | `rulebook` |
+| view outlet `widget-compliance.intake.normkaart-publication` | `widget-compliance.intake.rulebook-publication` (update registrations that use `Outlet`) |
+| framework model `Mortel\Models\ComplianceNormkaartVersion` | `Mortel\Models\ComplianceRulebookVersion` |
+
+Dutch customer-facing copy stays Dutch.
+
 ## Outlets
 
-An outlet is a place where you extend `mortelos/widget-compliance` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.2; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+An outlet is a place where you extend `mortelos/widget-compliance` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.4.0; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
 
 ```bash
 php artisan mortelos:outlets:list widget-compliance
@@ -52,11 +68,11 @@ php artisan mortelos:outlets:list widget-compliance
 | Kind | Name | What it is for | Data |
 | --- | --- | --- | --- |
 | view | `widget-compliance.intake.start` | The start card of the compliance intake, while there is no sources panel or review package yet. Default: the Livewire component `compliance.intake-start-widget`, which the host provides. | `runData`, `steps` |
-| view | `widget-compliance.intake.sources` | The panel for adding sources to the intake. Default: `compliance.bronnen-toevoegen-widget`, which the host provides. | `runId`, `compact` |
+| view | `widget-compliance.intake.sources` | The panel for adding sources to the intake. Default: `compliance.add-sources-widget`, which the host provides. | `runId`, `compact` |
 | view | `widget-compliance.intake.review-package` | The review package of the intake. Default: `compliance.review-package-widget`, which the host provides. | `runId` |
 | view | `widget-compliance.intake.workflow-review` | The review of the workflow links the intake proposes. Default: `compliance.workflow-review-widget`, which the host provides. | `runId` |
 | view | `widget-compliance.intake.open-questions` | The open questions of the intake. Default: `compliance.open-questions-widget`, which the host provides. | `runId` |
-| view | `widget-compliance.intake.normkaart-publication` | The publication of the norm card. Default: `compliance.normkaart-publication-widget`, which the host provides. | `runId` |
+| view | `widget-compliance.intake.rulebook-publication` | The publication of the rulebook. Default: `compliance.rulebook-publication-widget`, which the host provides. | `runId` |
 
 ## Boundaries
 

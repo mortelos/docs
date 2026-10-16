@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/daily-planner"
 canonical_path: "/docs/0/package-daily-planner"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -59,6 +59,45 @@ php artisan vendor:publish --tag=daily-planner-migrations
 | Sidebar item | `nav.sidebar.planner` |
 
 The `Planner` sidebar item is registered only when the framework `NavigationItemRegistry` is bound. A tenant migration allows `nav.sidebar.planner` on the framework's default `Owner navigation access` and `Operator navigation access` policies.
+
+## Upgrading to 0.6.0
+
+Update host listeners and dispatches to the English planner event names:
+
+| 0.5 | 0.6 |
+| --- | --- |
+| `dag-melding` | `planner-notification` |
+| `dag-paneel-open` | `planner-panel-opened` |
+| `dag-taak-veranderd` | `planner-task-changed` |
+| `dag-taak-verwijderd` | `planner-task-deleted` |
+
+The notification payload uses `text`, `copyText` and `highlight` instead of `tekst`, `kopieer` and `licht`. `token` and `open` keep their names and meanings. The Flux modal name of the task panel changes from `dag-item` to `planner-item`. The `DayExtras` contract and the public Livewire properties and methods keep their names.
+
+Update host CSS and tests that target the planner's DOM:
+
+| 0.5 | 0.6 |
+| --- | --- |
+| `data-licht`, `data-melding`, `data-ik`, `data-naam` | `data-highlight`, `data-notification`, `data-row-action`, `data-name` |
+| `.dag-licht` and the `dag-licht` animation | `.planner-highlight` and the `planner-highlight` animation |
+| `dag-licht-donker` animation | `planner-highlight-dark` animation |
+| `.dag-min` | `.planner-minutes` |
+| `--dag-cols` | `--planner-cols` |
+| `#dag-tip` | `#planner-tooltip` |
+| `#dag-paneel-kop` | `#planner-panel-heading` |
+| `#dag-notities-status` | `#planner-notes-status` |
+| `#dag-backlog-open`, `#dag-backlog-dicht` | `#planner-backlog-expand`, `#planner-backlog-collapse` |
+| `#dag-backlog`, `#dag-vandaag`, `#dag-rechts` | `#planner-backlog`, `#planner-today`, `#planner-right-column` |
+| `#dag-kop-backlog`, `#dag-kop-vandaag`, `#dag-kop-tijdlijn` | `#planner-backlog-heading`, `#planner-today-heading`, `#planner-timeline-heading` |
+| `#dag-kop-wacht`, `#dag-kop-bezig` | `#planner-waiting-heading`, `#planner-busy-heading` |
+| `#dag-klaar`, `#dag-knop-klaar` | `#planner-done`, `#planner-done-button` |
+| `#dag-later` | `#planner-later` |
+| `#dag-streams`, `#dag-knop-streams` | `#planner-streams`, `#planner-streams-button` |
+| `#dag-koppelingen`, `#dag-knop-koppelingen` | `#planner-connections`, `#planner-connections-button` |
+| `#dag-kop-plan`, `#dag-kop-afsluiten` | `#planner-plan-heading`, `#planner-shutdown-heading` |
+
+The sort group changes from `dag` to `planner`. The Alpine bindings of the page are internal and now use English names. The saved preference for a collapsed Backlog moves from `dag.backlogDicht` to `planner.backlogCollapsed`. To keep it, copy the Alpine Persist localStorage value before you upgrade, from `_x_dag.backlogDicht` to `_x_planner.backlogCollapsed`. Otherwise the Backlog starts expanded once after the upgrade.
+
+The Dutch interface text is kept. The framework and chat constraints are unchanged.
 
 ## Outlets
 

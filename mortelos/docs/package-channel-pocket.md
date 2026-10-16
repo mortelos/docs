@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-pocket"
 canonical_path: "/docs/0/package-channel-pocket"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -54,6 +54,21 @@ php artisan channel:poll-pocket
 | Channel driver | `pocket` |
 | Entity type | `meeting` |
 | Meeting fields added | `pocket_recording_id`, `pocket_updated_at`, `transcript`, `action_items`, `calendar_event_id` |
+
+## Upgrading to 0.2.0
+
+This release is a minor bump because public return values and a stored status changed. Update the package constraint in your app to `^0.2`. The framework constraint and the Dutch command output are unchanged.
+
+| 0.1 | 0.2 |
+| --- | --- |
+| `StorePocketRecording::handle()` returns `nieuw` | `created` |
+| `StorePocketRecording::handle()` returns `bijgewerkt` | `updated` |
+| `StorePocketRecording::handle()` returns `ongewijzigd` | `unchanged` |
+| status `attributes.status = opgenomen` on a new meeting | `recorded` |
+
+Update callers that compare or count the results. Migrate existing meeting statuses from `opgenomen` to `recorded`, and update application filters and renderers. Other statuses that a user edited are kept.
+
+If you use the default meeting layout of `mortelos/record`, upgrade it to `^0.3` together with this package. That layout now recognises `recorded`.
 
 ## Outlets
 

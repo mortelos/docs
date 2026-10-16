@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-gmail"
 canonical_path: "/docs/0/package-channel-gmail"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -35,6 +35,18 @@ composer require mortelos/channel-gmail
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+## Upgrading to 0.6.0
+
+This release is a minor bump because public attachment names changed. Update the package constraint in your app to `^0.6`. The framework constraint is unchanged.
+
+| 0.5 | 0.6 |
+| --- | --- |
+| named argument `bijlagen` in `GmailApiClient::createDraft()` and `updateDraft()` | `attachments` |
+| attachment array key `naam` | `name` |
+| attachment array key `inhoud` | `body` |
+
+The attachment key `mime` is unchanged. Update any stored attachment arrays before you pass them to the client.
 
 ## Outlets
 

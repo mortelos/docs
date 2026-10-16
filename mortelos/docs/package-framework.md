@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-10-15"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -38,9 +38,101 @@ composer require mortelos/framework
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
+## Upgrading to 0.7.0
+
+Version 0.7.0 renames every Dutch name in the framework to English: classes, methods, tables, columns, config keys, event properties and stored values. There are no aliases for the old names. Stay on `^0.6` until your app is ready; `0.6.x` keeps receiving fixes.
+
+What an app must do:
+
+1. Require `mortelos/framework:^0.7`. Update the packages that depend on it at the same time: chat, overviews, widget-compliance, the starter and the channel packages move together.
+2. Publish the new migration and run it. Publishing does not overwrite the migrations you already have. It only adds the new file.
+
+   ```bash
+   php artisan vendor:publish --tag=os-core-migrations
+   php artisan migrate            # or tenants:migrate, where your framework migrations live
+   ```
+
+   The migration `2026_10_16_000001_rename_dutch_schema_names_to_english` renames the tables, columns and indexes below and rewrites the stored Dutch values. It only renames what still has its old name, so it is safe to run twice and does nothing on a fresh install. It is one-way: `down()` does nothing. Take a backup first.
+3. If you published `config/mortel.php`, rename `inbox.max_per_bron_per_dag` to `inbox.max_per_source_per_day`.
+4. Rename every name from the tables below in your own code, views and tests.
+
+### Database
+
+| 0.6 | 0.7 |
+| --- | --- |
+| table `compliance_normkaart_versions` | `compliance_rulebook_versions` |
+| column `compliance_hard_rule_instances.compliance_normkaart_version_id` | `compliance_rulebook_version_id` |
+| column `compliance_hard_rule_instances.normkaart_rule_index` | `rulebook_rule_index` |
+| column `transcript_classifications.bronpassage` | `quote` |
+| indexes `compliance_normkaart_versions_*`, `*_compliance_normkaart_version_id_index` | `compliance_rulebook_versions_*`, `*_compliance_rulebook_version_id_index` |
+| default of `compliance_rulebook_versions.status`: `concept` | `draft` |
+
+The migration also rewrites these stored values:
+
+| Where | 0.6 | 0.7 |
+| --- | --- | --- |
+| `inbox_items.type` | `voorstel`, `notificatie`, `actie` | `proposal`, `notification`, `action` |
+| `inbox_items.metadata` key set by the inbox gate | `bron` | `gate_source` |
+| `inbox_items.metadata` values | `normkaart_publication`, `will_publish_normkaart`, `projectie-input` | `rulebook_publication`, `will_publish_rulebook`, `projection-input` |
+| `agent_runs.context_scope` | `gesprek`, `volledig` (`tenant` stays) | `conversation`, `full` |
+| `agent_runs.model_preset` | `snel`, `diep` (`medium` stays) | `fast`, `deep` |
+| `agent_conversation_messages.meta` | the same scopes and presets | the English ones |
+| `transcript_classifications.type` | `beslissing`, `feit`, `actie`, `samenvatting`, `actiepunt`, `besluit`, `vraag`, `risico` | `decision`, `fact`, `action`, `summary`, `action_item`, `decision`, `question`, `risk` (`context` stays) |
+| `compliance_intake_skill_runs.status` | `normkaart_concept` | `rulebook_draft` |
+| `compliance_intake_skill_runs` JSON (`review_packages`, `sources`, `intake_report`, `transition_log`) | key `normkaart`, category `onbekend`, the values above | key `rulebook`, category `unknown` |
+| `compliance_rulebook_versions.status` | `concept` | `draft` |
+| `compliance_rulebook_versions.audit_log` events | `normkaart.concept_prepared`, `normkaart.published`, `normkaart.publication_review_required` | `rulebook.draft_prepared`, `rulebook.published`, `rulebook.publication_review_required` |
+| `events.event_properties` of `inbox.item.blocked` | `reden`, `bron`, `titel`; reasons `geen_lid`, `geen_context` | `reason`, `source`, `title`; reasons `not_member`, `no_context` |
+| `policies.conditions` of resource type `inbox_volume` | `bron`, `max_per_dag` | `source`, `max_per_day` |
+
+The migration does not rewrite two things. Customer entities imported from a vault before 0.7 keep `klant_number` in their attributes, and nothing in the framework reads it. Import them again to get `customer_number`. A tenant AI setting that stores the preset `snel` or `diep` as text falls back to `medium`. Set it to `fast` or `deep`.
+
+### PHP
+
+| 0.6 | 0.7 |
+| --- | --- |
+| `Mortel\Models\ComplianceNormkaartVersion` | `Mortel\Models\ComplianceRulebookVersion` |
+| `Mortel\Actions\Compliance\PrepareComplianceNormkaartConcept` | `Mortel\Actions\Compliance\PrepareComplianceRulebookDraft` |
+| `Mortel\Actions\Compliance\PublishComplianceNormkaartVersion` | `Mortel\Actions\Compliance\PublishComplianceRulebookVersion` (named argument `$normkaart` is `$rulebook`) |
+| `ActivateComplianceHardRuleCandidate::handle(normkaart: …)` | `handle(rulebook: …)` |
+| `ComplianceHardRuleInstance::normkaartVersion()` | `rulebookVersion()` |
+| `HardRuleEvaluator::evaluate(normkaartContext: …)` | `evaluate(rulebookContext: …)` |
+| `ComplianceIntakeStatus::NormkaartConcept` (`normkaart_concept`) | `ComplianceIntakeStatus::RulebookDraft` (`rulebook_draft`) |
+| `ComplianceIntakeWidgetVisibility::forRun()` key `normkaart` | `rulebook` |
+| review package key `normkaart` | `rulebook` |
+| inbox proposal kind `normkaart_publication`, payload key `will_publish_normkaart` | `rulebook_publication`, `will_publish_rulebook` |
+| `Mortel\Events\Inbox\InboxBronAfgeremd($bron, $maxPerDag, …)` | `Mortel\Events\Inbox\InboxSourceThrottled($source, $maxPerDay, …)` |
+| `InboxItemBlocked` properties `reden`, `bron`, `titel` | `reason`, `source`, `title` |
+| `InboxItemBlockedException` properties `reden`, `bron` | `reason`, `source` |
+| `InboxItemGate::bron()` | `InboxItemGate::source()` |
+| gate reasons `geen_lid`, `geen_context` | `not_member`, `no_context` |
+| gate source fallback `onbekend` | `unknown` |
+| actor and `channels.updated_by` written by the gate: `inbox-poort` | `inbox-gate` |
+| config `mortel.inbox.max_per_bron_per_dag` | `mortel.inbox.max_per_source_per_day` |
+| `Mortel\Support\ClassificationResult::$bronpassage` | `::$quote` (also the `fromArray()` and `jsonSerialize()` key) |
+| `Mortel\Actions\Overzicht\SaveOverview` | `Mortel\Actions\Overview\SaveOverview` |
+| `PromoteEntity::isBouwstraatEntity()` (protected) | `requiresBuildTests()` |
+| `CreateAgentInboxItem::TYPE` (`voorstel`) | `proposal` |
+| `InboxItem::confidenceLevel()`: `hoog`, `gemiddeld`, `laag` | `high`, `medium`, `low` |
+| `AiModelRouter::forChatPreset()` and `ChatModelPresetResolver`: `snel`, `diep` | `fast`, `deep` |
+| context scopes for `AnswerQuestionJob`, `ChatIntentDispatcher`, `AnswerEntityQuestion`, `AgentRunService` and the MCP `AgentRunTool`: `gesprek`, `volledig` | `conversation`, `full` |
+| `ParseMarkdownFile` customer attribute `klant_number` | `customer_number` |
+
+The vault frontmatter now reads `customer-number`, `customer-name`, `customer`, `start-date` and `phase`. It still recognises the Dutch `klant-nr`, `klant-naam`, `klant`, `startdatum` and `fase`.
+
+### AI contracts
+
+- The classification prompt asks for `quote` instead of `bronpassage`, and for the types `decision`, `fact`, `action` and `context` instead of `beslissing`, `feit`, `actie` and `context`.
+- The `platform.usage` agent tool takes `days` instead of `dagen`. It returns `period_days`, `logins_recorded_since` and `users` with `name`, `email`, `last_login`, `logins_in_period`, `last_chat_question`, `chat_questions_in_period` and `chat_questions_total`.
+
+### Events other packages listen to
+
+- `Mortel\Events\Inbox\InboxBronAfgeremd` is now `InboxSourceThrottled`. Rename your listeners.
+- The Livewire browser event `overzicht-saved` is now `overview-saved`. The framework does not dispatch it. `mortelos/overviews` sends it, and `mortelos/chat` and the starter listen to it, so upgrade those three together.
+
 ## Outlets
 
-An outlet is a place where you extend `mortelos/framework` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.6.41; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
+An outlet is a place where you extend `mortelos/framework` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.7.0; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
 
 ```bash
 php artisan mortelos:outlets:list framework
@@ -104,7 +196,7 @@ php artisan mortelos:outlets:list framework
 | event | `Mortel\Events\ExternalActionCompleted` | An external action succeeded. Broadcast to the browser. |
 | event | `Mortel\Events\ExternalActionFailed` | An external action failed. Broadcast to the browser. |
 | event | `Mortel\Events\Inbox\InboxAttentionChanged` | The attention status of an inbox item changed. Stored fact (event sourcing). |
-| event | `Mortel\Events\Inbox\InboxBronAfgeremd` | A source reached the daily limit of the inbox gate; after commit. |
+| event | `Mortel\Events\Inbox\InboxSourceThrottled` | A source reached the daily limit of the inbox gate; after commit. |
 | event | `Mortel\Events\Inbox\InboxFindingPublished` | A finding was published in the inbox. Stored fact (event sourcing). |
 | event | `Mortel\Events\Inbox\InboxFollowUpRecorded` | A follow-up was recorded on an inbox item. Stored fact (event sourcing). |
 | event | `Mortel\Events\Inbox\InboxHumanResponseRecorded` | A human response was recorded on an inbox item. Stored fact (event sourcing). |
