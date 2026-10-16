@@ -119,6 +119,14 @@
         {
           "title": "Triage",
           "slug": "package-triage"
+        },
+        {
+          "title": "Booking",
+          "slug": "package-booking"
+        },
+        {
+          "title": "Sidecar",
+          "slug": "package-sidecar"
         }
       ]
     },

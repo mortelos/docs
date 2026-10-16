@@ -10,13 +10,13 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/agent-standards"
 canonical_path: "/docs/0/package-agent-standards"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
 # MortelOS Agent Standards
 
-`mortelos/agent-standards` carries reusable AI agent instructions for MortelOS host apps.
+`mortelos/agent-standards` carries reusable AI agent instructions for MortelOS host apps and packages. This page describes version 0.1.15.
 
 This package is a MortelOS-owned hard-fork-style standard. Spatie's AI guidelines and Laravel community conventions are useful references, but MortelOS owns the actual rules that agents receive in `AGENTS.md`.
 
@@ -24,7 +24,7 @@ This package is a MortelOS-owned hard-fork-style standard. Spatie's AI guideline
 
 Agent instructions drift when every host app edits its own long prompt. Drift makes agents inconsistent and makes reviews harder.
 
-The standard is packaged so every host app can install one reusable source of truth, then merge it into the root `AGENTS.md` with `mortelos/dev-tools`.
+The standard is packaged so every host app can install one reusable source of truth, then merge it into the root `AGENTS.md` with `mortelos/dev-tools`. The rules live in the package at `resources/mortelos/agent-rules/AGENTS.md`.
 
 ## Install In A Host App
 
@@ -34,6 +34,8 @@ composer require mortelos/dev-tools --dev
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+The package needs PHP 8.4 and `illuminate/support` 13. The service provider is auto-discovered.
 
 Host apps should publish package rules after Composer updates:
 
@@ -54,6 +56,25 @@ Then publish or check manually when needed:
 php artisan mortelos:agent-rules:publish --target=AGENTS.md --no-interaction
 php artisan mortelos:agent-rules:check --target=AGENTS.md --no-interaction
 ```
+
+To keep a plain copy of the rules in the host, publish them with the package tag. This writes `resources/mortelos/agent-rules/agent-standards.md`:
+
+```bash
+php artisan vendor:publish --tag=mortelos-agent-standards-rules
+```
+
+## Loading The Rules In Claude Code
+
+Claude Code reads `CLAUDE.md`, not `AGENTS.md`, when both exist.
+
+- In a host app, keep the generated block in `AGENTS.md` and put `@AGENTS.md` in `CLAUDE.md`.
+- In a package, require `mortelos/agent-standards` as a dev dependency from the MortelOS registry, not as a symlinked path repository. Then put this line in the package `CLAUDE.md`:
+
+```text
+@vendor/mortelos/agent-standards/resources/mortelos/agent-rules/AGENTS.md
+```
+
+An agent that works in a package from a parent directory loads that `CLAUDE.md` when it opens a file in the package with the Read tool.
 
 ## What It Covers
 
@@ -84,4 +105,4 @@ This package declares no outlets yet; it has no screens or seams a host plugs in
 
 ## Boundaries
 
-`mortelos/agent-standards` is only instruction content. It does not add runtime behavior. Pair it with `mortelos/dev-tools` for publish/check commands, and pair host apps with `mortelos/app-standards` for Laravel runtime defaults.
+`mortelos/agent-standards` is only instruction content. It adds no runtime behaviour: its service provider only registers the publish tag, and only in the console. Pair it with `mortelos/dev-tools` for publish and check commands, and pair host apps with `mortelos/app-standards` for Laravel runtime defaults.
