@@ -33,6 +33,8 @@ public: true
 
    Released in the same round, with no upgrade note: dev-tools 0.1.8, agent-standards 0.1.15, ui 0.5.2, entity-graph 0.5.1 and 0.5.2, policy-studio 0.3.3 and 0.3.4, widget-document-feedback 0.3.4 and 0.3.5, feedback 0.3.3 and 0.3.4, mail 0.1.4 and 0.1.5, issue-factory 0.1.4 and 0.1.5, social-login 0.2.2, app-standards 0.1.4, channel-fireflies 0.3.3 and 0.3.4, channel-google-calendar 0.4.2 and 0.4.3, channel-google-drive 0.5.1 and 0.5.2, channel-moneybird 0.4.7 and 0.4.8, channel-plaud 0.4.2 and 0.4.3, and channel-telegram 0.3.3 and 0.3.4.
 
+3. Released starter 0.14.0 on framework 0.7. A new app now includes the `CodeLanguageGuard` test and the agent rules check in CI. Existing apps follow the steps in the starter's `UPGRADE.md`.
+
 2026-10-14:
 
 1. Added [Outlets: extend a package without changing it](/docs/0/outlets), with the five kinds of outlet, app examples, the seven-rung ladder, the checks, and guidance for package authors. Added an Outlets section to every package reference page, plus new pages for [Triage](/docs/0/package-triage) and the [GitHub channel](/docs/0/package-channel-github). Replaced the advice to publish package views with outlet or package pull request guidance.
