@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/overviews"
 canonical_path: "/docs/0/package-overviews"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -44,6 +44,12 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 | Agent tool | `overview.save` |
 | Agent tool | `overview.suggest_save` |
 
+## Upgrading to 0.4.0
+
+Require `mortelos/framework:^0.7` and `mortelos/chat:^0.6`. Upgrade chat, widget-compliance and the host integrations together.
+
+The browser event `overzicht-saved` is now `overview-saved`, for both dynamic and snapshot saves. There is no alias for the old event. Update every host listener, including Blade and Alpine event bindings, and rename handlers such as `onOverzichtSaved` to `onOverviewSaved`. Dutch customer-facing copy stays Dutch.
+
 ## Outlets
 
 An outlet is a place where you extend `mortelos/overviews` from your app without changing the package. The table lists the outlets in its `resources/mortelos/outlets.json` as of version 0.3.1; read [Outlets](/docs/0/outlets) for how each kind works and what to do when none fits.
@@ -60,7 +66,7 @@ php artisan mortelos:outlets:list overviews
 | view | `overviews.save-prompt.actions` | Next to the Dynamic, Snapshot and Not now buttons in the save widget. Default: those three buttons. | `message` |
 | view | `overviews.save-prompt.saved` | The confirmation after the overview is saved. Default: a check mark with a short Dutch confirmation. | `message` |
 
-After saving, the save widget sends the Livewire browser event `overzicht-saved` with `overviewId`. It is not an outlet in the manifest, so it can change in a minor release.
+After saving, the save widget sends the Livewire browser event `overview-saved` with `overviewId`. It is not an outlet in the manifest, so it can change in a minor release.
 
 ## Boundaries
 

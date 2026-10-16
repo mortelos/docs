@@ -69,7 +69,7 @@ The service provider is auto-discovered and loads the package migrations. In a p
 
 ## Connecting Claude
 
-The package registers two Livewire pages under `route_prefix` (default `diepteonderzoek`) with `route_middleware` (default `web`, `auth`):
+The package registers two Livewire pages under `route_prefix` (default `deep-research`) with `route_middleware` (default `web`, `auth`):
 
 | Path | Route name | Purpose |
 | --- | --- | --- |
@@ -164,7 +164,7 @@ The name the sidecar uses in texts comes from `assistant_name` (`SIDECAR_ASSISTA
 | `python_binary` | `SIDECAR_PYTHON` | `python3` |
 | `work_root` | `SIDECAR_WORK_ROOT` | `storage/app/sidecar` |
 | `display_timezone` | `SIDECAR_DISPLAY_TIMEZONE` | `Europe/Amsterdam` |
-| `route_prefix`, `route_middleware` | | `diepteonderzoek`, `['web', 'auth']` |
+| `route_prefix`, `route_middleware` | | `deep-research`, `['web', 'auth']` |
 | `tool_allowlist` | | `[]` |
 | `memory.enabled` | `SIDECAR_MEMORY_ENABLED` | `false` |
 | `output.extensions`, `output.max_files`, `output.max_file_bytes` | | see Output Files |
@@ -272,6 +272,14 @@ Only `answered` completes the step, with this result:
 ```
 
 Every other outcome fails the step as `task_<outcome>` and follows the step's failure behaviour. A later step reads the bytes with `TaskResults::read()` as the current executor. Keep the framework's workflow recovery running: it completes a step whose notification was missed.
+
+## Upgrading to 0.3.0
+
+- The settings route prefix changes from `diepteonderzoek` to `deep-research`. Update bookmarks and reverse proxy rules that use the old path.
+- The query parameter of the connect return URL changes from `gesprek` to `conversation`. Update links that you build by hand.
+- Inbox items for completed sidecar tasks use the type `notification` instead of `notificatie`. Update host code that filters on this type.
+- Require `mortelos/framework:^0.7` alongside this package. If the host publishes `config/mortel.php`, rename `inbox.max_per_bron_per_dag` to `inbox.max_per_source_per_day`. Follow the framework 0.7 migration steps; see [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070).
+- Upgrade `mortelos/chat` to `^0.6` together with this package. Chat 0.5 requires framework 0.6 and cannot be installed with framework 0.7.
 
 ## Outlets
 

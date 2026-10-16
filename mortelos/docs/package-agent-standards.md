@@ -106,6 +106,10 @@ php artisan mortelos:agent-rules:publish
 
 Use local host prose only for details that cannot live in a reusable package. If a rule should apply across all OS apps, move it into `mortelos/agent-standards`.
 
+## Code Language
+
+Since 0.1.15 the rules say that all code is English. Dutch is for text a customer sees, with a short list of exceptions. `CodeLanguageGuard` in `mortelos/dev-tools` enforces the rule. See [Coding guidelines](/docs/0/coding-guidelines).
+
 ## Outlets
 
 This package declares no outlets yet; it has no screens or seams a host plugs into.

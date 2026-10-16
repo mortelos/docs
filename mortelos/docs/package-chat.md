@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/chat"
 canonical_path: "/docs/0/package-chat"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -42,6 +42,23 @@ Packages resolve from the MortelOS registry. Configure registry access once befo
 php artisan chat:widget:make demo_widget
 php artisan chat:widget:check compliance_intake_start
 ```
+
+## Upgrading to 0.6.0
+
+Require `mortelos/framework:^0.7` and run the framework 0.7 upgrade migration; see [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070). Update chat, overviews and widget-compliance together. Update any published chat views and host integrations:
+
+| 0.5 | 0.6 |
+| --- | --- |
+| `Mortel\Actions\Overzicht\SaveOverview` | `Mortel\Actions\Overview\SaveOverview` |
+| browser event `overzicht-saved` | `overview-saved` |
+| host listeners such as `onOverzichtSaved` | `onOverviewSaved` |
+| context scopes `gesprek`, `volledig` | `conversation`, `full` (`tenant` stays) |
+| model presets `snel`, `diep` | `fast`, `deep` (`medium` stays) |
+| compliance visibility key `normkaart` | `rulebook` |
+| host-provided Livewire component `compliance.normkaart-publication-widget` | `compliance.rulebook-publication-widget` |
+| host-provided Livewire component `compliance.bronnen-toevoegen-widget` | `compliance.add-sources-widget` |
+
+The framework migration rewrites stored context scopes and presets. Update host code that supplies these values too. Dutch customer-facing copy stays Dutch.
 
 ## Outlets
 

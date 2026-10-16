@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/dev-tools"
 canonical_path: "/docs/0/package-dev-tools"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -26,6 +26,7 @@ public: true
 | Governance checks | Validate package decision logs locally or in CI. |
 | Agent rules | Publish and check merged agent rules for package-aware development, including `mortelos/agent-standards`. |
 | Workflow support | Keep package boundaries explicit before implementation starts. |
+| Code language | Fail the build when code contains Dutch names, keys, comments or test names. See [Coding guidelines](/docs/0/coding-guidelines). |
 | Outlets | List the outlets of the installed packages, check a package's `outlets.json` against its code, and fail a host build that works around a package. |
 
 ## Install
@@ -99,6 +100,18 @@ it('extends mortelos packages only through their outlets', function () {
 ```
 
 It checks seven rules: `unknown-outlet`, `concrete-subclass`, `config-set`, `vendor-require`, `vendor-patch`, `vendor-view-copy` and `manifest`. The table on the [Outlets](/docs/0/outlets#how-the-check-runs) page says what each one catches. It works like the other guard in this package, `ArchGuard`: an existing app starts with an allow list of counts per file that may only go down, and `outlets-guard: ignore <reason>` on a PHP line, or on the line above it, skips that PHP line.
+
+## Code language check
+
+`CodeLanguageGuard` ships with 0.1.8. Add one test to every repo. [Coding guidelines](/docs/0/coding-guidelines) explains the rule, the five checks and the `code-language: dutch-input <reason>` marker:
+
+```php
+use Mortelos\DevTools\Testing\CodeLanguageGuard;
+
+it('keeps code in English', fn () => CodeLanguageGuard::assertClean(dirname(__DIR__, 2)));
+```
+
+There is no allow list and no baseline. Translate the code instead.
 
 ## Outlets
 

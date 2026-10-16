@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/document-studio"
 canonical_path: "/docs/0/package-document-studio"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -67,6 +67,12 @@ php artisan vendor:publish --tag=document-studio-config
 | `document-studio.sign_off.action_type` | `document-studio.sign-off-package` |
 
 Migrations load automatically; publish them with `--tag=document-studio-migrations` if the host manages them. The page copy ships in Dutch. The package no longer publishes its views, and `OutletsGuard` fails the build on a copied view. To add your own buttons or panels to a document or collection page, register them in one of the view outlets below; to change the package's own text, open a pull request on the package (see [Outlets](/docs/0/outlets#when-no-outlet-fits)).
+
+## Upgrading to 0.4.0
+
+Version 0.4.0 requires `mortelos/framework:^0.7`. Upgrade the host to framework 0.7 and follow its upgrade guide before you install this release; see [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070).
+
+Sign-off review inbox items now use `type: action` instead of `type: actie`. Update host filters, handlers and assertions that inspect this value. The framework 0.7 migration rewrites existing inbox rows from `actie` to `action`, so publish and run that migration when you upgrade the host.
 
 ## Outlets
 

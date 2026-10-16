@@ -9,13 +9,31 @@ order: 80
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/changelog"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
 # Changelog
 
 ## 0
+
+2026-10-16:
+
+1. Added [Coding guidelines](/docs/0/coding-guidelines): all code in packages and host apps is English, and Dutch stays in text a customer sees. The page covers the glossary rule, the exceptions, the `code-language: dutch-input` marker and the `CodeLanguageGuard` test. Added a Code language check to [Dev tools](/docs/0/package-dev-tools) and a Code Language section to [Agent standards](/docs/0/package-agent-standards).
+2. Added an "Upgrading" section to the pages of the packages with breaking renames. These releases need a change in your app:
+
+   - framework 0.7.0 (`php artisan migrate` after publishing the new migration), see [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070)
+   - chat 0.6.0, overviews 0.4.0 and widget-compliance 0.4.0, which move together with framework 0.7
+   - document-studio 0.4.0, channel-github 0.5.0 and sidecar 0.3.0, which require framework `^0.7`
+   - triage 0.2.0 (0.2.1 allows framework 0.7)
+   - channel-gmail 0.6.0 (0.6.1), channel-pocket 0.2.0 (0.2.1) and record 0.3.0 (0.3.1), which have no framework change
+   - daily-planner 0.6.0 (0.6.1), which renames its events and DOM names
+
+   Updated the names on the framework, overviews, widget-compliance, triage and sidecar pages. The record package has no page here yet; its upgrade note is in the package repository.
+
+   Released in the same round, with no upgrade note: dev-tools 0.1.8, agent-standards 0.1.15, ui 0.5.2, entity-graph 0.5.1 and 0.5.2, policy-studio 0.3.3 and 0.3.4, widget-document-feedback 0.3.4 and 0.3.5, feedback 0.3.3 and 0.3.4, mail 0.1.4 and 0.1.5, issue-factory 0.1.4 and 0.1.5, social-login 0.2.2, app-standards 0.1.4, channel-fireflies 0.3.3 and 0.3.4, channel-google-calendar 0.4.2 and 0.4.3, channel-google-drive 0.5.1 and 0.5.2, channel-moneybird 0.4.7 and 0.4.8, channel-plaud 0.4.2 and 0.4.3, and channel-telegram 0.3.3 and 0.3.4.
+
+3. Released starter 0.14.0 on framework 0.7. A new app now includes the `CodeLanguageGuard` test and the agent rules check in CI. Existing apps follow the steps in the starter's `UPGRADE.md`.
 
 2026-10-14:
 

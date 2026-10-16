@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/channel-github"
 canonical_path: "/docs/0/package-channel-github"
-last_verified: "2026-10-14"
+last_verified: "2026-10-16"
 public: true
 ---
 
@@ -48,6 +48,10 @@ php artisan channel:recover-github-decisions
 ```
 
 All three run every five minutes through the Laravel scheduler. Without `--tenant`, polling covers every tenant.
+
+## Upgrading to 0.5.0
+
+Require `mortelos/framework:^0.7` alongside this package and follow the framework 0.7 migration steps; see [Upgrading to 0.7.0](/docs/0/package-framework#upgrading-to-070). If the host publishes `config/mortel.php`, rename `inbox.max_per_bron_per_dag` to `inbox.max_per_source_per_day`.
 
 ## Outlets
 
