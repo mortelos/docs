@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/mcp-runtime"
-last_verified: "2026-10-15"
+last_verified: "2026-10-18"
 public: true
 ---
 
@@ -47,6 +47,24 @@ Mcp::web('/mcp/mortelos', UteqOSServer::class)
 ```
 
 Keep the route stable as `/mcp/mortelos`. Customer-specific MCP routes belong only in that host's own documentation.
+
+### The Mortel API server
+
+From `mortelos/framework` 0.7.7 a host can mount a second server, `Mortel\MCP\Servers\MortelServer`, beside the first one. It needs `ResolveApiContext` after the host's own auth and tenancy middleware:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+use Mortel\Api\Http\Middleware\ResolveApiContext;
+use Mortel\MCP\Servers\MortelServer;
+
+Mcp::web('/mcp/mortel', MortelServer::class)->middleware([
+    'auth:api',
+    InitializeTenancyByRequestData::class, // or your own tenancy middleware
+    ResolveApiContext::class,
+]);
+```
+
+`UteqOSServer` has a fixed set of tools. `MortelServer` has none of its own: it builds one tool per entry in the Mortel API registries, `query_<name>` for each named query and `action_<name>` for each public action, with dots as dashes. A tool the user may not use is not listed. The tools run the same checks and return the same bodies and receipts as the HTTP API, so an action can be retried over either transport without running twice. It does not work without the HTTP middleware above and has no stdio mount. See [Mortel API v1](/docs/0/mortel-api#mcp).
 
 ## What MCP exposes
 

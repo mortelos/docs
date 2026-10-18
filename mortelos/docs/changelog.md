@@ -9,13 +9,19 @@ order: 80
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/changelog"
-last_verified: "2026-10-16"
+last_verified: "2026-10-18"
 public: true
 ---
 
 # Changelog
 
 ## 0
+
+2026-10-18:
+
+1. Added [Mortel API v1](/docs/0/mortel-api) for framework 0.7.7 and 0.8.3, which are the same code. A host can switch on one versioned contract to read named queries, run public actions with a receipt and hear about changes live, over HTTP and MCP. The page covers switching it on, the routes, receipts, errors, live notifications, the `MortelServer` MCP server, adding your own queries and actions, and what the API refuses. The API is off until a host mounts it.
+2. Added [Upgrading to 0.7.7](/docs/0/package-framework#upgrading-to-077): Laravel 13.25 or later, the `api_operations` migration only for an app that switches the API on, and webhook delivery that now refuses private, internal and link-local addresses and redirects to them.
+3. Added the `MortelServer` mount to [MCP runtime](/docs/0/mcp-runtime#the-mortel-api-server) and pointed the [API](/docs/0/api) page to the new page.
 
 2026-10-16:
 

@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/framework"
 canonical_path: "/docs/0/package-framework"
-last_verified: "2026-10-16"
+last_verified: "2026-10-18"
 public: true
 ---
 
@@ -37,6 +37,33 @@ composer require mortelos/framework
 ```
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
+
+## Upgrading to 0.7.7
+
+Version 0.7.7 adds the [Mortel API v1](/docs/0/mortel-api) and a hardened client for webhook delivery. Version 0.8.3 is the same code. The API is off by default: an app that does not switch it on needs no change for it.
+
+What an app must do:
+
+1. Run Laravel 13.25 or later. The framework now requires `illuminate/http:^13.25`. It accepts `laravel/mcp` 0.6.7 or later, or 1.x.
+2. Only if you switch the API on: publish the framework migrations and run the new `2026_10_17_000001_create_api_operations_table` in every brain's database, not in the central one. Publishing does not overwrite the migrations you already have.
+
+   ```bash
+   php artisan vendor:publish --tag=os-core-migrations
+   php artisan migrate            # or tenants:migrate, where your framework migrations live
+   ```
+
+3. Check your webhook subscriptions. `Mortel\Jobs\DeliverWebhookJob` now sends through `Mortel\Support\Http\OutboundHttp`, which refuses:
+
+   - a host with any address that is not public: private, loopback, link-local (such as `169.254.169.254`), shared, multicast, reserved and documentation ranges, for IPv4 and IPv6. Every A and AAAA record counts, and so do numeric IPv4 forms and IPv4-mapped IPv6 addresses;
+   - a host that does not resolve;
+   - a scheme other than `http` or `https`, a port other than 80 or 443, and a user name or password in the URL;
+   - more than three redirects. Each redirect is checked again, so a redirect to a private address is refused too.
+
+   The checked address is pinned for the connection, and the call ignores proxy settings. On a redirect to another origin the signature and other secret headers are dropped.
+
+   When a delivery is refused, the app sees this: the `webhook_deliveries` row gets status `failed`, one more attempt and no response code. The log gets the warning `Webhook delivery refused` with the subscription id, the delivery id, the URL and the reason, such as `blocked_address`, `blocked_port`, `unsupported_scheme`, `unresolvable_host` or `redirect_limit`. The queue job fails at once with `Mortel\Support\Http\OutboundRequestRefused` and is not retried. The subscription keeps its status, so the next event to that URL is refused in the same way.
+
+   To reach a known internal service on purpose, list its host in `mortel.outbound_http.allow_hosts` in `config/mortel.php`. An entry `host:port` also allows that port. The list is empty by default.
 
 ## Upgrading to 0.7.0
 

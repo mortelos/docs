@@ -213,6 +213,10 @@
           "slug": "api"
         },
         {
+          "title": "Mortel API",
+          "slug": "mortel-api"
+        },
+        {
           "title": "Troubleshooting",
           "slug": "troubleshooting"
         },
