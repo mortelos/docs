@@ -9,13 +9,13 @@ order: 70
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/api"
-last_verified: "2026-10-07"
+last_verified: "2026-10-18"
 public: true
 ---
 
 # API
 
-MortelOS v0 has no general public HTTP API. Neither `mortelos/framework` nor `mortelos/starter` ships REST or JSON routes for entities, the inbox, governance or users. This page lists what a client outside the host app can call today, so you can decide how to build your own front end.
+MortelOS v0 has no full REST API for entities, the inbox, governance or users. From `mortelos/framework` 0.7.7 a host can switch on the [Mortel API v1](/docs/0/mortel-api), a smaller versioned contract of named queries and public actions, such as listing entities and renaming one. This page lists what a client outside the host app can call today, so you can decide how to build your own front end.
 
 ## Can I Build My Own Front End?
 
@@ -45,6 +45,10 @@ The framework does not mount the server. The host mounts it in `routes/ai.php` w
 
 The tools are built for agents: a client calls a named tool with JSON arguments and gets JSON text back. Their output is not documented as a stable schema in v0, so a front end that relies on it should expect changes.
 
+### Mortel API v1
+
+`mortelos/framework` 0.7.7 ships the Mortel API v1: one versioned contract per installation to read named queries, run public actions with a receipt and hear about changes live, over HTTP (`/api/mortel/v1`) and MCP (`MortelServer`). It is off until the host mounts it. See [Mortel API v1](/docs/0/mortel-api) for how to switch it on, what it offers and what it refuses.
+
 ### Entity graph API
 
 `mortelos/entity-graph` registers four read-only JSON routes: `GET /api/v1/entity-graph` and its `/expand`, `/search` and `/path` sub-routes. Their default middleware starts with `auth:api`, the same token guard as the MCP mount, so they only work once the host has one. See [Entity graph](/docs/0/package-entity-graph#use-it-for) for what each route does. Set `entity-graph.api.enabled` to `false` to turn them off.
@@ -55,7 +59,7 @@ Feature packages register Livewire pages such as `/chat`, `/documents` and `/pla
 
 ## Not There Yet
 
-- A versioned REST or JSON API for entities, inbox, governance, users or settings.
+- A versioned REST or JSON API for the inbox, governance, users or settings. The [Mortel API v1](/docs/0/mortel-api) covers named queries and public actions, and the framework ships one of each for entities.
 - API tokens or an OAuth server in the starter.
 - A published reference for MCP tool input and output.
 
