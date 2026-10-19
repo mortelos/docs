@@ -9,7 +9,7 @@ order: 50
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/packages"
-last_verified: "2026-10-16"
+last_verified: "2026-10-19"
 public: true
 ---
 
@@ -26,7 +26,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/starter`](/docs/0/starter-package) | Host app template | You need a new Laravel portal host with shell routes, auth baseline, dashboard, inbox, governance, users, settings and diagnostics. |
 | [`mortelos/app-standards`](/docs/0/package-app-standards) | Host runtime defaults | You need MortelOS-owned Laravel defaults for a concrete host app. |
 | [`mortelos/framework`](/docs/0/package-framework) | Core library | You need MortelOS primitives: entities, links, events, projections, tenant primitives, access resolution, MCP runtime and reusable application services. |
-| [`mortelos/ui`](/docs/0/package-ui) | UI library | You need shared Flux-aligned UI primitives for a host app or reusable package surface. |
+| [`mortelos/ui`](/docs/0/package-ui) | UI library | You need the shared UI components (the own kit with the shadcn/ui look) for a host app or reusable package surface. |
 
 ## Capability Surfaces
 

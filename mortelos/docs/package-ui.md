@@ -3,14 +3,14 @@ title: "MortelOS UI"
 nav_title: "UI"
 slug: "package-ui"
 version: "0"
-description: "Shared UI primitives consumed by MortelOS packages and host apps."
+description: "The MortelOS component kit: x-mortel:: Blade components for host apps and packages, with its own shadcn-style implementation behind one switch."
 section: "packages"
 order: 53
 status: "mvp"
 audience: "developers"
 package: "mortelos/ui"
 canonical_path: "/docs/0/package-ui"
-last_verified: "2026-10-15"
+last_verified: "2026-10-19"
 public: true
 ---
 
@@ -22,9 +22,10 @@ public: true
 
 | Area | Package responsibility |
 | --- | --- |
-| UI primitives | Shared Flux-aligned Blade and Livewire interface building blocks. |
-| Package surfaces | Reusable components that packages can consume without copying host app UI. |
-| Design consistency | Common visual primitives for starter screens and package-owned views. |
+| Components | Every screen of a host app or package is built from `<x-mortel::…>` Blade components: buttons, fields, selects, tables, menus, dialogs, toasts, the app frame, cards, tabs, key figures, page headers and action bars, lists, a command palette, steps and a status board. |
+| Own kit | Its own implementation of those components, with the look of shadcn/ui, behind one switch. The same tags render through Livewire Flux until an app flips. |
+| Theme | One set of semantic tokens (`--primary`, `--muted`, `--border`, `--radius`, …) that apps set to taste. |
+| Guards | `UiGuard` keeps screens on the kit and Flux-free; `LivewireMonitor` budgets each interaction in browser tests. |
 | View outlets | `<x-mortel::outlet>` marks a place in a package screen; `Mortelos\Ui\Outlet` lets an app plug its own view, Livewire component or closure into it. |
 
 ## Install
@@ -35,9 +36,70 @@ composer require mortelos/ui
 
 Packages resolve from the MortelOS registry. Configure registry access once before installing; see [Installation](/docs/0/installation#configuring-package-access).
 
+## The own kit
+
+`mortelos/ui` has its own implementation of every component that host apps and packages use: Blade components with the look of shadcn/ui (through Basecoat, MIT), on Alpine and the browser's own `<dialog>` and popover, without Flux. Apps keep writing the same `<x-mortel::…>` tags. One switch per app picks the implementation:
+
+```bash
+MORTEL_UI_KIT=own   # the own kit; the default is flux
+```
+
+| Value | What the tags render |
+| --- | --- |
+| `flux` (default) | The Flux wrapper of each tag, as before. Updating `mortelos/ui` changes nothing while the switch is `flux`. |
+| `own` | The own implementation of each tag that has one, otherwise its Flux wrapper. Compiled views go to a folder of their own, so flipping needs no `view:clear`. |
+
+- The switch ships with `mortelos/ui` 0.5.8; every family is built from 0.5.13. Releases stay on 0.5.x; 0.6.0 removes Flux.
+- Own components are at least as fast as the Flux wrappers they replace, in CPU time and in HTML bytes; the package's CI measures it for every component.
+- The kitchen sink at `/_mortel` (environment `local`) shows every component; add `?kit=own` or `?kit=flux` to pick the mode.
+
+## Documentation for AI agents
+
+The package documents itself for an agent that builds a screen and must not invent anything. In an installed app it lives under `vendor/mortelos/ui/`. This set of files, `UiGuard::assertFluxFree()` and `UiGuard::assertAppComponents()` ship from 0.5.14.
+
+| File | What it holds |
+| --- | --- |
+| `COMPONENTS.md` | The one entry point: the rules (kit first, no UI components of an app's own, ask the kit for a missing piece), a decision table from need to component, theming, the speed rules, the guards and every tag with its implementation. |
+| `docs/components/<family>.md` | One page per family: the exact props and values, slots, events and hooks of each component, a minimal and a full example, and the mistakes to avoid. |
+| `docs/recipes.md` | Copy-ready screens: a list page with filters, table, empty state and paging; a detail page with an inspector; a form with page actions; a settings page; a dashboard; a confirm dialog; a toast with undo; loading placeholders. |
+| `docs/theme.md` | The theme tokens and how to set the brand. |
+| `docs/migration.md` | How an app moves from Flux to the own kit. |
+
+A doc-drift test in the package fails when a component or prop has no documentation, when an example or recipe does not render in both modes, when a recipe does not pass `UiGuard`, or when the decision table names a component that does not exist. The agent rules of [`mortelos/agent-standards`](/docs/0/package-agent-standards) ("TALL And UI") point agents to `COMPONENTS.md` first.
+
+An app may have Blade components of its own for what is specific to it, on the kit and under the kit's rules: only `<x-mortel::…>` tags and HTML, no network calls, no server calls of their own, no scripts, no Flux, and field roles as props rather than business names. `UiGuard::assertAppComponents()` checks that.
+
+## Moving an app to the own kit
+
+`vendor/mortelos/ui/docs/migration.md` is the guide. In short:
+
+1. **Step 0**, while the switch is still `flux`: `@mortelAppearance` and `@mortelScripts` in the layouts instead of `@fluxAppearance` and `@fluxScripts`; `kit.css` imported right after `flux.css` instead of `mortel.css`; `Flux::modal(…)` becomes `$this->dispatch('modal-show', name: …)` and `'modal-close'`; toasts use the `mortel-toast` event (in flux mode the kit hands it to Flux, without the undo action); `$flux.appearance` becomes `$store.mortel.appearance`; app CSS, JavaScript and tests that select `data-flux-*` hooks also select the kit hooks (`data-mortel-*`); app icons move to `resources/views/mortel/icon/`.
+2. **The flip**, in one pull request: `MORTEL_UI_KIT=own`, the Flux selectors and `flux.css` out, the test suite green in own mode.
+3. **Flux free**: `UiGuard::assertFluxFree()` fails on any Flux left in Blade, PHP, CSS and JavaScript.
+
+```php
+use Mortelos\Ui\Testing\UiGuard;
+
+it('keeps the UI on the kit', function () {
+    UiGuard::assertClean(resource_path('views'), app_path('Providers'));
+    UiGuard::assertAppComponents(resource_path('views/components'));
+    UiGuard::assertFluxFree(resource_path('views'), resource_path('css'), resource_path('js'), app_path());
+});
+```
+
+The guide holds the table from every `data-flux-*` hook and Flux variant to its kit hook.
+
 ## Theme
 
-Set your brand colour in the host app's `resources/css/app.css`. Import the MortelOS theme layer directly after Flux (it ships with `mortelos/ui` 0.4.6 and later):
+With the own kit, import `kit.css` directly after Flux. Its tokens follow shadcn/ui's names (`--background`, `--primary`, `--muted`, `--border`, `--radius`, …); set them on `:root` and `.dark` after the import to change the look. An app that sets Flux's `--color-accent`, `--color-accent-content` and `--color-accent-foreground` keeps its brand: the kit reads them. The full list is in `vendor/mortelos/ui/docs/theme.md`.
+
+```css
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+@import '../../vendor/mortelos/ui/resources/css/kit.css';
+```
+
+The starter derives its brand from one token through the MortelOS theme layer `mortel.css`, between Flux and the kit. Without the own kit, set your brand colour in the host app's `resources/css/app.css` and import the theme layer directly after Flux (it ships with `mortelos/ui` 0.4.6 and later):
 
 ```css
 @import '../../vendor/livewire/flux/dist/flux.css';
@@ -110,7 +172,7 @@ public function boot(): void
 | Closures | A string you return is escaped. Return a view or an `Htmlable` for markup. |
 | No wrapper | The tag adds no HTML element of its own; the package chooses the container. |
 
-`Outlet::has('<name>')` tells you whether anything is plugged in. The name is always a literal string with at least three kebab-case parts, starting with the short package name (`chat.`, `entity-graph.`). `UiGuard` gives a hint for a name that breaks this rule, and `OutletsGuard` in `mortelos/dev-tools` fails the build for a view name absent from both the installed packages' manifests and your app's manifest. The full rules are in `COMPONENTS.md` in the package, under `outlet`.
+`Outlet::has('<name>')` tells you whether anything is plugged in. The name is always a literal string with at least three kebab-case parts, starting with the short package name (`chat.`, `entity-graph.`). `UiGuard` gives a hint for a name that breaks this rule, and `OutletsGuard` in `mortelos/dev-tools` fails the build for a view name absent from both the installed packages' manifests and your app's manifest. The full rules are in `COMPONENTS.md` in the package, under "Outlets".
 
 ## Outlets
 

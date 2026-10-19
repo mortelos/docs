@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/installation"
-last_verified: "2026-08-27"
+last_verified: "2026-10-19"
 public: true
 ---
 
@@ -162,7 +162,7 @@ Open `http://127.0.0.1:8000`.
 
 `composer setup` and `composer create-project` both install the PHP dependencies and run the starter bootstrap hooks. That means `vendor/`, `.env`, the PostgreSQL database, migrations and the development seed account are already in place before the Vite build runs. The database is named after the project folder: `mijn-portal` becomes `mijn_portal`.
 
-The frontend build imports Livewire and Flux assets from Composer packages under `vendor/`. If you created the app from an existing checkout or copied the files manually, run the Composer bootstrap first:
+The frontend build imports Livewire and `mortelos/ui` assets from Composer packages under `vendor/`. If you created the app from an existing checkout or copied the files manually, run the Composer bootstrap first:
 
 ```bash
 composer install
