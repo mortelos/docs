@@ -9,13 +9,18 @@ order: 80
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/changelog"
-last_verified: "2026-10-16"
+last_verified: "2026-10-19"
 public: true
 ---
 
 # Changelog
 
 ## 0
+
+2026-10-19:
+
+1. Updated [mortelos/ui](/docs/0/package-ui) for ui 0.5.14: the own kit and its switch (`MORTEL_UI_KIT`), the documentation set an agent builds screens from, the migration from Flux to the own kit, `UiGuard::assertFluxFree()` and `UiGuard::assertAppComponents()`.
+2. Updated [mortelos/agent-standards](/docs/0/package-agent-standards) to 0.1.19: the own kit first in the TALL and UI rules, the registry check before building a capability, and asking before a new dependency.
 
 2026-10-16:
 

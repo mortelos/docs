@@ -55,7 +55,7 @@ MORTEL_UI_KIT=own   # the own kit; the default is flux
 
 ## Documentation for AI agents
 
-The package documents itself for an agent that builds a screen and must not invent anything. In an installed app it lives under `vendor/mortelos/ui/`. This set of files, `UiGuard::assertFluxFree()` and `UiGuard::assertAppComponents()` ship in the release after 0.5.13.
+The package documents itself for an agent that builds a screen and must not invent anything. In an installed app it lives under `vendor/mortelos/ui/`. This set of files, `UiGuard::assertFluxFree()` and `UiGuard::assertAppComponents()` ship from 0.5.14.
 
 | File | What it holds |
 | --- | --- |

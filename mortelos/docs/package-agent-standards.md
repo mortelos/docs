@@ -10,13 +10,13 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/agent-standards"
 canonical_path: "/docs/0/package-agent-standards"
-last_verified: "2026-10-16"
+last_verified: "2026-10-19"
 public: true
 ---
 
 # MortelOS Agent Standards
 
-`mortelos/agent-standards` carries reusable AI agent instructions for MortelOS host apps and packages. This page describes version 0.1.15.
+`mortelos/agent-standards` carries reusable AI agent instructions for MortelOS host apps and packages. This page describes version 0.1.19.
 
 This package is a MortelOS-owned hard-fork-style standard. Spatie's AI guidelines and Laravel community conventions are useful references, but MortelOS owns the actual rules that agents receive in `AGENTS.md`.
 
@@ -80,17 +80,17 @@ An agent that works in a package from a parent directory loads that `CLAUDE.md` 
 
 | Area | Rule family |
 | --- | --- |
-| Working method | Read repo instructions, keep work scoped, verify before reporting completion. |
+| Working method | Read repo instructions, check the registry for a package before building a capability, keep work scoped, verify before reporting completion. |
 | Outlets first | Use declared outlets before changing a package. Declare new public surfaces in the outlet manifest. |
 | Laravel and PHP | Strict types, typed values, immutable dates and strict models. Put writes in authorized Actions. |
 | Host state and events | Store auditable facts through aggregates and events. Rebuild read tables through projectors. Return Action results with undo where possible. |
-| TALL and UI | Build UI only from `x-mortel::` components. Never write `flux:` directly or raw form controls and tables. Compose missing components from existing ones. Keep components presentational. |
+| TALL and UI | Kit first: build UI only from `x-mortel::` components, picked from the decision table in `vendor/mortelos/ui/COMPONENTS.md` and its recipes. Never write `flux:` directly or raw form controls and tables. No UI components of your own, except application components under the kit's rules. Ask `mortelos/ui` for a missing generic piece. Colours come from the theme tokens. |
 | Livewire 4 | Use single-file components, islands, stable loop keys and scoped state. Follow the loading, polling and navigation rules. |
 | Verify UI changes | Run the guards and screen browser tests. Check request counts, layout shifts and console output, and include screenshots. Name skipped browser checks when the repo has no browser job. |
 | Security | Validate and authorize at boundaries, guard tenant scope and explicit membership, fake external calls in tests. |
 | Version control and review | Keep changes focused and respect dirty worktrees. |
 | External sources and personal data | Reuse framework channels, entities and transcript events for personal imports. Keep content private and make purges safe across replays. |
-| Dependency and versioning | Use semantic-version tags and registry caret constraints. Commit application lockfiles, keep package lockfiles out of git and wait for tags before upgrading consumers. |
+| Dependency and versioning | Use semantic-version tags and registry caret constraints. Commit application lockfiles, keep package lockfiles out of git and wait for tags before upgrading consumers. Ask before adding a new dependency; clear Laravel Vet with `bin/vet-agent`. |
 | Code language | Write code, comments, commits and pull requests in English. Keep Dutch to user-facing copy and the explicit exceptions. |
 | Dutch product copy | Plain Dutch prose and no em dashes in Dutch user-facing text. |
 
