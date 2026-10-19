@@ -10,7 +10,7 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/starter-package"
-last_verified: "2026-10-14"
+last_verified: "2026-10-19"
 public: true
 ---
 
@@ -24,7 +24,7 @@ It gives you a working application first. You get login, dashboard, inbox, gover
 
 | Area | Included |
 | --- | --- |
-| Framework | Laravel 13, Livewire 4, `mortelos/ui` (built on Flux), Tailwind and Pest |
+| Framework | Laravel 13, Livewire 4, `mortelos/ui` (its own kit with the shadcn/ui look), Tailwind and Pest |
 | Runtime standards | `mortelos/app-standards` for host-level Laravel defaults |
 | Auth baseline | Password login, a working invitation flow (`/invite/{token}`) and a passkey stub |
 | Shell routes | `/login`, `/dashboard`, `/inbox`, `/governance`, `/users`, `/settings`, `/onboarding` |

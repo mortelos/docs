@@ -10,19 +10,19 @@ status: "mvp"
 audience: "developers"
 package: "mortelos/starter"
 canonical_path: "/docs/0/tall-conventions"
-last_verified: "2026-10-14"
+last_verified: "2026-10-19"
 public: true
 ---
 
 # TALL Conventions
 
-MortelOS Starter uses Laravel 13, Livewire 4 single-file components, `mortelos/ui` (built on Flux), Tailwind and Pest.
+MortelOS Starter uses Laravel 13, Livewire 4 single-file components, `mortelos/ui` (its own kit with the shadcn/ui look), Tailwind and Pest.
 
 ## Rules
 
 | Rule | Why |
 | --- | --- |
-| Use `x-mortel::` components from `mortelos/ui` first; check its `COMPONENTS.md` catalogue. Use Flux (`flux:`) only when no matching component exists in `mortelos/ui`. Never write custom HTML for something it already provides. | `mortelos/ui` is the design system. |
+| Build UI only from `x-mortel::` components of `mortelos/ui`; its `COMPONENTS.md` names the component for each need. Never write `flux:` tags; ask `mortelos/ui` for a missing generic piece. Never write custom HTML for something it already provides. | `mortelos/ui` is the design system. |
 | Use Livewire 4 single-file components for new portal surfaces. | State, lifecycle and view stay together. |
 | Put every write in an action class under `app/Actions/<Domain>/`: `final`, a `handle()` method, a `public const ABILITY`, a `Mortel\Support\Actor` in and a `Mortel\Actions\ActionResult` out (with a `Mortel\Actions\Undo` when the change can be reversed). | Domain rules stay out of components, and every screen, agent and bridge gets the same result shape. |
 | Use Pest for tests. | The starter baseline and capability tests run through Pest. |

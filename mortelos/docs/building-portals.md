@@ -9,7 +9,7 @@ order: 31
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/building-portals"
-last_verified: "2026-10-14"
+last_verified: "2026-10-19"
 public: true
 ---
 
@@ -129,7 +129,7 @@ Pick the smallest surface that fits the workflow.
 | Chat widget | Guided task inside `mortelos/chat`. | Package |
 | Inbox item | Human approval or review point. | Host or workflow package |
 
-Use `x-mortel::` components from `mortelos/ui` first; check its `COMPONENTS.md` catalogue. Use Flux (`flux:`) only when `mortelos/ui` has no component for the task. Never write custom HTML for something `mortelos/ui` already provides. Use Livewire 4 single-file components for new UI.
+Build UI only from `x-mortel::` components of `mortelos/ui`; its `COMPONENTS.md` names the component for each need. Never write `flux:` tags. When a generic piece is missing, ask `mortelos/ui` for it and compose the screen from existing components until it ships. Never write custom HTML for something `mortelos/ui` already provides. Use Livewire 4 single-file components for new UI.
 
 ## Policies and workflows
 
