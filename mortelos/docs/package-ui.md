@@ -73,8 +73,8 @@ An app may have Blade components of its own for what is specific to it, on the k
 
 `vendor/mortelos/ui/docs/migration.md` is the guide. In short:
 
-1. **Step 0**, while the switch is still `flux`: `@mortelAppearance` and `@mortelScripts` in the layouts instead of `@fluxAppearance` and `@fluxScripts`; `kit.css` imported right after `flux.css` instead of `mortel.css`; `Flux::modal(…)` becomes `$this->dispatch('modal-show', name: …)` and `'modal-close'`; `$flux.appearance` becomes `$store.mortel.appearance`; app CSS, JavaScript and tests that select `data-flux-*` hooks also select the kit hooks (`data-mortel-*`); app icons move to `resources/views/mortel/icon/`.
-2. **The flip**, in one pull request: `MORTEL_UI_KIT=own`, toasts on the `mortel-toast` event, the Flux selectors and `flux.css` out, the test suite green in own mode.
+1. **Step 0**, while the switch is still `flux`: `@mortelAppearance` and `@mortelScripts` in the layouts instead of `@fluxAppearance` and `@fluxScripts`; `kit.css` imported right after `flux.css` instead of `mortel.css`; `Flux::modal(…)` becomes `$this->dispatch('modal-show', name: …)` and `'modal-close'`; toasts use the `mortel-toast` event (in flux mode the kit hands it to Flux, without the undo action); `$flux.appearance` becomes `$store.mortel.appearance`; app CSS, JavaScript and tests that select `data-flux-*` hooks also select the kit hooks (`data-mortel-*`); app icons move to `resources/views/mortel/icon/`.
+2. **The flip**, in one pull request: `MORTEL_UI_KIT=own`, the Flux selectors and `flux.css` out, the test suite green in own mode.
 3. **Flux free**: `UiGuard::assertFluxFree()` fails on any Flux left in Blade, PHP, CSS and JavaScript.
 
 ```php
