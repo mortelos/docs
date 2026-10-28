@@ -112,11 +112,11 @@ The starter derives its brand from one token through the optional MortelOS brand
 }
 ```
 
-One token is enough. The layer derives readable button text and link tints for light and dark mode. Without any `--mortel-*` token the kit's zinc defaults stay. In 0.6 `mortel.css` holds only this derivation; its old rules for Flux components are gone.
+One token is enough. The layer derives readable button text and link tints for light and dark mode. Without any `--mortel-*` token the layer sets zinc-800 in light mode and white in dark mode. Without `mortel.css` the kit's own defaults (zinc-900 in light, zinc-200 in dark) apply. In 0.6 `mortel.css` holds only this derivation; its old rules for Flux components are gone.
 
 | Token | Used for | Default |
 | --- | --- | --- |
-| `--mortel-accent` | Primary buttons, active navigation, accent surfaces | The kit's zinc: zinc-900 in light, zinc-200 in dark |
+| `--mortel-accent` | Primary buttons, active navigation, accent surfaces | zinc-800 in light, white in dark |
 | `--mortel-accent-content` | Accent-coloured text in light mode | Derived: brand colour, darkened when needed to stay readable on white |
 | `--mortel-accent-foreground` | Text on accent surfaces in light mode | Derived: white or black, whichever contrasts more |
 | `--mortel-accent-dark` | Accent in dark mode | `--mortel-accent` |
@@ -126,6 +126,7 @@ One token is enough. The layer derives readable button text and link tints for l
 - Set the tokens in `@theme` or on `:root`. On a deeper element they have no effect, because the derivation happens on `:root`.
 - Import the brand layer before `kit.css`, so the kit reads the derived values.
 - Do not set `--color-accent` yourself or add your own `.dark` rule for it; the layer handles both modes.
+- Neutral greys follow Tailwind's zinc: keep the app's `--color-zinc-50` to `--color-zinc-950` in the same `@theme` block. The kit resets no zinc shades. For example, `--color-zinc-100` sets light muted, secondary and hover surfaces, and `--color-zinc-800` sets them in dark mode.
 - A typo in a colour value makes the accent invalid (transparent buttons). Check a primary button in light and dark after changing it.
 - The derivation uses CSS relative colour syntax and `round()`. It is tested in Chromium, WebKit and Firefox.
 
