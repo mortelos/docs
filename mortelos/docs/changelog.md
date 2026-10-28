@@ -9,13 +9,18 @@ order: 80
 status: "mvp"
 audience: "developers"
 canonical_path: "/docs/0/changelog"
-last_verified: "2026-10-19"
+last_verified: "2026-10-28"
 public: true
 ---
 
 # Changelog
 
 ## 0
+
+2026-10-28:
+
+1. Updated [mortelos/ui](/docs/0/package-ui) for ui 0.6.0: the own kit is the only implementation, Flux is out, `MORTEL_UI_KIT` and `config('mortel-ui.kit')` do nothing, `livewire/flux` is no longer a dependency, and views compile to the configured `view.compiled` folder again (`php artisan view:clear` once on deploy). The page describes moving an app from 0.5 or from Flux to 0.6, the release lines (`main` is 0.6.x, `release/0.5` only when needed) and the theme without Flux.
+2. ui 0.6.1 adds `Repository::has()`, a check that tells whether the kit can draw an icon name and never throws or reports. The migration guide gains the rows for the Livewire macro `$this->modal('x')->show()` and `->close()`, which becomes `$this->dispatch('modal-show'|'modal-close', name: 'x')`.
 
 2026-10-19:
 
