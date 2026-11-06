@@ -8,9 +8,9 @@ section: "ai"
 order: 34
 status: "mvp"
 audience: "developers"
-package: "mortelos/framework"
+package: "mortelos/mcp"
 canonical_path: "/docs/0/mcp-runtime"
-last_verified: "2026-10-15"
+last_verified: "2026-11-06"
 public: true
 ---
 
@@ -27,26 +27,34 @@ The MCP server is not used for portal bootstrap. Bootstrap is code, config, Arti
 
 ## Host mount
 
-A host mounts the MortelOS MCP server from `mortelos/framework` in `routes/ai.php`:
+`mortelos/mcp` is the standard way to mount MCP in a host. It puts the MCP server behind OAuth login (Laravel Passport and `laravel/mcp`), so an employee connects an AI client such as Codex CLI or Claude Code with their own app login.
 
-```php
-use Laravel\Mcp\Facades\Mcp;
-use Mortel\MCP\Servers\UteqOSServer;
-
-Mcp::oauthRoutes();
-
-Mcp::web('/mcp/mortelos', UteqOSServer::class)
-    ->middleware([
-        'auth:api',
-        // tenancy init from the MCP token
-        // role resolution
-        // trust-level enforcement
-        // data classification
-        // throttling
-    ]);
+```bash
+composer require mortelos/mcp
 ```
 
+```dotenv
+MORTELOS_MCP_ENABLED=true
+```
+
+The package is off until you set that variable. When it is on, the package mounts everything itself, so the host adds no route to `routes/ai.php`:
+
+- `Mcp::oauthRoutes()` for discovery and client registration.
+- The MCP server at `/mcp/mortelos`, behind authentication, the `mcp:use` scope and throttling.
+- Access only for users whose role has the `mcp.connect` right. Without it every request gets 403.
+- Only agent tools that are read-only, need no approval and that the user's role may also use in the chat. Rights are checked again on every call.
+
 Keep the route stable as `/mcp/mortelos`. Customer-specific MCP routes belong only in that host's own documentation.
+
+The package also needs Passport migrations and signing keys, a user model that implements `OAuthenticatable`, and the `mcp.connect` policy for the right roles. The full host setup, the settings in `config/mortelos-mcp.php` and the steps to connect a client are in the package README, `vendor/mortelos/mcp/README.md`.
+
+### Mount a server of your own
+
+The package config key `servers` maps a handle to a `path` and a `Laravel\Mcp\Server` class. Each entry is mounted behind the same access stack as the default server: authentication, the `mcp:use` scope, throttling, host middleware and the `mcp.connect` check. A host that wants an extra server adds an entry there instead of calling `Mcp::web()` itself.
+
+The read-only guarantee above belongs to the package's own `AgentToolsServer`. A server you add brings its own tools, so check which of them can change data before you expose it.
+
+The framework's `Mortel\MCP\Servers\UteqOSServer` has write and governance tools and is not part of the package's offer. A host that wants it mounts it by hand with `Mcp::oauthRoutes()` and `Mcp::web('/mcp/mortelos', UteqOSServer::class)` in `routes/ai.php`, without `mortelos/mcp`, and then supplies its own authentication (`auth:api`), tenancy, role resolution, trust-level enforcement, data classification and throttling in the middleware.
 
 ## What MCP exposes
 
