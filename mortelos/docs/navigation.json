@@ -131,6 +131,10 @@
         {
           "title": "Sidecar",
           "slug": "package-sidecar"
+        },
+        {
+          "title": "MCP",
+          "slug": "package-mcp"
         }
       ]
     },
