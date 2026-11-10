@@ -46,7 +46,7 @@ The package is off until you set that variable. When it is on, the package mount
 
 Keep the route stable as `/mcp/mortelos`. Customer-specific MCP routes belong only in that host's own documentation.
 
-The package also needs Passport migrations and signing keys, a user model that implements `OAuthenticatable`, and the `mcp.connect` policy for the right roles. The full host setup, the settings in `config/mortelos-mcp.php` and the steps to connect a client are in the package README, `vendor/mortelos/mcp/README.md`.
+The package also needs Passport migrations and signing keys, a user model that implements `OAuthenticatable`, and the `mcp.connect` policy for the right roles. The full host setup, the settings in `config/mortelos-mcp.php` and the steps to connect a client are in the package README, `vendor/mortelos/mcp/README.md`. A worked example, from install to a connected client and including the connect window and the list of connected apps, is on the page [MortelOS MCP](/docs/0/package-mcp).
 
 ### Mount a server of your own
 

@@ -44,6 +44,7 @@ Start with `mortelos/starter`, then add the package that matches the portal surf
 | [`mortelos/triage`](/docs/0/package-triage) | Workspace package | You need building blocks for a mail triage loop: one judgement per thread, a doubt check and a receipt for every decision. |
 | [`mortelos/booking`](/docs/0/package-booking) | Workspace package | You need personal appointment links with open times, booking questions, an embeddable public booking form and bookings in the owner's calendar. |
 | [`mortelos/sidecar`](/docs/0/package-sidecar) | Workspace package | You need heavy chat questions handed to Claude Code on the asking user's own Claude account, in a closed sandbox. |
+| [`mortelos/mcp`](/docs/0/package-mcp) | Workspace package | You need employees to connect an AI client such as Claude Code or Codex with their own login, with a connect window and a list of connected apps. |
 
 ## Channels
 
